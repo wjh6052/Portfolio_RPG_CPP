@@ -1,0 +1,110 @@
+#include "CCharacter_Base.h"
+#include "../Global.h"
+
+#include "Camera/CameraComponent.h"
+#include "GameFramework/Controller.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Engine/Classes/Components/SphereComponent.h"
+
+
+
+ACCharacter_Base::ACCharacter_Base()
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+
+	//Ä«¸Þ¶ó
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->TargetArmLength = 300.0f;
+	SpringArm->bUsePawnControlRotation = true;
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
+	Camera->bUsePawnControlRotation = false;
+
+
+	//Create Actor Component
+	StatComponent = CreateDefaultSubobject<UCStatComponent>(L"StatComponent");
+
+
+
+	// -> MovementComp
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
+}
+
+void ACCharacter_Base::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+void ACCharacter_Base::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &ACCharacter_Base::OnMoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ACCharacter_Base::OnMoveRight);
+	PlayerInputComponent->BindAxis("HorizontalLook", this, &ACCharacter_Base::OnHorizontalLook);
+	PlayerInputComponent->BindAxis("VerticalLook", this, &ACCharacter_Base::OnVerticalLook);
+	PlayerInputComponent->BindAxis("CameraZoom", this, &ACCharacter_Base::OnCameraZoom);
+
+
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ACCharacter_Base::OnJump);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACCharacter_Base::OffJump);
+}
+
+
+void ACCharacter_Base::OnMoveForward(float InAxis)
+{
+	CheckTrue(FMath::IsNearlyZero(InAxis));
+	CheckFalse(GetStatComponent()->IsCanMove());
+}
+
+
+void ACCharacter_Base::OnMoveRight(float InAxis)
+{
+	CheckFalse(GetStatComponent()->IsCanMove());
+	CheckTrue(FMath::IsNearlyZero(InAxis));
+}
+
+
+void ACCharacter_Base::OnHorizontalLook(float InAxis)
+{
+	AddControllerYawInput(InAxis);
+}
+
+
+void ACCharacter_Base::OnVerticalLook(float InAxis)
+{
+	AddControllerPitchInput(InAxis);
+}
+
+
+void ACCharacter_Base::OnCameraZoom(float InAxis)
+{
+	SpringArm->TargetArmLength = FMath::Clamp((InAxis * 10) + SpringArm->TargetArmLength, 150.f, 1000.f);
+}
+
+
+void ACCharacter_Base::OnJump()
+{
+	CheckFalse(GetStatComponent()->IsCanMove());
+	ACharacter::Jump();
+}
+
+
+void ACCharacter_Base::OffJump()
+{
+	ACharacter::OnJumped();
+}

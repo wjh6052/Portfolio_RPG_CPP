@@ -1,0 +1,2 @@
+#include "CCharacterDataAsset.h"
+
