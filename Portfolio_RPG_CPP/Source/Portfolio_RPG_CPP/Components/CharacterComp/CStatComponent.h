@@ -35,6 +35,7 @@ enum class ESpeedType : uint8
 	Stop,
 	Walk,
 	Joging,
+	Run,
 	Sprint
 };
 
@@ -61,7 +62,7 @@ public:
 	FORCEINLINE EStatusType GetStatusType() const { return StatusType; }
 	FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
 
-	FORCEINLINE UCCharacterDataAsset* GetCharacterDataAsset() const { return CharacterDataAsset; }
+	FORCEINLINE class UCCharacterDataAsset* GetCharacterDataAsset() const { return CharacterDataAsset; }
 
 
 	//set

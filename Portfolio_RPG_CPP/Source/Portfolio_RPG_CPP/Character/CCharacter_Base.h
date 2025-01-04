@@ -39,8 +39,10 @@ public:
 
 protected:
 	virtual void OnMoveForward(float InAxis);
+	void OnMoveForward_Unarmed(float InAxis);
 
 	virtual void OnMoveRight(float InAxis);
+	void OnMoveRight_Unarmed(float InAxis);
 
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);

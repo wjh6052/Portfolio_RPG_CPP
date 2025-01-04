@@ -7,8 +7,15 @@ public class Portfolio_RPG_CPP : ModuleRules
 	public Portfolio_RPG_CPP(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+
+		PublicDependencyModuleNames.AddRange(new string[] {
+			"Core",
+			"CoreUObject",
+			"Engine",
+			"InputCore",
+			"Niagara",
+			"AnimGraphRuntime"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

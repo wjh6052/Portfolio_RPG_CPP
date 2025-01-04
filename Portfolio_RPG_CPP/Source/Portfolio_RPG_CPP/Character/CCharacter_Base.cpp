@@ -7,6 +7,10 @@
 #include "Engine/Classes/Components/SphereComponent.h"
 
 
+#define INPUT
+
+
+
 
 ACCharacter_Base::ACCharacter_Base()
 {
@@ -18,6 +22,7 @@ ACCharacter_Base::ACCharacter_Base()
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->TargetArmLength = 300.0f;
 	SpringArm->bUsePawnControlRotation = true;
+	
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
@@ -27,7 +32,7 @@ ACCharacter_Base::ACCharacter_Base()
 	//Create Actor Component
 	StatComponent = CreateDefaultSubobject<UCStatComponent>(L"StatComponent");
 
-
+	
 
 	// -> MovementComp
 	bUseControllerRotationPitch = false;
@@ -64,18 +69,34 @@ void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACCharacter_Base::OffJump);
 }
 
-
+#ifdef INPUT
 void ACCharacter_Base::OnMoveForward(float InAxis)
 {
-	CheckTrue(FMath::IsNearlyZero(InAxis));
+	CheckTrue(InAxis == 0);
 	CheckFalse(GetStatComponent()->IsCanMove());
+}
+
+void ACCharacter_Base::OnMoveForward_Unarmed(float InAxis)
+{
+	CheckFalse(GetStatComponent()->IsCanMove());
+	FVector direction = FQuat(FRotator(0, GetControlRotation().Yaw, 0)).GetForwardVector().GetSafeNormal2D();
+
+	AddMovementInput(direction, InAxis);
 }
 
 
 void ACCharacter_Base::OnMoveRight(float InAxis)
 {
 	CheckFalse(GetStatComponent()->IsCanMove());
-	CheckTrue(FMath::IsNearlyZero(InAxis));
+	CheckTrue(InAxis == 0);
+}
+
+void ACCharacter_Base::OnMoveRight_Unarmed(float InAxis)
+{
+	CheckFalse(GetStatComponent()->IsCanMove());
+	FVector direction = FQuat(FRotator(0, GetControlRotation().Yaw, 0)).GetRightVector().GetSafeNormal2D();
+
+	AddMovementInput(direction, InAxis);
 }
 
 
@@ -108,3 +129,4 @@ void ACCharacter_Base::OffJump()
 {
 	ACharacter::OnJumped();
 }
+#endif
