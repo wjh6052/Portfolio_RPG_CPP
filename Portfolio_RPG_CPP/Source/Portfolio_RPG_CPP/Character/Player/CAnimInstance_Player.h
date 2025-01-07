@@ -56,5 +56,5 @@ protected:
 
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "OwnerPlayer")
-		class ACCharacter_Player* OwnerPlayer;
+		class ACCharacter_Player* OwnerCharacter_Player;
 };

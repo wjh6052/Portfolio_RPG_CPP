@@ -12,9 +12,6 @@
 void UCAnimInstance_Base::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
-	OwnerCharacter = Cast<ACCharacter_Base>(TryGetPawnOwner());
-	CheckNull(OwnerCharacter);
-
 
 }
 
@@ -23,9 +20,10 @@ void UCAnimInstance_Base::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
+	if(OwnerCharacter == nullptr)
+		OwnerCharacter = Cast<ACCharacter_Base>(TryGetPawnOwner());
 
 	CheckNull(OwnerCharacter);
-
 	Speed = FMath::Lerp(Speed, OwnerCharacter->GetVelocity().Size2D(), 0.05f);
 
 
@@ -38,9 +36,6 @@ void UCAnimInstance_Base::NativeUpdateAnimation(float DeltaSeconds)
 	StateType = OwnerCharacter->GetStatComponent()->GetStateType();
 
 	StatusType = OwnerCharacter->GetStatComponent()->GetStatusType();
-
-
-	PawnOwnerIsValid();
 
 }
 

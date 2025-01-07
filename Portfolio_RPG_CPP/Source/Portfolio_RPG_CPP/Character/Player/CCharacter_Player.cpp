@@ -2,11 +2,17 @@
 #include "../../Global.h"
 
 
+#include "Components/SkeletalMeshComponent.h"
+
 
 
 ACCharacter_Player::ACCharacter_Player()
 {
+	// StatComp를 위한 캐릭터 태그
+	CharacterType = ECharacterType::Player;
+
 	//Create Actor Component
+	FlightComponent = CreateDefaultSubobject<UCFlightComponent>(L"FlightComponent");
 
 }
 
@@ -38,6 +44,8 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACCharacter_Player::OffSprint);
 
 }
+
+
 
 void ACCharacter_Player::OnMoveForward(float InAxis)
 {
@@ -181,7 +189,7 @@ void ACCharacter_Player::OnRun()
 
 void ACCharacter_Player::OffRun()
 {
-	GetWorld()->GetTimerManager().SetTimer(RunTimer, this, &ACCharacter_Player::RunDelay, GetStatComponent()->GetCharacterDataAsset()->Speed.Run_Time, false);
+	GetWorld()->GetTimerManager().SetTimer(RunTimer, this, &ACCharacter_Player::RunDelay, GetStatComponent()->GetPlayerDataTable().Run_Time, false);
 }
 
 void ACCharacter_Player::RunDelay()
@@ -207,8 +215,7 @@ void ACCharacter_Player::OnSprint()
 	CheckFalse(GetStatComponent()->IsState(EStateType::Idling));
 
 
-	CheckNull(GetStatComponent()->GetCharacterDataAsset());
-	PlayAnimMontage(GetStatComponent()->GetCharacterDataAsset()->RollAnimMontage.AnimMontage, GetStatComponent()->GetCharacterDataAsset()->RollAnimMontage.PlayRate);
+	PlayAnimMontage(GetStatComponent()->GetPlayerDataTable().RollAnimMontage.AnimMontage, GetStatComponent()->GetPlayerDataTable().RollAnimMontage.PlayRate);
 }
 
 void ACCharacter_Player::OffSprint()

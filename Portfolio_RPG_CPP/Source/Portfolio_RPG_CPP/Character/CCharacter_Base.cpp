@@ -69,7 +69,9 @@ void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Released, this, &ACCharacter_Base::OffJump);
 }
 
+
 #ifdef INPUT
+
 void ACCharacter_Base::OnMoveForward(float InAxis)
 {
 	CheckTrue(InAxis == 0);

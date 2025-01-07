@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "../../Datas/DataAsset/CCharacterDataAsset.h"
+#include "../../Datas/Data_Character.h"
 #include "CStatComponent.generated.h"
 
 
@@ -52,8 +52,14 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	void PlayerDataSetting();
+	void EnemyDataSetting();
+	void BossDataSetting();
 
 
+public:
+	void SetSpeed(ESpeedType input);
+	
 public:
 	//get
 	FORCEINLINE bool GetSprint() const { return bSprint; }
@@ -62,7 +68,9 @@ public:
 	FORCEINLINE EStatusType GetStatusType() const { return StatusType; }
 	FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
 
-	FORCEINLINE class UCCharacterDataAsset* GetCharacterDataAsset() const { return CharacterDataAsset; }
+	FORCEINLINE FPlayer_DataTable GetPlayerDataTable() const { return Player_DataTable; }
+	FORCEINLINE FEnemy_DataTable GetEnemyDataTable() const { return Enemy_DataTable; }
+	FORCEINLINE FBoss_DataTable GetBossDataTable() const { return Boss_DataTable; }
 
 
 	//set
@@ -73,6 +81,10 @@ public:
 	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }
 	FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }
 
+	FORCEINLINE void SetPlayerDataTable(FPlayer_DataTable input) { Player_DataTable = input; }
+	FORCEINLINE void SetEnemyDataTable(FEnemy_DataTable input) { Enemy_DataTable = input; }
+	FORCEINLINE void SetBossDataTable(FBoss_DataTable input) { Boss_DataTable = input; }
+
 
 	//Is
 	FORCEINLINE bool IsCanMove() { return bCanMove; }
@@ -82,26 +94,20 @@ public:
 	FORCEINLINE bool IsState(EStateType input) { return StateType == input; }
 	FORCEINLINE bool IsStatus(EStatusType input) { return StatusType == input; }
 
-		
-public:
-	//Set
-	void SetSpeed(ESpeedType input);
-
 
 
 private:
-	// 기본스텟을 받아옴
-	UPROPERTY(EditAnywhere, Category = "Data")
-		class UCCharacterDataAsset* InPut_CharacterDataAsset;
-
-	// 스텟을 다룰 변수
-	class UCCharacterDataAsset* CharacterDataAsset;
+	// 데이터 테이블
+	FPlayer_DataTable Player_DataTable;
+	FEnemy_DataTable Enemy_DataTable;
+	FBoss_DataTable Boss_DataTable;
 
 
 	//현재의 상태를 조절하는 열거형
 	EStateType StateType;
 	EStatusType StatusType;
 	ESpeedType SpeedType;
+
 
 	bool bSprint = false;
 	bool bCanMove = true;

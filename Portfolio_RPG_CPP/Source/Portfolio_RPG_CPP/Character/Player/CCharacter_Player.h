@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "../CCharacter_Base.h"
+#include "../../Components/CharacterComp/PlayerComp/CFlightComponent.h"
 #include "CCharacter_Player.generated.h"
 
 
@@ -21,6 +22,10 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+
+public:
+	FORCEINLINE class UCFlightComponent* GetFlightComponent() const { return FlightComponent; }
 
 public:
 	virtual void OnMoveForward(float InAxis) override;
@@ -34,6 +39,13 @@ public:
 	void OffRun();
 	void OnSprint();
 	void OffSprint();
+
+
+
+protected:
+	//Actor Component
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<UCFlightComponent> FlightComponent;
 
 
 

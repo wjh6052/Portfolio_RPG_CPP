@@ -9,14 +9,17 @@ void UCAnimInstance_Player::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-	OwnerPlayer = Cast<ACCharacter_Player>(TryGetPawnOwner());
-	CheckNull(OwnerPlayer);
+	
 }
 
 void UCAnimInstance_Player::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
+	OwnerCharacter_Player = Cast<ACCharacter_Player>(OwnerCharacter);
+	CheckNull(OwnerCharacter_Player);
+
+	PawnOwnerIsValid();
 }
 
 void UCAnimInstance_Player::PawnOwnerIsValid()
@@ -36,7 +39,8 @@ void UCAnimInstance_Player::IKvariable()
 
 void UCAnimInstance_Player::Flightvariable()
 {
-	Flight_MaxFlySpeed = OwnerPlayer->GetCharacterMovement()->MaxFlySpeed;
+	CheckNull(OwnerCharacter_Player);
+	Flight_MaxFlySpeed = OwnerCharacter_Player->GetCharacterMovement()->MaxFlySpeed;
 
 
 	UKismetMathLibrary::FInterpTo(Flight_Speed_MoveRate, UKismetMathLibrary::MapRangeUnclamped(Speed, 0, Flight_MaxFlySpeed, 0, 0), UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), 0);
@@ -44,7 +48,7 @@ void UCAnimInstance_Player::Flightvariable()
 	LookAtLocation = FVector::ZeroVector;
 
 
-	FVector flight_Speed = UKismetMathLibrary::LessLess_VectorRotator(OwnerPlayer->GetVelocity(), OwnerPlayer->GetActorRotation());
+	FVector flight_Speed = UKismetMathLibrary::LessLess_VectorRotator(OwnerCharacter_Player->GetVelocity(), OwnerCharacter_Player->GetActorRotation());
 
 
 

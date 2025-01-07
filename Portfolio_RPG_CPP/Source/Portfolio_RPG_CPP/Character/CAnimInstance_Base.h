@@ -33,6 +33,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		EStatusType StatusType;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	class ACCharacter_Base* OwnerCharacter;
 	
 };
