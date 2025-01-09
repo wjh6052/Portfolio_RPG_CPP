@@ -39,6 +39,7 @@ public:
 
 public:
 	//Get
+	FORCEINLINE class USkeletalMeshComponent* GetMainMesh() { return Main_SkeletalMesh; }
 	FORCEINLINE class UCStatComponent* GetStatComponent() const { return StatComponent; }
 	FORCEINLINE ECharacterType GetCharacterType() const { return CharacterType; }
 
@@ -66,7 +67,6 @@ protected:
 
 
 
-
 public:
 	//Scene Component
 	UPROPERTY(EditAnywhere, Category = Camera)
@@ -74,6 +74,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Camera)
 		class UCameraComponent* Camera;
+
+protected:
+
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+		class USkeletalMeshComponent* Main_SkeletalMesh;
+
 
 protected:
 		ECharacterType CharacterType;

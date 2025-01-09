@@ -14,6 +14,9 @@ UCStatComponent::UCStatComponent()
 {
 	OwnerCharacter = Cast<ACCharacter_Base>(GetOwner());
 	CheckNull(OwnerCharacter);
+
+
+	
 	
 }
 
@@ -69,12 +72,12 @@ void UCStatComponent::PlayerDataSetting()
 
 	// 오너에게 매쉬 입력
 		
-	OwnerCharacter->GetMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshAsset);
+	OwnerCharacter->GetMainMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshAsset);
 	OwnerCharacter->GetMesh()->SetRelativeLocation(GetPlayerDataTable().Mesh.Character_Location);
 	OwnerCharacter->GetMesh()->SetRelativeRotation(GetPlayerDataTable().Mesh.Character_Rotation);
 
 	// 애님인스턴스
-	OwnerCharacter->GetMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
+	OwnerCharacter->GetMainMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
 
 	// 콜리전
 	OwnerCharacter->GetCapsuleComponent()->SetCapsuleRadius(GetPlayerDataTable().Mesh.CapsuleRadius);
@@ -115,26 +118,26 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 {
 	CheckNull(OwnerCharacter);
 
-	/*switch (input)
+	switch (input)
 	{
 	case ESpeedType::Stop:
 		SetSpeedType(ESpeedType::Stop);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetCharacterData().Speed.Stop;
+		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Stop;
 		break;
 
 	case ESpeedType::Walk:
 		SetSpeedType(ESpeedType::Walk);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetCharacterData().Speed.Walk;
+		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Walk;
 		break;
 
 	case ESpeedType::Joging:
 		SetSpeedType(ESpeedType::Joging);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetCharacterData().Speed.Joging;
+		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Joging;
 		break;
 
 	case ESpeedType::Run:
 		SetSpeedType(ESpeedType::Run);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetCharacterData().Speed.Run;
+		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Run;
 		break;
 
 	case ESpeedType::Sprint:
@@ -143,5 +146,5 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 
 	default:
 		break;
-	}*/
+	}
 }

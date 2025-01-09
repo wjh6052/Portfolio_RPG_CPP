@@ -1,5 +1,8 @@
 #include "CCharacter_Base.h"
 #include "../Global.h"
+#include "Player/CAnimInstance_Player.h"
+
+
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Controller.h"
@@ -33,6 +36,22 @@ ACCharacter_Base::ACCharacter_Base()
 	StatComponent = CreateDefaultSubobject<UCStatComponent>(L"StatComponent");
 
 	
+	// Main Mesh
+	CHelpers::CreateSceneComponent(this, &Main_SkeletalMesh, "SkeletalMesh", GetMesh());
+	USkeletalMesh* meshAsset;
+	CHelpers::GetAsset<USkeletalMesh>(&meshAsset, "SkeletalMesh'/Game/Asset/Characters/UE4_Mannequins/Meshes/UE4_SK_Mannequin.UE4_SK_Mannequin'");
+	GetMesh()->SetSkeletalMesh(meshAsset);
+
+
+	// Script / Engine.AnimBlueprint'/Game/Characters/APB_UE4_Mannequins.APB_UE4_Mannequins'
+	TSubclassOf<UCAnimInstance_Player> animInstanceClass;
+	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/Characters/APB_UE4_Mannequins'");
+	GetMesh()->SetAnimInstanceClass(animInstanceClass);
+
+
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+	GetMesh()->SetVisibility(false);
+
 
 	// -> MovementComp
 	bUseControllerRotationPitch = false;
@@ -51,6 +70,7 @@ void ACCharacter_Base::BeginPlay()
 void ACCharacter_Base::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 
 }
 
