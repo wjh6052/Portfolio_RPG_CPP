@@ -52,7 +52,11 @@ public:
 	//----------------------class--------------------------
 	UPROPERTY(EditAnywhere, Category = "WingsClass")
 		class UClass* WingsClass;
-	
+
+	UPROPERTY(EditAnywhere, Category = "WingsClass")
+		class USkeletalMesh* WingsMesh;
+
+
 	//----------------------FlightSpeed--------------------------
 	UPROPERTY(EditAnywhere, Category = "FlightSpeed")
 		FFlightSetting FlightSetting;
@@ -60,13 +64,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "FlightSpeed")
 		FFlightSetting_Sprint FlightSetting_Sprint;
 
-
-	//----------------Sprint_FlightUnderDust----------------------
-	UPROPERTY(EditAnywhere, Category = "Sprint_FlightUnderDust")
-		bool bOnFlightUnderDust = true;
-
-	UPROPERTY(EditAnywhere, Category = "Sprint_FlightUnderDust")
-		float FlightUnderDustLength = -300.f;
 
 
 	//----------------------AnimMontage--------------------------
@@ -78,6 +75,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AnimMontage")
 		struct FAnimMontageBase Landing;
+
 
 	//----------------------Flight_Trail--------------------------
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Flight_Trail")
@@ -109,6 +107,12 @@ public:
 
 
 	//----------------------FlightUnderDust--------------------------
+	UPROPERTY(EditAnywhere, Category = "Sprint_FlightUnderDust")
+		bool bOnFlightUnderDust = true;
+
+	UPROPERTY(EditAnywhere, Category = "Sprint_FlightUnderDust")
+		float FlightUnderDustLength = -300.f;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "FlightUnderDust")
 		TArray <class UNiagaraSystem*> FlightUnderDust_Impact;
 

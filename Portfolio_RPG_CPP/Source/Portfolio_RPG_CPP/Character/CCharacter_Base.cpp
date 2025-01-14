@@ -43,9 +43,8 @@ ACCharacter_Base::ACCharacter_Base()
 	GetMesh()->SetSkeletalMesh(meshAsset);
 
 
-	// Script / Engine.AnimBlueprint'/Game/Characters/APB_UE4_Mannequins.APB_UE4_Mannequins'
 	TSubclassOf<UCAnimInstance_Player> animInstanceClass;
-	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/Characters/APB_UE4_Mannequins'");
+	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/Characters/Player/APB_UE4_Mannequins'");
 	GetMesh()->SetAnimInstanceClass(animInstanceClass);
 
 

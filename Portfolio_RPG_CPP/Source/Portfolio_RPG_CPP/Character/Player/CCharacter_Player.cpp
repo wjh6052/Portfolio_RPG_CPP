@@ -50,8 +50,8 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 void ACCharacter_Player::OnMoveForward(float InAxis)
 {
 
-	//if (GetStatComponent()->IsStatus(EStatusType::Flight) && GetFlightComponent()->GetSprint())
-	//	GetFlightComponent()->OnMoveForward_Flight(1);
+	if (GetStatComponent()->IsStatus(EStatusType::Flight) && GetStatComponent()->GetSpeedType() == ESpeedType::Sprint)
+		GetFlightComponent()->OnMoveForward_Flight(1);
 
 	Super::OnMoveForward(InAxis);
 
@@ -71,7 +71,7 @@ void ACCharacter_Player::OnMoveForward(float InAxis)
 	{
 
 	case EStatusType::Flight:
-		//GetFlightComponent()->OnMoveForward_Flight(InAxis);
+		GetFlightComponent()->OnMoveForward_Flight(InAxis);
 		break;
 
 	case EStatusType::Climbing:
@@ -97,7 +97,7 @@ void ACCharacter_Player::OnMoveRight(float InAxis)
 	{
 
 	case EStatusType::Flight:
-		//GetFlightComponent()->OnMoveRight_Flight(InAxis);
+		GetFlightComponent()->OnMoveRight_Flight(InAxis);
 		break;
 
 	case EStatusType::Climbing:
@@ -131,16 +131,16 @@ void ACCharacter_Player::OnJump()
 	{
 
 	case EStatusType::Unarmed:
-		/*if (IsMovementMode(EMovementMode::MOVE_Falling))
+		if (IsMovementMode(EMovementMode::MOVE_Falling))
 		{
 			if (GetStatComponent()->IsStatus(EStatusType::Unarmed))
 				GetFlightComponent()->StartFlight();
-		}*/
+		}
 		Super::OnJump();
 		break;
 
 	case EStatusType::Flight:
-		//GetFlightComponent()->EndFlight();
+		GetFlightComponent()->EndFlight();
 		break;
 
 	case EStatusType::Climbing:
@@ -205,8 +205,8 @@ void ACCharacter_Player::OnSprint()
 
 	if (GetStatComponent()->IsStatus(EStatusType::Flight))
 	{
-		//CheckNull(GetFlightComponent());
-		//GetFlightComponent()->SetSprint(GetStatComponent()->GetSprint());
+		CheckNull(GetFlightComponent());
+		GetFlightComponent()->SetSprint(GetStatComponent()->GetSprint());
 
 
 		return;
@@ -222,15 +222,15 @@ void ACCharacter_Player::OffSprint()
 {
 	GetStatComponent()->SetSprint(false);
 
-	/*
-	if (GetStatComponent()->IsStatus(EStatusType::Flight) && GetFlightComponent()->GetSprint())
+	
+	if (GetStatComponent()->IsStatus(EStatusType::Flight) && GetStatComponent()->GetSpeedType() == ESpeedType::Sprint)
 	{
 		GetFlightComponent()->SetSprint(GetStatComponent()->GetSprint());
 
 		return;
 	}
 	CheckFalse(GetStatComponent()->IsStatus(EStatusType::Flight));
-	*/
+	
 
 }
 

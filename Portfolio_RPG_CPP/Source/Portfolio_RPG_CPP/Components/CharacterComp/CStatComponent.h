@@ -75,7 +75,6 @@ public:
 
 	//set
 	FORCEINLINE void SetSprint(bool input) { bSprint = input; }
-	FORCEINLINE void SetCanMove(bool input) { bCanMove = input; }
 
 	FORCEINLINE void SetStateType(EStateType input) { StateType = input; }
 	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }
@@ -87,7 +86,7 @@ public:
 
 
 	//Is
-	FORCEINLINE bool IsCanMove() { return bCanMove; }
+	FORCEINLINE bool IsCanMove() { return SpeedType != ESpeedType::Stop; }
 
 	FORCEINLINE bool IsSpeedType(ESpeedType input) { return SpeedType == input; }
 
@@ -110,7 +109,6 @@ private:
 
 
 	bool bSprint = false;
-	bool bCanMove = true;
 
 
 public:

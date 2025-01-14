@@ -4,21 +4,70 @@
 #include "GameFramework/Actor.h"
 #include "CWings.generated.h"
 
+
+
 UCLASS()
 class PORTFOLIO_RPG_CPP_API ACWings : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ACWings();
 
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
+public:
+	void SpawnWings(bool input);
+	void AttachTo(FName InSocketName);
+
+	void SetSprint(bool input);
+
+
+public:
+	//Get
+	FORCEINLINE FVector GetWing_L() const { return Wing_L; }
+	FORCEINLINE FVector GetWing_R() const { return Wing_R; }
+	
+
+
+
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE void WingsMoveReset() { Wing_L = FVector::ZeroVector; Wing_R = FVector::ZeroVector; }
+
+
+	UFUNCTION(BlueprintCallable)
+		void SetWingsMove(float input);
+
+
+
+public:	// 블루프린트에서 호출될 이벤트
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void SpawnWingsImpact();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void WingsMove();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void WingsStop();
+
+
+
+public:
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+		class USkeletalMeshComponent* WingsMesh;
+
+
+
+private:
+	class ACCharacter_Player* OwnerPlayer;
+
+	// 날개 움직임
+	FVector Wing_L;
+	FVector Wing_R;
+
 
 };

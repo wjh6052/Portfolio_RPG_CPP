@@ -1,24 +1,58 @@
 #include "CWings.h"
+#include "../../Global.h"
+#include "../../Character/Player/CCharacter_Player.h"
 
-// Sets default values
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraDataInterfaceArrayFunctionLibrary.h"
+#include "Materials/MaterialInstanceDynamic.h"
+
+
+
 ACWings::ACWings()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+	CHelpers::CreateSceneComponent(this, &WingsMesh, "SkeletalMesh", GetRootComponent());
 }
 
-// Called when the game starts or when spawned
+
 void ACWings::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	OwnerPlayer = Cast<ACCharacter_Player>(GetOwner());
+	CheckNull(OwnerPlayer);
 }
 
-// Called every frame
-void ACWings::Tick(float DeltaTime)
+
+void ACWings::SpawnWings(bool input)
 {
-	Super::Tick(DeltaTime);
 
 }
+
+
+void ACWings::AttachTo(FName InSocketName)
+{
+	CheckNull(OwnerPlayer);
+
+	AttachToComponent
+	(
+		OwnerPlayer->GetMainMesh(),
+		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+		InSocketName
+	);
+}
+
+
+void ACWings::SetSprint(bool input)
+{
+
+}
+
+void ACWings::SetWingsMove(float input)
+{
+	Wing_L = FVector(0.f, input * 50, input * 30);
+	Wing_R = FVector(0.f, input * 50, input * 30);
+}
+
+
 
