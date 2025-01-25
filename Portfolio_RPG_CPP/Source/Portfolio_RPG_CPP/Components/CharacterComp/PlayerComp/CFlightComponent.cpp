@@ -54,10 +54,10 @@ void UCFlightComponent::BeginPlay()
 			FlightData.Flight_Trail_Rotation,
 			FVector(0, 0, 0),
 			EAttachLocation::Type::KeepRelativeOffset,
-			true,
+			false,
 			ENCPoolMethod::None,
-			true,
-			false
+			false,
+			true
 		);
 		Flight_Wave_Ref = UNiagaraFunctionLibrary::SpawnSystemAttached
 		(
@@ -68,10 +68,10 @@ void UCFlightComponent::BeginPlay()
 			FlightData.Flight_Wave_Rotation,
 			FVector(1, 1, 1),
 			EAttachLocation::Type::KeepRelativeOffset,
-			true,
+			false,
 			ENCPoolMethod::None,
-			true,
-			false
+			false,
+			true
 		);
 
 		for (int i = 0; i < FlightData.FlightUnderDust_Impact.Num(); i++)
