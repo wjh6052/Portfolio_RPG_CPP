@@ -25,6 +25,8 @@ public:
 	
 
 public:
+	//Get
+	FORCEINLINE class USkeletalMeshComponent* GetOutLineMesh() { return OutLine_SkeletalMesh; }
 	FORCEINLINE class UCFlightComponent* GetFlightComponent() const { return FlightComponent; }
 
 public:
@@ -43,6 +45,9 @@ public:
 
 
 protected:
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+		class USkeletalMeshComponent* OutLine_SkeletalMesh;
+
 	//Actor Component
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCFlightComponent> FlightComponent;

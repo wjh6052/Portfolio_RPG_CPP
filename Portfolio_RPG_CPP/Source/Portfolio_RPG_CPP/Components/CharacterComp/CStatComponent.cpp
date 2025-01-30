@@ -2,6 +2,7 @@
 #include "../../Global.h"
 #include "../../CGameInstance.h"
 #include "../../Character/CCharacter_Base.h"
+#include "../../Character/Player/CCharacter_Player.h"
 #include "../../Maps/CLevel_Main.h"
 
 #include "Components/CapsuleComponent.h"
@@ -12,8 +13,8 @@
 
 UCStatComponent::UCStatComponent()
 {
-	OwnerCharacter = Cast<ACCharacter_Base>(GetOwner());
-	CheckNull(OwnerCharacter);
+	OwnerCharacter_Base = Cast<ACCharacter_Base>(GetOwner());
+	CheckNull(OwnerCharacter_Base);
 
 
 	
@@ -27,9 +28,9 @@ void UCStatComponent::BeginPlay()
 
 
 	// GameInstance에서 오너캐릭터의 타입마다 다른 데이터 적용
-	switch (OwnerCharacter->GetCharacterType())
+	switch (OwnerCharacter_Base->GetCharacterType())
 	{
-	case ECharacterType::Player:
+	case ECharacterType::Player:		
 		PlayerDataSetting();
 		break;
 
@@ -55,8 +56,10 @@ void UCStatComponent::BeginPlay()
 
 void UCStatComponent::PlayerDataSetting()
 {
+	OwnerACCharacter_Player = Cast<ACCharacter_Player>(OwnerCharacter_Base);
+
 	// GameInstance에서 데이터 테이블 가져오기
-	UDataTable* dataTable = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerCharacter->GetWorld()))->Player_DataTable;
+	UDataTable* dataTable = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerACCharacter_Player->GetWorld()))->Player_DataTable;
 	CheckNull(dataTable);
 
 	// 데이터테이블의 모든 행 이름을 가져오기
@@ -70,22 +73,32 @@ void UCStatComponent::PlayerDataSetting()
 
 
 
-	// 오너에게 매쉬 입력
-		
-	OwnerCharacter->GetMainMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshAsset);
-	OwnerCharacter->GetMesh()->SetRelativeLocation(GetPlayerDataTable().Mesh.Character_Location);
-	OwnerCharacter->GetMesh()->SetRelativeRotation(GetPlayerDataTable().Mesh.Character_Rotation);
+	// 오너에게 메인 매쉬 입력		
+	OwnerACCharacter_Player->GetMainMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshAsset);
+	OwnerACCharacter_Player->GetMesh()->SetRelativeLocation(GetPlayerDataTable().Mesh.Character_Location);
+	OwnerACCharacter_Player->GetMesh()->SetRelativeRotation(GetPlayerDataTable().Mesh.Character_Rotation);
+
+	// 오너의 OutLine 매쉬 입력
+	OwnerACCharacter_Player->GetOutLineMesh()->SetSkeletalMesh(GetPlayerDataTable().MeshOutLineAsset);
 
 	// 애님인스턴스
-	OwnerCharacter->GetMainMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
+	OwnerACCharacter_Player->GetMainMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
+	OwnerACCharacter_Player->GetOutLineMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
+
+
+	
+
+
+
+	
 
 	// 콜리전
-	OwnerCharacter->GetCapsuleComponent()->SetCapsuleRadius(GetPlayerDataTable().Mesh.CapsuleRadius);
-	OwnerCharacter->GetCapsuleComponent()->SetCapsuleHalfHeight(GetPlayerDataTable().Mesh.CapsuleHalfHeight);
+	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleRadius(GetPlayerDataTable().Mesh.CapsuleRadius);
+	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleHalfHeight(GetPlayerDataTable().Mesh.CapsuleHalfHeight);
 
 
 	//카메라 암위치 수정
-	OwnerCharacter->SpringArm->SetRelativeLocation(GetPlayerDataTable().Mesh.CameraSpringArm_Location);
+	OwnerACCharacter_Player->SpringArm->SetRelativeLocation(GetPlayerDataTable().Mesh.CameraSpringArm_Location);
 
 
 	
@@ -116,28 +129,28 @@ void UCStatComponent::BossDataSetting()
 
 void UCStatComponent::SetSpeed(ESpeedType input)
 {
-	CheckNull(OwnerCharacter);
+	CheckNull(OwnerCharacter_Base);
 
 	switch (input)
 	{
 	case ESpeedType::Stop:
 		SetSpeedType(ESpeedType::Stop);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Stop;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Stop;
 		break;
 
 	case ESpeedType::Walk:
 		SetSpeedType(ESpeedType::Walk);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Walk;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Walk;
 		break;
 
 	case ESpeedType::Joging:
 		SetSpeedType(ESpeedType::Joging);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Joging;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Joging;
 		break;
 
 	case ESpeedType::Run:
 		SetSpeedType(ESpeedType::Run);
-		OwnerCharacter->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Run;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Run;
 		break;
 
 	case ESpeedType::Sprint:

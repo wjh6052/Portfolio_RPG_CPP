@@ -122,7 +122,8 @@ public:
 
 
 
-//--Main---------------------------------------------------------------------
+
+//--DataTable---------------------------------------------------------------------
 
 USTRUCT(BlueprintType)
 struct FPlayer_DataTable : public FTableRowBase
@@ -131,6 +132,9 @@ struct FPlayer_DataTable : public FTableRowBase
 public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
 		FMesh Mesh;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
+		class USkeletalMesh* MeshOutLineAsset;
 
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")

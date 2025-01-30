@@ -14,6 +14,11 @@ ACCharacter_Player::ACCharacter_Player()
 	//Create Actor Component
 	FlightComponent = CreateDefaultSubobject<UCFlightComponent>(L"FlightComponent");
 
+
+	// OutLine ¸Þ½¬
+	CHelpers::CreateSceneComponent(this, &OutLine_SkeletalMesh, "Main_SkeletalMesh", GetMesh());
+
+
 }
 
 
@@ -21,6 +26,8 @@ void ACCharacter_Player::BeginPlay()
 {
 	Super::BeginPlay();
 
+
+	
 
 }
 

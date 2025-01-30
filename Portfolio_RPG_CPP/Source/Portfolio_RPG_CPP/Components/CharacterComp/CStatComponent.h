@@ -112,6 +112,7 @@ private:
 
 
 public:
-	class ACCharacter_Base* OwnerCharacter;
+	class ACCharacter_Base* OwnerCharacter_Base;
+	class ACCharacter_Player* OwnerACCharacter_Player;
 
 };
