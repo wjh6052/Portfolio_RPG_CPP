@@ -1,7 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Engine/DataTable.h"
 #include "Data_Inventory.generated.h"
 
 
@@ -10,63 +11,87 @@
 //---------------------------Enum---------------------------------------------
 
 UENUM(BlueprintType)
-enum class EStarRating : uint8 // µî±Ş ¼³Á¤
+enum class EStarRating : uint8 // ë“±ê¸‰ ì„¤ì •
 {
-	None,		// ºñ¾îÀÖÀ½
-	OneStar,	// 1¼º
-	TwoStar,	// 2¼º
-	ThreeStar,	// 3¼º
-	Fourstar,	// 4¼º
-	Fivestar,	// 5¼º
+	None		UMETA(DisplayName = "ë¹„ì–´ìˆìŒ"),
+	OneStar		UMETA(DisplayName = "1ì„±"), 
+	TwoStar		UMETA(DisplayName = "2ì„±"),
+	ThreeStar	UMETA(DisplayName = "3ì„±"),
+	Fourstar	UMETA(DisplayName = "4ì„±"),
+	Fivestar	UMETA(DisplayName = "5ì„±"),
 };
 
 
 UENUM(BlueprintType)
-enum class EItemCategory : uint8 // ¾ÆÀÌÅÛ Ä«Å×°í¸® Á¾·ù
+enum class EItemCategory : uint8 // ì•„ì´í…œ ì¹´í…Œê³ ë¦¬ ì¢…ë¥˜
 {
-	None,		// ºñ¾îÀÖÀ½		
-	Material,	// Àç·á ¾ÆÀÌÅÛ	
-	Potion,		// Æ÷¼Ç			
-	Equipment,	// Àåºñ			
-	Weapon		// ¹«±â			
+	None		UMETA(DisplayName = "ë¹„ì–´ìˆìŒ"),
+	Material	UMETA(DisplayName = "ì¬ë£Œ ì•„ì´í…œ"),	
+	Potion		UMETA(DisplayName = "í¬ì…˜"),			
+	Equipment	UMETA(DisplayName = "ì¥ë¹„"),			
+	Weapon		UMETA(DisplayName = "ë¬´ê¸°")			
 };
 
 
 UENUM(BlueprintType)
-enum class EItemUseType : uint8 // ¾ÆÀÌÅÛÀÇ »ç¿ëÃ³
+enum class EItemUseType : uint8 // ì•„ì´í…œì˜ ì‚¬ìš©ì²˜
 {
-	None,				// ºñ¾îÀÖÀ½			
-	PotionCraft,		// Æ÷¼ÇÁ¦ÀÛ Àç·á		
-	EquipmentUpgrade,	// Àåºñ °­È­ Àç·á		
-	DaggerUpgrade,		// ´Ü°Ë °­È­ Àç·á		
-	BowUpgrade,			// È° °­È­ Àç·á		
-	StaffUpgrade		// ÁöÆÎÀÌ °­È­ Àç·á	
+	None				UMETA(DisplayName = "ë¹„ì–´ìˆìŒ"),
+	PotionCraft			UMETA(DisplayName = "í¬ì…˜ì œì‘ ì¬ë£Œ"),		
+	EquipmentUpgrade	UMETA(DisplayName = "ì¥ë¹„ ê°•í™” ì¬ë£Œ"),		
+	DaggerUpgrade		UMETA(DisplayName = "ë‹¨ê²€ ê°•í™” ì¬ë£Œ"),		
+	BowUpgrade			UMETA(DisplayName = "í™œ ê°•í™” ì¬ë£Œ"),		
+	StaffUpgrade		UMETA(DisplayName = "ì§€íŒ¡ì´ ê°•í™” ì¬ë£Œ	")
 };
 
 
 //---------------------------struct---------------------------------------------
 
 USTRUCT(BlueprintType)
-struct FItemRarityColor // µî±Şº° »ö»ó ±¸Á¶Ã¼
+struct FItemRarityColor // ë“±ê¸‰ë³„ ìƒ‰ìƒ êµ¬ì¡°ì²´
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemRarityColor")
-		FColor OneStarColor = FColor(255,255,255,255); // Èò»ö
+		FColor OneStarColor = FColor(255,255,255,255); // í°ìƒ‰
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemRarityColor")
-		FColor TwoStarColor = FColor(60, 121, 125, 255); // ÃÊ·Ï»ö
+		FColor TwoStarColor = FColor(60, 121, 125, 255); // ì´ˆë¡ìƒ‰
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemRarityColor")
-		FColor ThreeStarColor = FColor(70, 116, 178, 255); // ÆÄ¶õ»ö
+		FColor ThreeStarColor = FColor(70, 116, 178, 255); // íŒŒë€ìƒ‰
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemRarityColor")
-		FColor FourstarColor = FColor(152, 103, 208, 255); // º¸¶ó»ö
+		FColor FourstarColor = FColor(152, 103, 208, 255); // ë³´ë¼ìƒ‰
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemRarityColor")
-		FColor FivestarColor = FColor(197, 162, 113, 255); // ³ë¶õ»ö
+		FColor FivestarColor = FColor(197, 162, 113, 255); // ë…¸ë€ìƒ‰
 
+
+	FColor GetRatingColor(EStarRating Input)
+	{
+		switch (Input)
+		{
+		case EStarRating::OneStar:
+			return OneStarColor;
+			break;
+		case EStarRating::TwoStar:
+			return TwoStarColor;
+			break;
+		case EStarRating::ThreeStar:
+			return OneStarColor;
+			break;
+		case EStarRating::Fourstar:
+			return ThreeStarColor;
+			break;
+		case EStarRating::Fivestar:
+			return FivestarColor;
+			break;
+		}
+
+		return FColor(0);
+	}
 };
 
 
@@ -77,7 +102,7 @@ public:
 
 
 USTRUCT(BlueprintType)
-struct FMaterialItem_DataTable : public FTableRowBase // Àç·á¾ÆÀÌÅÛ µ¥ÀÌÅÍÅ×ÀÌºí
+struct FMaterialItem_DataTable : public FTableRowBase // ì¬ë£Œì•„ì´í…œ ë°ì´í„°í…Œì´ë¸”
 {
 	GENERATED_BODY()
 
@@ -86,46 +111,46 @@ public:
 
 	// =====Category=====
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Category")
-		EItemCategory ItemCategory; // ¾ÆÀÌÅÛ Ä«Å×°í¸® Á¾·ù
+		EItemCategory ItemCategory; // ì•„ì´í…œ ì¹´í…Œê³ ë¦¬ ì¢…ë¥˜
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Category")
-		EItemUseType ItemUseType; // ¾ÆÀÌÅÛÀÇ »ç¿ëÃ³
+		EItemUseType ItemUseType; // ì•„ì´í…œì˜ ì‚¬ìš©ì²˜
 
 
 	// =====Description=====
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		EStarRating StarRating; //µî±Ş ¼³Á¤
+		EStarRating StarRating; //ë“±ê¸‰ ì„¤ì •
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		FString ItmeName; // ¾ÆÀÌÅÛ ÀÌ¸§
+		FString ItmeName; // ì•„ì´í…œ ì´ë¦„
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		int ItemCount = 0; // ¾ÆÀÌÅÛ °¹¼ö
+		int ItemCount = 0; // ì•„ì´í…œ ê°¯ìˆ˜
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		int ItmePrice = 0; // ¾ÆÀÌÅÛ °¡°İ
+		int ItmePrice = 0; // ì•„ì´í…œ ê°€ê²©
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		UTexture2D* ItmeImage; // À§Á¬¿¡ Ç¥½ÃµÉ ÀÌ¹ÌÁö
+		UTexture2D* ItmeImage; // ìœ„ì ¯ì— í‘œì‹œë  ì´ë¯¸ì§€
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		FString ItemSimpleDescription; // ¾ÆÀÌÅÛ °£´Ü ¼³¸í
+		FString ItemSimpleDescription; // ì•„ì´í…œ ê°„ë‹¨ ì„¤ëª…
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		FString ItemDescription; // ¾ÆÀÌÅÛ ¼³¸í
+		FString ItemDescription; // ì•„ì´í…œ ì„¤ëª…
 	
 	
-	// ÀÎ°ÔÀÓ¿¡¼­ ¿ùµå¿¡¼­ Ç¥½ÃµÉ ºí·çÇÁ¸°Æ® ¿ÀºêÁ§Æ® Ãß°¡ ¿¹Á¤
+	// ì¸ê²Œì„ì—ì„œ ì›”ë“œì—ì„œ í‘œì‹œë  ë¸”ë£¨í”„ë¦°íŠ¸ ì˜¤ë¸Œì íŠ¸ ì¶”ê°€ ì˜ˆì •
 };
 
 
 
 
-// FPotionItem Æ÷¼Ç µ¥ÀÌÅÍ Å×ÀÌºí Ãß°¡ ¿¹Á¤
+// FPotionItem í¬ì…˜ ë°ì´í„° í…Œì´ë¸” ì¶”ê°€ ì˜ˆì •
 
-// FEquipmentItem Àåºñ µ¥ÀÌÅÍ Å×ÀÌºí Ãß°¡ ¿¹Á¤
+// FEquipmentItem ì¥ë¹„ ë°ì´í„° í…Œì´ë¸” ì¶”ê°€ ì˜ˆì •
 
-// FWeaponItem ¹«±â µ¥ÀÌÅÍ Å×ÀÌºí Ãß°¡ ¿¹Á¤
+// FWeaponItem ë¬´ê¸° ë°ì´í„° í…Œì´ë¸” ì¶”ê°€ ì˜ˆì •
 
 
 

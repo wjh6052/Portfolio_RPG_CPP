@@ -1,4 +1,4 @@
-#include "CCharacter_Player.h"
+ï»¿#include "CCharacter_Player.h"
 #include "../../Global.h"
 
 
@@ -8,14 +8,14 @@
 
 ACCharacter_Player::ACCharacter_Player()
 {
-	// StatComp¸¦ À§ÇÑ Ä³¸¯ÅÍ ÅÂ±×
+	// StatCompë¥¼ ìœ„í•œ ìºë¦­í„° íƒœê·¸
 	CharacterType = ECharacterType::Player;
 
 	//Create Actor Component
 	FlightComponent = CreateDefaultSubobject<UCFlightComponent>(L"FlightComponent");
 
 
-	// OutLine ¸Ş½¬
+	// OutLine ë©”ì‰¬
 	CHelpers::CreateSceneComponent(this, &OutLine_SkeletalMesh, "Main_SkeletalMesh", GetMesh());
 
 
