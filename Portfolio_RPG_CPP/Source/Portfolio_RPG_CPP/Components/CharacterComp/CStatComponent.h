@@ -96,13 +96,13 @@ public:
 
 
 private:
-	// 데이터 테이블
+	// 
 	FPlayer_DataTable Player_DataTable;
 	FEnemy_DataTable Enemy_DataTable;
 	FBoss_DataTable Boss_DataTable;
 
 
-	//현재의 상태를 조절하는 열거형
+	//
 	EStateType StateType;
 	EStatusType StatusType;
 	ESpeedType SpeedType;

@@ -25,18 +25,18 @@ void UCFlightComponent::BeginPlay()
 	Super::BeginPlay();
 
 
-	if (FlightDataTable != nullptr) // µ¥ÀÌÅÍ Å×ÀÌºí¿¡¼­ µ¥ÀÌÅÍ °¡Á®¿À±â
+	if (FlightDataTable != nullptr)
 	{
-		// µ¥ÀÌÅÍÅ×ÀÌºíÀÇ ¸ğµç Çà ÀÌ¸§À» °¡Á®¿À±â
+		
 		TArray<FName> rowNames = FlightDataTable->GetRowNames();
 		CheckTrue(rowNames.Num() < 0);
 		FName firstRowName = rowNames[0];
 
-		// Ã¹ ¹øÂ° Çà µ¥ÀÌÅÍ¸¦ °¡Á®¿É´Ï´Ù
+		
 		FlightData = *FlightDataTable->FindRow<FPlayer_Flight>(firstRowName, TEXT(""));
 
 
-		// ¿À³Ê ÀúÀå
+		
 		OwnerPlayer = Cast<ACCharacter_Player>(GetOwner());
 		CheckNull(OwnerPlayer);
 	}
@@ -95,11 +95,11 @@ void UCFlightComponent::BeginPlay()
 
 	}
 
-	// ¹Ù´ÚÀÌ³ª º®¿¡ ºÙÀÌÃÆÀ»¶§ OnHitÇÔ¼ö¸¦ È£Ãâ
+	// ï¿½Ù´ï¿½ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ OnHitï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
 	OwnerPlayer->GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &UCFlightComponent::OnHit);
 
 
-	// ³¯°³ Å¬·¹½º
+	// ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
 	CheckNull(FlightData.WingsClass);
 	FActorSpawnParameters wingsOwner;
 	wingsOwner.Owner = Cast<AActor>(OwnerPlayer);
@@ -107,7 +107,7 @@ void UCFlightComponent::BeginPlay()
 	Wings->SetActorHiddenInGame(true);
 	Wings->AttachTo(L"Wings");
 
-	// ³¯°³ ¸Å½¬
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½Å½ï¿½
 	CheckNull(FlightData.WingsMesh);
 	Wings->WingsMesh->SetSkeletalMesh(FlightData.WingsMesh);
 	
@@ -121,7 +121,7 @@ void UCFlightComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ¾Ö´Ô Å¬·¡½º¿¡ »ç¿ëµÇ´Â Vector º¯¼ö
+	// ï¿½Ö´ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç´ï¿½ Vector ï¿½ï¿½ï¿½ï¿½
 	LookAtLocation = UKismetMathLibrary::VInterpTo
 	(
 		LookAtLocation,
@@ -146,7 +146,7 @@ void UCFlightComponent::OnMoveForward_Flight(float InAxis)
 	OwnerPlayer->AddMovementInput(direction, InAxis);
 
 
-	// Sprint¶§ ¹Ù´Ú°ú »óÈ£ÀÛ¿ëÇÏ¿© ¸ÕÁö¸¦ ÀÏÀ¸Å´
+	// Sprintï¿½ï¿½ ï¿½Ù´Ú°ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å´
 	if (OwnerPlayer->GetStatComponent()->GetSpeedType() == ESpeedType::Sprint && FlightData.bOnFlightUnderDust)
 	{
 		Sprint_FlightUnderDust();
@@ -219,7 +219,7 @@ void UCFlightComponent::StartFlight()
 
 void UCFlightComponent::EndFlight()
 {
-	CheckTrue(OwnerPlayer->GetStatComponent()->GetSpeedType() == ESpeedType::Sprint); // SpawnÁß ³¯¶ó°¨ ¹æÁö
+	CheckTrue(OwnerPlayer->GetStatComponent()->GetSpeedType() == ESpeedType::Sprint); // Spawnï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	Flight_bFlying = false;
 	OwnerPlayer->OffSprint();
@@ -237,11 +237,11 @@ void UCFlightComponent::EndFlight()
 	}
 
 
-	SetSprint(Flight_bFlying); // Sprint ¼Óµµ µÇµ¹¸®±â
+	SetSprint(Flight_bFlying); // Sprint ï¿½Óµï¿½ ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½
 
 
 
-	switch (OwnerPlayer->GetStatComponent()->GetSpeedType()) // ÀÌµ¿ ¼Óµµ µÇµ¹¸®±â
+	switch (OwnerPlayer->GetStatComponent()->GetSpeedType()) // ï¿½Ìµï¿½ ï¿½Óµï¿½ ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 	case ESpeedType::Joging:
 		OwnerPlayer->GetStatComponent()->SetSpeed(ESpeedType::Joging);
@@ -421,7 +421,7 @@ void UCFlightComponent::HitEvent(bool input)
 		StopToPlayAnim(&FlightData.Landing);
 
 
-		//Ä«¸Ş¶ó ÀÌµ¿
+		//Ä«ï¿½Ş¶ï¿½ ï¿½Ìµï¿½
 		OwnerPlayer->GetController()->SetControlRotation(FRotator(0.f, OwnerPlayer->GetControlRotation().Yaw, OwnerPlayer->GetControlRotation().Roll));
 	}
 	else

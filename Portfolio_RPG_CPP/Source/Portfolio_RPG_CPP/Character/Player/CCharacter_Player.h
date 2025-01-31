@@ -55,7 +55,7 @@ protected:
 
 
 private:
-	// ´Þ¸®±â ½ÃÀü½Ã°£
+	// ë‹¬ë¦¬ê¸°
 	void RunDelay();
 
 	int Run = 0;

@@ -14,11 +14,10 @@ struct FMesh
 	GENERATED_BODY()
 
 public:
-	// 애님클래스
 	UPROPERTY(EditAnywhere)
 		class UClass* AnimInstance;
 
-	// 스켈레탈 메시 에셋
+
 	UPROPERTY(EditAnywhere)
 		class USkeletalMesh* MeshAsset;
 
@@ -29,16 +28,16 @@ public:
 		FRotator Character_Rotation = FRotator(0.f, -90.f, 0.f);
 
 
-	// 카메라 암 위치
+	
 	UPROPERTY(EditAnywhere)
 		FVector CameraSpringArm_Location = FVector(0.f, 0.f, 40.f);
 
 
-	// 캡슐 반경
+	
 	UPROPERTY(EditAnywhere)
 		float CapsuleHalfHeight = 80.f;
 
-	// 캡슐 절반 높이
+	
 	UPROPERTY(EditAnywhere)
 		float CapsuleRadius = 25.f;
 
@@ -145,7 +144,6 @@ public:
 		FSpeed Speed;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Speed")
-	// 달리기 가능 시간
 		float Run_Time = 0.25f;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Speed")

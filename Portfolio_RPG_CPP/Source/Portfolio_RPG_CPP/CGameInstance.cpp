@@ -24,7 +24,7 @@ void UCGameInstance::Init()
 	if (ItmeData_SaveGame == nullptr)
 	{
 		DataTableToMaterialItemData();
-		//SaveData();
+		SaveData();
 
 	}
 }
@@ -35,9 +35,6 @@ void UCGameInstance::Init()
 void UCGameInstance::DataTableToMaterialItemData()
 {
 	CheckNull(MaterialItem_DataTable);
-
-	//TArray<FName> rowNames = MaterialItem_DataTable->GetRowNames();
-	//CheckTrue(rowNames.Num() < 0);
 
 	TArray<FMaterialItem_DataTable*> AllRows;
 	MaterialItem_DataTable->GetAllRows<FMaterialItem_DataTable>(L"", AllRows);
@@ -60,7 +57,7 @@ void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemR
 
 void UCGameInstance::SaveData(int Index)
 {
-	if (ItmeData_SaveGame != nullptr)
+	if (ItmeData_SaveGame == nullptr)
 	{
 		ItmeData_SaveGame = Cast<UCItmeData_SaveGame>(UGameplayStatics::CreateSaveGameObject(UCItmeData_SaveGame::StaticClass()));
 	}
@@ -68,14 +65,13 @@ void UCGameInstance::SaveData(int Index)
 	ItmeData_SaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
 
 
-	bool a = UGameplayStatics::SaveGameToSlot(ItmeData_SaveGame, TEXT("SaveData"), Index);
-	if (a)
+	if (UGameplayStatics::SaveGameToSlot(ItmeData_SaveGame, TEXT("SaveData"), Index))
 	{
-		CLog::Print("세이브를 성공했습니다");
+		CLog::Print(L"세이브를 성공했습니다");
 	}
 	else
 	{
-		CLog::Print("세이브를 실패했습니다");
+		CLog::Print(L"세이브를 실패했습니다");
 	}   
 	
 }
@@ -92,13 +88,11 @@ void UCGameInstance::LoadData(int Index)
 		ItmeData_SaveGame = LoadedGame;
 		MaterialItemItmeData_Arr = ItmeData_SaveGame->Save_MaterialItemItmeData_Arr;
 
-		CLog::Print("로드를 성공했습니다");
+		CLog::Print(L"로드를 성공했습니다");
 	}
 	else
 	{
-		CLog::Print("로드를 실패했습니다");
-		CLog::Log("로드를 실패했습니다");
-		CLog::Print("1244444444");
+		CLog::Print(L"로드를 실패했습니다");
 	}
 
 	

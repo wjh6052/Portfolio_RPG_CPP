@@ -26,7 +26,7 @@ public:
 
 
 public: //-----------------------------------------Get-----------------------------------------
-//	FORCEINLINE bool GetSprint() const { return Flight_bSprint; } // statcompÀÇ ESpeedType°¡ ´ëÃ¼
+//	FORCEINLINE bool GetSprint() const { return Flight_bSprint; } // statcompï¿½ï¿½ ESpeedTypeï¿½ï¿½ ï¿½ï¿½Ã¼
 	FORCEINLINE FPlayer_Flight GetFlightData() const { return FlightData; }
 
 

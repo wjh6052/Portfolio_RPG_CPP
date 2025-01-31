@@ -20,7 +20,7 @@ ACCharacter_Base::ACCharacter_Base()
 	PrimaryActorTick.bCanEverTick = true;
 
 
-	//Ä«¸Ş¶ó
+	// ì¹´ë©”ë¼ ì•”
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->TargetArmLength = 300.0f;
@@ -45,7 +45,7 @@ ACCharacter_Base::ACCharacter_Base()
 	GetMesh()->SetAnimInstanceClass(animInstanceClass);
 
 
-	// ¸ŞÀÎ ¸Å½¬ ºÙÀÌ±â
+	// OutLine ë§¤ì‰¬
 	CHelpers::CreateSceneComponent(this, &Main_SkeletalMesh, "SkeletalMesh", GetMesh());
 
 
