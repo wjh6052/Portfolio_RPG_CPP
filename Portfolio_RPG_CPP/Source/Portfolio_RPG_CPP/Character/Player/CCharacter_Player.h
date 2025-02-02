@@ -28,6 +28,7 @@ public:
 	//Get
 	FORCEINLINE class USkeletalMeshComponent* GetOutLineMesh() { return OutLine_SkeletalMesh; }
 	FORCEINLINE class UCFlightComponent* GetFlightComponent() const { return FlightComponent; }
+	FORCEINLINE class UCWidgetComponent* GetWidgetComponent() const { return WidgetComponent; }
 
 public:
 	virtual void OnMoveForward(float InAxis) override;
@@ -42,6 +43,7 @@ public:
 	void OnSprint();
 	void OffSprint();
 
+	void OnInventory();
 
 
 protected:
@@ -52,6 +54,8 @@ protected:
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCFlightComponent> FlightComponent;
 
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<UCWidgetComponent> WidgetComponent;
 
 
 private:

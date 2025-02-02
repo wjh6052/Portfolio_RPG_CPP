@@ -80,10 +80,10 @@ public:
 			return TwoStarColor;
 			break;
 		case EStarRating::ThreeStar:
-			return OneStarColor;
+			return ThreeStarColor;
 			break;
 		case EStarRating::Fourstar:
-			return ThreeStarColor;
+			return FourstarColor;
 			break;
 		case EStarRating::Fivestar:
 			return FivestarColor;

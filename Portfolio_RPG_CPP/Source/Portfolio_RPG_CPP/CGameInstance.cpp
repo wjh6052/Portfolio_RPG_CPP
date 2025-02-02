@@ -7,11 +7,12 @@
 
 UCGameInstance::UCGameInstance()
 {
+	// 플레이어 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&Player_DataTable, "DataTable'/Game/Data/DT_PlayerData.DT_PlayerData'");
 
 	// 몬스터와 보스 데이터 테이블 추가예정
 	
-
+	// 아이템 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&MaterialItem_DataTable, "DataTable'/Game/Data/DT_MaterialItem.DT_MaterialItem'");
 	
 }
@@ -20,13 +21,13 @@ void UCGameInstance::Init()
 {
 	Super::Init();
 
-	LoadData();
-	if (ItmeData_SaveGame == nullptr)
-	{
-		DataTableToMaterialItemData();
-		SaveData();
-
-	}
+	DataTableToMaterialItemData();
+	//LoadData();
+	//if (ItmeData_SaveGame == nullptr)
+	//{		
+	//	SaveData();
+	//
+	//}
 }
 
 
@@ -34,18 +35,23 @@ void UCGameInstance::Init()
 
 void UCGameInstance::DataTableToMaterialItemData()
 {
-	CheckNull(MaterialItem_DataTable);
+	if (!MaterialItem_DataTable)
+	{
+		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
+		return;
+	}
+
 
 	TArray<FMaterialItem_DataTable*> AllRows;
 	MaterialItem_DataTable->GetAllRows<FMaterialItem_DataTable>(L"", AllRows);
 
+
 	for (FMaterialItem_DataTable* Row : AllRows)
 	{
-		if (Row)
-		{
+		if(Row)
 			MaterialItemItmeData_Arr.Add(*Row);
-		}
 	}
+	
 	
 }
 

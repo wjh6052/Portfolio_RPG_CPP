@@ -33,7 +33,6 @@ public:
 	void DeleteData(int Index = 0);
 
 
-	FORCEINLINE TArray<FMaterialItem_DataTable> GetMaterialItemArr() { return MaterialItemItmeData_Arr; }
 
 
 	// 델리게이트 호출 함수
@@ -56,10 +55,14 @@ public:
 		FUpdateMaterialItem Update_MaterialItem;
 	
 
-private:
-	TArray<FMaterialItem_DataTable> MaterialItemItmeData_Arr;
-	FItemRarityColor RatingColor;
 
+	// 유저가 가지고 있는 아이템 배열
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FMaterialItem_DataTable> MaterialItemItmeData_Arr;
+	UPROPERTY(BlueprintReadWrite)
+		FItemRarityColor RatingColor;
+private:
+	
 
 	// 아이템데이터를 저장할 SaveGame
 	class UCItmeData_SaveGame* ItmeData_SaveGame;

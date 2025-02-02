@@ -1,5 +1,6 @@
 ﻿#include "CCharacter_Player.h"
 #include "../../Global.h"
+#include "../../Components/CharacterComp/PlayerComp/CWidgetComponent.h"
 
 
 #include "Components/SkeletalMeshComponent.h"
@@ -13,6 +14,7 @@ ACCharacter_Player::ACCharacter_Player()
 
 	//Create Actor Component
 	FlightComponent = CreateDefaultSubobject<UCFlightComponent>(L"FlightComponent");
+	WidgetComponent = CreateDefaultSubobject<UCWidgetComponent>(L"WidgetComponent");
 
 
 	// OutLine 메쉬
@@ -50,6 +52,7 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnSprint);
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACCharacter_Player::OffSprint);
 
+	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInventory);
 }
 
 
@@ -239,6 +242,11 @@ void ACCharacter_Player::OffSprint()
 	CheckFalse(GetStatComponent()->IsStatus(EStatusType::Flight));
 	
 
+}
+
+void ACCharacter_Player::OnInventory()
+{
+	GetWidgetComponent()->SetViewInventory();
 }
 
 
