@@ -69,7 +69,7 @@ void UCGameInstance::SaveData(int Index)
 	}
 
 	ItmeData_SaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
-
+	ItmeData_SaveGame->Money = Money;
 
 	if (UGameplayStatics::SaveGameToSlot(ItmeData_SaveGame, TEXT("SaveData"), Index))
 	{
@@ -93,6 +93,7 @@ void UCGameInstance::LoadData(int Index)
 	{
 		ItmeData_SaveGame = LoadedGame;
 		MaterialItemItmeData_Arr = ItmeData_SaveGame->Save_MaterialItemItmeData_Arr;
+		Money = ItmeData_SaveGame->Money;
 
 		CLog::Print(L"로드를 성공했습니다");
 	}
@@ -108,4 +109,11 @@ void UCGameInstance::LoadData(int Index)
 
 void UCGameInstance::DeleteData(int Index)
 {
+}
+
+void UCGameInstance::TriggerUpdateMoney(int InMoney)
+{
+	Money += InMoney;
+
+	Update_Money.Broadcast(Money);
 }
