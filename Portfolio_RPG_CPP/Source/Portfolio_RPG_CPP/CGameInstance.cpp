@@ -21,13 +21,10 @@ void UCGameInstance::Init()
 {
 	Super::Init();
 
-	DataTableToMaterialItemData();
-	//LoadData();
-	//if (ItmeData_SaveGame == nullptr)
-	//{		
-	//	SaveData();
-	//
-	//}
+	if (!LoadData())
+	{
+		SaveData();
+	}
 }
 
 
@@ -61,54 +58,98 @@ void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemR
 
 
 
-void UCGameInstance::SaveData(int Index)
+void UCGameInstance::SaveData(FString SlotName, int Index)
 {
-	if (ItmeData_SaveGame == nullptr)
+	if (!ItmeData_SaveGame)
 	{
 		ItmeData_SaveGame = Cast<UCItmeData_SaveGame>(UGameplayStatics::CreateSaveGameObject(UCItmeData_SaveGame::StaticClass()));
 	}
 
-	ItmeData_SaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
-	ItmeData_SaveGame->Money = Money;
 
-	if (UGameplayStatics::SaveGameToSlot(ItmeData_SaveGame, TEXT("SaveData"), Index))
+	if (ItmeData_SaveGame) //데이터 저장
+	{
+		// 세이브 게임의 기존 값 삭제
+		ItmeData_SaveGame->Save_MaterialItemItmeData_Arr.Empty();
+
+
+		// 데이터 테이블에서 기본값 불러오기
+		DataTableToMaterialItemData();
+
+		// 데이터 저장
+		ItmeData_SaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
+		// 돈 추가 예정
+
+
+		UGameplayStatics::SaveGameToSlot(ItmeData_SaveGame, SlotName, Index);
+
+	}
+
+
+	if (UGameplayStatics::DoesSaveGameExist(SlotName, Index))
 	{
 		CLog::Print(L"세이브를 성공했습니다");
 	}
 	else
 	{
 		CLog::Print(L"세이브를 실패했습니다");
-	}   
+	}
 	
 }
 
-void UCGameInstance::LoadData(int Index)
+bool UCGameInstance::LoadData(FString SlotName, int Index)
 {
 
 
-	UCItmeData_SaveGame* LoadedGame = Cast<UCItmeData_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("SaveData"), Index));
+	UCItmeData_SaveGame* loadData = Cast<UCItmeData_SaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, Index));
 
 
-	if (LoadedGame)
+
+
+
+	if (loadData)
 	{
-		ItmeData_SaveGame = LoadedGame;
+		// 데이터저장
+		ItmeData_SaveGame = loadData;
+
+		// 기존의 값 삭제
+		MaterialItemItmeData_Arr.Empty();
+
+		// 아이템데이터 저장
 		MaterialItemItmeData_Arr = ItmeData_SaveGame->Save_MaterialItemItmeData_Arr;
-		Money = ItmeData_SaveGame->Money;
+		// 돈 추가 예정
+
 
 		CLog::Print(L"로드를 성공했습니다");
+		return true;
 	}
 	else
 	{
 		CLog::Print(L"로드를 실패했습니다");
+		return false;
 	}
 
 	
 }
 
-
-
-void UCGameInstance::DeleteData(int Index)
+void UCGameInstance::DeleteData(FString SlotName, int Index)
 {
+	if (UGameplayStatics::DoesSaveGameExist(SlotName, Index))
+	{
+		// 데이터 삭제
+		UGameplayStatics::DeleteGameInSlot(SlotName, Index);
+		if (UGameplayStatics::DoesSaveGameExist(SlotName, Index))
+		{
+			CLog::Print(L"데이터 제거를 성공했습니다");
+		}
+		else
+		{
+			CLog::Print(L"데이터 제거를 실패했습니다");
+		}
+	}
+	else
+	{
+		CLog::Print(L"제거할 데이터를 찾지 못 하였습니다");
+	}
 }
 
 void UCGameInstance::TriggerUpdateMoney(int InMoney)
