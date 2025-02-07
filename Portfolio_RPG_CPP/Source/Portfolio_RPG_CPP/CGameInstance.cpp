@@ -49,11 +49,6 @@ void UCGameInstance::DataTableToMaterialItemData()
 			MaterialItemItmeData_Arr.Add(*Row);
 	}
 	
-	
-}
-
-void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount)
-{
 }
 
 
@@ -77,17 +72,16 @@ void UCGameInstance::SaveData(FString SlotName, int Index)
 
 		// 데이터 저장
 		ItmeData_SaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
-		// 돈 추가 예정
+		ItmeData_SaveGame->Save_Money = Money;
 
 
 		UGameplayStatics::SaveGameToSlot(ItmeData_SaveGame, SlotName, Index);
-
 	}
 
-
+	
 	if (UGameplayStatics::DoesSaveGameExist(SlotName, Index))
 	{
-		CLog::Print(L"세이브를 성공했습니다");
+		CLog::Print(L"세이브를 성공했습니다");		
 	}
 	else
 	{
@@ -108,18 +102,17 @@ bool UCGameInstance::LoadData(FString SlotName, int Index)
 
 	if (loadData)
 	{
-		// 데이터저장
 		ItmeData_SaveGame = loadData;
-
+		
 		// 기존의 값 삭제
 		MaterialItemItmeData_Arr.Empty();
 
 		// 아이템데이터 저장
 		MaterialItemItmeData_Arr = ItmeData_SaveGame->Save_MaterialItemItmeData_Arr;
-		// 돈 추가 예정
+		Money = ItmeData_SaveGame->Save_Money;
 
 
-		CLog::Print(L"로드를 성공했습니다");
+		CLog::Print(L"로드를 성공했습니다");	
 		return true;
 	}
 	else
@@ -152,9 +145,48 @@ void UCGameInstance::DeleteData(FString SlotName, int Index)
 	}
 }
 
-void UCGameInstance::TriggerUpdateMoney(int InMoney)
-{
-	Money += InMoney;
 
-	Update_Money.Broadcast(Money);
+void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount)
+{
+	for (int i = 0; i < MaterialItemItmeData_Arr.Num(); i++)
+	{
+		if (MaterialItemItmeData_Arr[i].ItemUseType == ItemUseType && MaterialItemItmeData_Arr[i].StarRating == ItemRating)
+		{
+			MaterialItemItmeData_Arr[i].ItemCount += AddCount;
+			TriggerUpdateMaterialItem();
+
+			UEnum* enumUseType = StaticEnum<EItemUseType>();
+			FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
+			UEnum* EnumRating = StaticEnum<EStarRating>();
+			FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
+			
+
+			CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 획득"), *eUseType, *eStarRating, AddCount));
+			return;
+		}
+	}
+}
+
+void UCGameInstance::AddMoney(int AddMoney)
+{
+	if (AddMoney >= 0)
+	{
+		Money += AddMoney;
+		TriggerUpdateMoney();
+
+
+
+		CLog::Print(FString::Printf(TEXT("%d머니 획득!"), AddMoney));
+	}
+	else
+	{
+		if (Money + AddMoney <= 0)
+		{
+			Money += AddMoney;
+			TriggerUpdateMoney();
+
+
+			CLog::Print(FString::Printf(TEXT("%d머니 소모"), AddMoney));
+		}
+	}
 }

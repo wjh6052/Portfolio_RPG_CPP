@@ -1,6 +1,7 @@
 #include "CWidgetComponent.h"
 #include "../../../Global.h"
 #include "../../../Character/Player/CCharacter_Player.h"
+#include "../../../Widgets/CWMain.h"
 #include "../../../Widgets/Inventory/CWInventory.h"
 
 #include "GameFramework/PlayerController.h"
@@ -10,7 +11,8 @@ UCWidgetComponent::UCWidgetComponent()
 {
 	OwnerPlayer = Cast<ACCharacter_Player>(GetOwner());
 
-	
+
+	CHelpers::GetClass<UCWMain>(&MainWidgetClass, "WidgetBlueprint'/Game/Widgets/CW_Main.CW_Main_C'");
 	CHelpers::GetClass<UCWInventory>(&InventoryClass, "WidgetBlueprint'/Game/Widgets/Inventory/CBP_WInventory.CBP_WInventory_C'");
 }
 
@@ -24,11 +26,14 @@ void UCWidgetComponent::BeginPlay()
 
 	
 
-	// Spawn Widget
-	
+	// Spawn Widget	
+	MainWidget = Cast<UCWMain>(CreateWidget(PlayerController, MainWidgetClass));
 	InventoryWidget = Cast<UCWInventory>(CreateWidget(PlayerController, InventoryClass));
 	
 	
+
+	// 메인 위젯 켜기
+	MainWidget->AddToViewport();
 }
 
 void UCWidgetComponent::SetViewInventory()

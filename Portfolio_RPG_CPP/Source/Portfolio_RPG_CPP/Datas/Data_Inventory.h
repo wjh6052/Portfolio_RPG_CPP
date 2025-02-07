@@ -45,6 +45,16 @@ enum class EItemUseType : uint8 // 아이템의 사용처
 };
 
 
+UENUM(BlueprintType)
+enum class EInteractionCategory : uint8 // 아이템의 사용처
+{
+	None		UMETA(DisplayName = "비어있음"),
+	Material	UMETA(DisplayName = "강화 재료"),
+	Money		UMETA(DisplayName = "돈"),
+	System		UMETA(DisplayName = "시스템"),
+	NPC			UMETA(DisplayName = "NPC")
+};
+
 //---------------------------struct---------------------------------------------
 
 USTRUCT(BlueprintType)
@@ -96,6 +106,21 @@ public:
 
 
 
+USTRUCT(BlueprintType)
+struct FInteractionItemMaterial
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		EStarRating StarRating;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		EItemUseType ItemUseType;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		int MaterialNum;
+};
 
 
 //---------------------------DataTable---------------------------------------------
@@ -122,16 +147,16 @@ public:
 		EStarRating StarRating; //등급 설정
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		FString ItmeName; // 아이템 이름
+		FString ItemName; // 아이템 이름
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
 		int ItemCount = 0; // 아이템 갯수
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		int ItmePrice = 0; // 아이템 가격
+		int ItemPrice = 0; // 아이템 가격
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		UTexture2D* ItmeImage; // 위젯에 표시될 이미지
+		UTexture2D* ItemImage; // 위젯에 표시될 이미지
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
 		FString ItemSimpleDescription; // 아이템 간단 설명

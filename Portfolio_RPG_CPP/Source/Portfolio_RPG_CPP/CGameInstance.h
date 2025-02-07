@@ -9,7 +9,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateMaterialItem);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdate_Money, int, InMoney);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdate_Money);
 
 UCLASS()
 class PORTFOLIO_RPG_CPP_API UCGameInstance : public UGameInstance
@@ -25,7 +25,7 @@ public:
 public:
 
 	void DataTableToMaterialItemData(); // 데이터테이블에서 가져온 데이터를 배열으로 옮김	
-	void AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating,int AddCount); // 배열에 아이템의 갯수를 더함
+	
 	
 
 public:
@@ -38,19 +38,24 @@ public:
 		void DeleteData(FString SlotName = "SaveData", int Index = 0);
 
 
+public:
+	FORCEINLINE int GetMoney() { return Money; }
 
 
 	
-
-
-
+public:
+	// 배열에 아이템의 갯수를 추가함
+	UFUNCTION(BlueprintCallable)
+		void AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount); 
+	UFUNCTION(BlueprintCallable)
+		void AddMoney(int AddMoney);
 
 	
 
 public:
 	// 델리게이트 호출 함수
 	FORCEINLINE void TriggerUpdateMaterialItem() { Update_MaterialItem.Broadcast(); }
-	void TriggerUpdateMoney(int InMoney);
+	FORCEINLINE void TriggerUpdateMoney() { Update_Money.Broadcast(); }
 
 
 

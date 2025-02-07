@@ -12,9 +12,5 @@ class PORTFOLIO_RPG_CPP_API UCWItemGridPanel : public UUserWidget
 	
 public:
 
-	
-
-
-
 
 };

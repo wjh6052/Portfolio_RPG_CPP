@@ -22,8 +22,16 @@ public:
 	// 인벤토리를 출력 및 지울때
 	void SetViewInventory();
 
+
+public:
+	FORCEINLINE class UCWMain* GetMainWidget() { return MainWidget; }
+
+
 	
 private:
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+		TSubclassOf<class UCWMain> MainWidgetClass;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 		TSubclassOf<class UCWInventory> InventoryClass;
 
@@ -31,5 +39,6 @@ private:
 	class APlayerController* PlayerController;
 	class ACCharacter_Player* OwnerPlayer;
 
+	class UCWMain* MainWidget;
 	class UCWInventory* InventoryWidget;
 };

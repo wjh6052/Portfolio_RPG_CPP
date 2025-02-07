@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "../CCharacter_Base.h"
 #include "../../Components/CharacterComp/PlayerComp/CFlightComponent.h"
+#include "../../Components/CharacterComp/PlayerComp/CWidgetComponent.h"
+#include "../../Components/CharacterComp/PlayerComp/CInteractionComponent.h"
 #include "CCharacter_Player.generated.h"
 
 
@@ -29,6 +31,7 @@ public:
 	FORCEINLINE class USkeletalMeshComponent* GetOutLineMesh() { return OutLine_SkeletalMesh; }
 	FORCEINLINE class UCFlightComponent* GetFlightComponent() const { return FlightComponent; }
 	FORCEINLINE class UCWidgetComponent* GetWidgetComponent() const { return WidgetComponent; }
+	FORCEINLINE class UCInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
 
 public:
 	virtual void OnMoveForward(float InAxis) override;
@@ -44,6 +47,10 @@ public:
 	void OffSprint();
 
 	void OnInventory();
+	void OnInteraction();
+
+
+	void OnCameraZoom(float InAxis) override;
 
 
 protected:
@@ -57,6 +64,8 @@ protected:
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCWidgetComponent> WidgetComponent;
 
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<UCInteractionComponent> InteractionComponent;
 
 private:
 	// 달리기

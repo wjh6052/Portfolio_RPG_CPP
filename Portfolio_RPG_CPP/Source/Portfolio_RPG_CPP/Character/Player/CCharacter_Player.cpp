@@ -1,6 +1,8 @@
 ﻿#include "CCharacter_Player.h"
 #include "../../Global.h"
-#include "../../Components/CharacterComp/PlayerComp/CWidgetComponent.h"
+#include "../../Widgets/CWMain.h"
+#include "../../Widgets/Interaction/CWInteractionBox.h"
+
 
 
 #include "Components/SkeletalMeshComponent.h"
@@ -15,6 +17,7 @@ ACCharacter_Player::ACCharacter_Player()
 	//Create Actor Component
 	FlightComponent = CreateDefaultSubobject<UCFlightComponent>(L"FlightComponent");
 	WidgetComponent = CreateDefaultSubobject<UCWidgetComponent>(L"WidgetComponent");
+	InteractionComponent = CreateDefaultSubobject<UCInteractionComponent>(L"InteractionComponent");
 
 
 	// OutLine 메쉬
@@ -53,6 +56,7 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACCharacter_Player::OffSprint);
 
 	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInventory);
+	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInteraction);
 }
 
 
@@ -247,6 +251,26 @@ void ACCharacter_Player::OffSprint()
 void ACCharacter_Player::OnInventory()
 {
 	GetWidgetComponent()->SetViewInventory();
+}
+
+void ACCharacter_Player::OnInteraction()
+{
+	GetWidgetComponent()->GetMainWidget()->GetWInteractionBox()->UseInteraction();
+
+}
+
+void ACCharacter_Player::OnCameraZoom(float InAxis)
+{
+	CheckFalse(InAxis != 0);
+
+	if (GetWidgetComponent()->GetMainWidget()->GetWInteractionBox()->GetOnInteractionBox())
+	{
+		GetWidgetComponent()->GetMainWidget()->GetWInteractionBox()->ChoiceInteraction(InAxis);
+	}
+	else
+	{
+		Super::OnCameraZoom(InAxis);
+	}
 }
 
 

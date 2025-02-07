@@ -59,7 +59,7 @@ protected:
 
 	void OnHorizontalLook(float InAxis);
 	void OnVerticalLook(float InAxis);
-	void OnCameraZoom(float InAxis);
+	virtual void OnCameraZoom(float InAxis);
 
 
 	virtual void OnJump();

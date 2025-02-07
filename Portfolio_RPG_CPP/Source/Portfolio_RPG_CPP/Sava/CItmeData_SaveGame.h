@@ -13,7 +13,9 @@ class PORTFOLIO_RPG_CPP_API UCItmeData_SaveGame : public USaveGame
 	GENERATED_BODY()
 	
 public:
-	TArray<FMaterialItem_DataTable> Save_MaterialItemItmeData_Arr;
+	UPROPERTY(SaveGame)
+		TArray<FMaterialItem_DataTable> Save_MaterialItemItmeData_Arr;
 	
-	int Money;
+	UPROPERTY(SaveGame)
+		int Save_Money;
 };
