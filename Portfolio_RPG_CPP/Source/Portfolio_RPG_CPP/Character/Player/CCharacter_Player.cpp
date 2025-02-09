@@ -20,8 +20,7 @@ ACCharacter_Player::ACCharacter_Player()
 	InteractionComponent = CreateDefaultSubobject<UCInteractionComponent>(L"InteractionComponent");
 
 
-	// OutLine 메쉬
-	CHelpers::CreateSceneComponent(this, &OutLine_SkeletalMesh, "Main_SkeletalMesh", GetMesh());
+	
 
 
 }

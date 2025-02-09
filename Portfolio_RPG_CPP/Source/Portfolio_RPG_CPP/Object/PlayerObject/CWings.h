@@ -43,7 +43,7 @@ public:
 
 
 
-public:	// ºí·çÇÁ¸°Æ®¿¡¼­ È£ÃâµÉ ÀÌº¥Æ®
+public:	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void SpawnWingsImpact();
@@ -65,7 +65,7 @@ public:
 private:
 	class ACCharacter_Player* OwnerPlayer;
 
-	// ³¯°³ ¿òÁ÷ÀÓ
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	FVector Wing_L;
 	FVector Wing_R;
 

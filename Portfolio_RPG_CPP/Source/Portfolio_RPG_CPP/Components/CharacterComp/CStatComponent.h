@@ -55,6 +55,7 @@ protected:
 	void PlayerDataSetting();
 	void EnemyDataSetting();
 	void BossDataSetting();
+	void NPCDataSetting();
 
 
 public:
@@ -71,6 +72,8 @@ public:
 	FORCEINLINE FPlayer_DataTable GetPlayerDataTable() const { return Player_DataTable; }
 	FORCEINLINE FEnemy_DataTable GetEnemyDataTable() const { return Enemy_DataTable; }
 	FORCEINLINE FBoss_DataTable GetBossDataTable() const { return Boss_DataTable; }
+
+	
 
 
 	//set
@@ -112,7 +115,11 @@ private:
 
 
 public:
+	class UCGameInstance* CGameInstance;
+
+
 	class ACCharacter_Base* OwnerCharacter_Base;
 	class ACCharacter_Player* OwnerACCharacter_Player;
+	class ACCharacter_NPC* OwnerACCharacter_NPC;
 
 };

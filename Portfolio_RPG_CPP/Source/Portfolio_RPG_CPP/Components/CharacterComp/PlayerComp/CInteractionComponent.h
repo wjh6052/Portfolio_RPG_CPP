@@ -19,12 +19,17 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 
 public:	
 	void AddInteraction(AActor* InIteminteraction);
 	void RemovalInteraction(AActor* InIteminteraction);
 	
+	UFUNCTION(BlueprintCallable)
+		void StartNPCInteraction(AActor* InNpc);
+
 
 private:
 	class ACCharacter_Player* OwnerPlayer;

@@ -11,7 +11,13 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&Player_DataTable, "DataTable'/Game/Data/DT_PlayerData.DT_PlayerData'");
 
 	// 몬스터와 보스 데이터 테이블 추가예정
+
 	
+	//NPC 데이터 테이블
+	CHelpers::GetAsset<UDataTable>(&NPC_DataTable, "DataTable'/Game/Data/DT_NPC.DT_NPC'");
+	
+
+
 	// 아이템 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&MaterialItem_DataTable, "DataTable'/Game/Data/DT_MaterialItem.DT_MaterialItem'");
 	
@@ -20,6 +26,8 @@ UCGameInstance::UCGameInstance()
 void UCGameInstance::Init()
 {
 	Super::Init();
+
+	NPCDataTableToArr();
 
 	if (!LoadData())
 	{
@@ -30,25 +38,45 @@ void UCGameInstance::Init()
 
 
 
-void UCGameInstance::DataTableToMaterialItemData()
+void UCGameInstance::ItemDataTableToArr()
 {
 	if (!MaterialItem_DataTable)
 	{
 		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
-		return;
 	}
-
-
-	TArray<FMaterialItem_DataTable*> AllRows;
-	MaterialItem_DataTable->GetAllRows<FMaterialItem_DataTable>(L"", AllRows);
-
-
-	for (FMaterialItem_DataTable* Row : AllRows)
+	else
 	{
-		if(Row)
-			MaterialItemItmeData_Arr.Add(*Row);
-	}
+		TArray<FMaterialItem_DataTable*> AllRows;
+		MaterialItem_DataTable->GetAllRows<FMaterialItem_DataTable>(L"", AllRows);
+
+
+		for (FMaterialItem_DataTable* Row : AllRows)
+		{
+			if (Row)
+				MaterialItemItmeData_Arr.Add(*Row);
+		}
+	}	
 	
+}
+
+void UCGameInstance::NPCDataTableToArr()
+{
+	if (!NPC_DataTable)
+	{
+		CLog::Print(L"NPC 데이터테이블을 읽어오지 못하였습니다");
+	}
+	else
+	{
+		TArray<FNPC_DataTable*> AllRows;
+		NPC_DataTable->GetAllRows<FNPC_DataTable>(L"", AllRows);
+
+
+		for (FNPC_DataTable* Row : AllRows)
+		{
+			if (Row)
+				NPCData_Arr.Add(*Row);
+		}
+	}
 }
 
 
@@ -68,7 +96,7 @@ void UCGameInstance::SaveData(FString SlotName, int Index)
 
 
 		// 데이터 테이블에서 기본값 불러오기
-		DataTableToMaterialItemData();
+		ItemDataTableToArr();
 
 		// 데이터 저장
 		ItmeData_SaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
@@ -190,3 +218,4 @@ void UCGameInstance::AddMoney(int AddMoney)
 		}
 	}
 }
+

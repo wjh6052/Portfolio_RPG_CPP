@@ -12,9 +12,11 @@
 UENUM(BlueprintType)
 enum class ECharacterType : uint8
 {
+	None,
 	Player,
 	Enemy,
-	Boss
+	Boss,
+	NPC
 };
 
 
@@ -40,6 +42,7 @@ public:
 public:
 	//Get
 	FORCEINLINE class USkeletalMeshComponent* GetMainMesh() { return Main_SkeletalMesh; }
+	FORCEINLINE class USkeletalMeshComponent* GetOutLineMesh() { return OutLine_SkeletalMesh; }
 	FORCEINLINE class UCStatComponent* GetStatComponent() const { return StatComponent; }
 	FORCEINLINE ECharacterType GetCharacterType() const { return CharacterType; }
 
@@ -75,11 +78,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = Camera)
 		class UCameraComponent* Camera;
 
-protected:
-
+protected:	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 		class USkeletalMeshComponent* Main_SkeletalMesh;
-
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
+		class USkeletalMeshComponent* OutLine_SkeletalMesh;
 
 protected:
 		ECharacterType CharacterType;

@@ -41,13 +41,13 @@ ACCharacter_Base::ACCharacter_Base()
 	CHelpers::GetAsset<USkeletalMesh>(&meshAsset, "SkeletalMesh'/Game/Asset/Characters/UE4_Mannequins/Meshes/UE4_SK_Mannequin.UE4_SK_Mannequin'");
 	GetMesh()->SetSkeletalMesh(meshAsset);
 	TSubclassOf<UCAnimInstance_Player> animInstanceClass;
-	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/Characters/Player/APB_UE4_Mannequins'");
+	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/Characters/Player/APB_Player_Mannequins'");
 	GetMesh()->SetAnimInstanceClass(animInstanceClass);
 
 
-	// OutLine 매쉬
+	// 매쉬
 	CHelpers::CreateSceneComponent(this, &Main_SkeletalMesh, "SkeletalMesh", GetMesh());
-
+	CHelpers::CreateSceneComponent(this, &OutLine_SkeletalMesh, "Main_SkeletalMesh", GetMesh());
 
 
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;

@@ -3,35 +3,36 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "../../Datas/Data_Inventory.h"
-#include "CItemInteraction.generated.h"
+#include "CInteraction.generated.h"
 
 
 
 
 UCLASS()
-class PORTFOLIO_RPG_CPP_API ACItemInteraction : public AActor
+class PORTFOLIO_RPG_CPP_API ACInteraction : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	ACItemInteraction();
+	ACInteraction();
 
 protected:
 	virtual void BeginPlay() override;
 
 
-private:
+protected:
 	UFUNCTION()
-		void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+		virtual void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-		void OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+		virtual void OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 
 public:
 	// Get
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		FORCEINLINE FString GetItemName() { return ItemName; }
+	FORCEINLINE class USphereComponent* GetSphereCollision() { return SphereCollision; }
 
 
 
@@ -44,7 +45,7 @@ protected:
 		class UStaticMeshComponent* StaticMesh;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-		class USphereComponent* SphereComponent;
+		class USphereComponent* SphereCollision;
 
 
 public:
@@ -54,5 +55,8 @@ public:
 		class UObject* InteractionImage;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
 		FString ItemName;
+
+
+	class ACCharacter_Base* OwnerCharacter;
 
 };

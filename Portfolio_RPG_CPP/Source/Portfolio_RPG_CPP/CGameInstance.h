@@ -5,6 +5,7 @@
 #include "Engine/DataTable.h"
 #include "Datas/Data_Character.h"
 #include "Datas/Data_Inventory.h"
+#include "Datas/Data_NPC.h"
 #include "CGameInstance.generated.h"
 
 
@@ -24,7 +25,8 @@ public:
 
 public:
 
-	void DataTableToMaterialItemData(); // 데이터테이블에서 가져온 데이터를 배열으로 옮김	
+	void ItemDataTableToArr(); // 아이템 데이터테이블에서 가져온 데이터를 배열으로 옮김	
+	void NPCDataTableToArr(); // NPC 데이터테이블에서 가져온 데이터를 배열으로 옮김	
 	
 	
 
@@ -71,6 +73,14 @@ public:
 
 
 public:
+	// 플레이어 데이터
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FPlayer_DataTable> Playe_Data_Arr;
+
+		// NPC 데이터
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FNPC_DataTable> NPCData_Arr;
+
 	// 유저가 가지고 있는 아이템 배열
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FMaterialItem_DataTable> MaterialItemItmeData_Arr;
@@ -91,6 +101,8 @@ public: // DataTable
 	UDataTable* Player_DataTable;
 	UDataTable* Enemy_DataTable;
 	UDataTable* Boss_DataTable;
+
+	UDataTable* NPC_DataTable;
 
 	UDataTable* MaterialItem_DataTable;
 

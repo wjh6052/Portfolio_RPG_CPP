@@ -70,4 +70,16 @@ public:
 	{
 		return Cast<T>(InActor->GetComponentByClass(T::StaticClass()));
 	}
+
+	template<typename T>
+	static FString GetEnumDisplayName(T EnumValue)
+	{
+		static_assert(TIsEnum<T>::Value, "T must be an enum type"); // 열거형 타입인지 확인
+
+		const UEnum* EnumPtr = StaticEnum<T>(); // 열거형의 UEnum 정보 가져오기
+		if (!EnumPtr) return TEXT("Invalid");
+
+		return EnumPtr->GetDisplayNameTextByValue(static_cast<int64>(EnumValue)).ToString();
+	}
+
 };

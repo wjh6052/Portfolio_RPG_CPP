@@ -28,10 +28,12 @@ public:
 
 public:
 	//Get
-	FORCEINLINE class USkeletalMeshComponent* GetOutLineMesh() { return OutLine_SkeletalMesh; }
 	FORCEINLINE class UCFlightComponent* GetFlightComponent() const { return FlightComponent; }
 	FORCEINLINE class UCWidgetComponent* GetWidgetComponent() const { return WidgetComponent; }
-	FORCEINLINE class UCInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FORCEINLINE class UCInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }
+
 
 public:
 	virtual void OnMoveForward(float InAxis) override;
@@ -53,9 +55,7 @@ public:
 	void OnCameraZoom(float InAxis) override;
 
 
-protected:
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-		class USkeletalMeshComponent* OutLine_SkeletalMesh;
+
 
 	//Actor Component
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

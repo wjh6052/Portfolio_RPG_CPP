@@ -167,6 +167,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
 		FMesh Mesh;
 
+	// 에너미 마네킹 애님인스턴스
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;
@@ -189,6 +190,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
 		FMesh Mesh;
 
+	// 보스 마네킹 애님인스턴스
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;

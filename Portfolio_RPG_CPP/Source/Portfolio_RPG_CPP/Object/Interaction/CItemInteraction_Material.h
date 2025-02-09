@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CItemInteraction.h"
+#include "CInteraction.h"
 #include "CItemInteraction_Material.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PORTFOLIO_RPG_CPP_API ACItemInteraction_Material : public ACItemInteraction
+class PORTFOLIO_RPG_CPP_API ACItemInteraction_Material : public ACInteraction
 {
 	GENERATED_BODY()
 
