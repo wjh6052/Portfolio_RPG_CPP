@@ -21,5 +21,6 @@ protected:
 
 
 public:
-	class ACCharacter_NPC* OwnerNPC;
+	UPROPERTY(BlueprintReadOnly)
+		class ACCharacter_NPC* OwnerNPC;
 };

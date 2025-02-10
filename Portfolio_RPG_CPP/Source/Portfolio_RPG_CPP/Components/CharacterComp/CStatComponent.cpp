@@ -83,6 +83,8 @@ void UCStatComponent::PlayerDataSetting()
 
 	// 매쉬
 	OwnerACCharacter_Player->GetMainMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshAsset);
+	OwnerACCharacter_Player->GetMainMesh()->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+	OwnerACCharacter_Player->GetMainMesh()->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
 	OwnerACCharacter_Player->GetMesh()->SetRelativeLocation(GetPlayerDataTable().Mesh.Character_Location);
 	OwnerACCharacter_Player->GetMesh()->SetRelativeRotation(GetPlayerDataTable().Mesh.Character_Rotation);
 
@@ -126,16 +128,21 @@ void UCStatComponent::NPCDataSetting()
 			{
 				// 매쉬
 				OwnerACCharacter_NPC->GetMainMesh()->SetSkeletalMesh(CGameInstance->NPCData_Arr[i].Mesh.MeshAsset);
+				OwnerACCharacter_NPC->GetMainMesh()->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+				OwnerACCharacter_NPC->GetMainMesh()->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
 				OwnerACCharacter_NPC->GetMesh()->SetRelativeLocation(CGameInstance->NPCData_Arr[i].Mesh.Character_Location);
 				OwnerACCharacter_NPC->GetMesh()->SetRelativeRotation(CGameInstance->NPCData_Arr[i].Mesh.Character_Rotation);
 
+				
 				// 매쉬 OutLine 
 				OwnerACCharacter_NPC->GetOutLineMesh()->SetSkeletalMesh(CGameInstance->NPCData_Arr[i].MeshOutLineMesh);
 
+
 				// 애님인스턴스
+				OwnerACCharacter_NPC->GetMesh()->SetAnimInstanceClass(CGameInstance->NPCData_Arr[i].MannequinAnimInstance);
 				OwnerACCharacter_NPC->GetMainMesh()->SetAnimInstanceClass(CGameInstance->NPCData_Arr[i].Mesh.AnimInstance);
 				OwnerACCharacter_NPC->GetOutLineMesh()->SetAnimInstanceClass(CGameInstance->NPCData_Arr[i].Mesh.AnimInstance);
-
+				
 
 				// 매쉬 콜리전 크기 조정
 				OwnerACCharacter_NPC->GetCapsuleComponent()->SetCapsuleRadius(CGameInstance->NPCData_Arr[i].Mesh.CapsuleRadius);
@@ -146,10 +153,7 @@ void UCStatComponent::NPCDataSetting()
 		}
 	}
 
-	//테스트
-	//OwnerACCharacter_NPC->GetMesh()->SetVisibility(true);
-	//OwnerACCharacter_NPC->GetMesh()->SetRelativeLocation(FVector(0.f,0.f,-88.f));
-	//OwnerACCharacter_NPC->GetMesh()->SetRelativeRotation(FRotator(0.f,-90.f,0.f));
+
 }
 
 

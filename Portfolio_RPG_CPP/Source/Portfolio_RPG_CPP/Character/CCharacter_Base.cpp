@@ -41,13 +41,16 @@ ACCharacter_Base::ACCharacter_Base()
 	CHelpers::GetAsset<USkeletalMesh>(&meshAsset, "SkeletalMesh'/Game/Asset/Characters/UE4_Mannequins/Meshes/UE4_SK_Mannequin.UE4_SK_Mannequin'");
 	GetMesh()->SetSkeletalMesh(meshAsset);
 	TSubclassOf<UCAnimInstance_Player> animInstanceClass;
-	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/Characters/Player/APB_Player_Mannequins'");
+	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/Characters/Player/ABP_Player_Mannequins'");
 	GetMesh()->SetAnimInstanceClass(animInstanceClass);
 
 
 	// 매쉬
-	CHelpers::CreateSceneComponent(this, &Main_SkeletalMesh, "SkeletalMesh", GetMesh());
-	CHelpers::CreateSceneComponent(this, &OutLine_SkeletalMesh, "Main_SkeletalMesh", GetMesh());
+	CHelpers::CreateSceneComponent(this, &Main_SkeletalMesh, "&Main_SkeletalMesh", GetMesh());
+	CHelpers::CreateSceneComponent(this, &OutLine_SkeletalMesh, "OutLine_SkeletalMesh", GetMesh());
+
+	Main_SkeletalMesh->SetRelativeLocation(FVector(0.f, 0.f, -80.f));
+	Main_SkeletalMesh->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 
 
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
