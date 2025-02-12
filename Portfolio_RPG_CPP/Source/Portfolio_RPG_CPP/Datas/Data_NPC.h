@@ -2,7 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Engine/DataTable.h"
 #include "Data_Character.h"
+#include "Data_Widget.h"
 #include "Data_NPC.generated.h"
 
 
@@ -35,7 +37,34 @@ enum class ENPCName : uint8 // NPC이름 열거형
 //---------------------------struct---------------------------------------------
 
 
+USTRUCT(BlueprintType)
+struct FConversation // NPC대화의 내용과 선택지id를 설정하는 구조체
+{
+	GENERATED_BODY()
 
+public:
+	// 선택지 Id
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Id")
+		int ConversationId;
+
+	// 선택지 ID 목록 (선택지가 없으면 비움)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Id")
+		TArray<int32> NextChoices;
+
+
+	// 선택지의 타입
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Type")
+		EConversationType ConversationType;
+
+
+	// 위젯에서나올 선택지이름
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dialogue")
+		FText ConversationName;
+
+	// 선택지를 선택했을때
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dialogue")
+		TArray<FText> DialogueText;
+};
 
 
 //---------------------------DataTable---------------------------------------------
@@ -62,6 +91,10 @@ public:
 		class UClass* MannequinAnimInstance;
 
 	
+	// 대화를 시작해서 나오는 내용을 담은 FConversation
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Conversation")
+		TArray<FConversation> Conversation;
+
 };
 
 

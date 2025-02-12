@@ -9,18 +9,22 @@ UCGameInstance::UCGameInstance()
 {
 	// 플레이어 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&Player_DataTable, "DataTable'/Game/Data/DT_PlayerData.DT_PlayerData'");
-
-	// 몬스터와 보스 데이터 테이블 추가예정
-
+	// 몬스터 데이터 테이블 추가예정
+	// 보스 데이터 테이블 추가예정
 	
+
 	//NPC 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&NPC_DataTable, "DataTable'/Game/Data/DT_NPC.DT_NPC'");
 	
 
-
 	// 아이템 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&MaterialItem_DataTable, "DataTable'/Game/Data/DT_MaterialItem.DT_MaterialItem'");
 	
+
+	// 위젯 대화 아이콘 배열
+	CHelpers::GetAsset<UDataTable>(&ConversationIcon_DataTable, "DataTable'/Game/Data/Widget/DT_ConversationIcon.DT_ConversationIcon'");
+
+
 }
 
 void UCGameInstance::Init()
@@ -28,6 +32,8 @@ void UCGameInstance::Init()
 	Super::Init();
 
 	NPCDataTableToArr();
+	IconDataTableToArr();
+
 
 	if (!LoadData())
 	{
@@ -36,28 +42,7 @@ void UCGameInstance::Init()
 }
 
 
-
-
-void UCGameInstance::ItemDataTableToArr()
-{
-	if (!MaterialItem_DataTable)
-	{
-		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
-	}
-	else
-	{
-		TArray<FMaterialItem_DataTable*> AllRows;
-		MaterialItem_DataTable->GetAllRows<FMaterialItem_DataTable>(L"", AllRows);
-
-
-		for (FMaterialItem_DataTable* Row : AllRows)
-		{
-			if (Row)
-				MaterialItemItmeData_Arr.Add(*Row);
-		}
-	}	
-	
-}
+// ------------------------------------------------DataTable-------------------------------------------------------
 
 void UCGameInstance::NPCDataTableToArr()
 {
@@ -79,7 +64,53 @@ void UCGameInstance::NPCDataTableToArr()
 	}
 }
 
+void UCGameInstance::ItemDataTableToArr()
+{
+	if (!MaterialItem_DataTable)
+	{
+		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
+	}
+	else
+	{
+		TArray<FMaterialItem_DataTable*> AllRows;
+		MaterialItem_DataTable->GetAllRows<FMaterialItem_DataTable>(L"", AllRows);
 
+
+		for (FMaterialItem_DataTable* Row : AllRows)
+		{
+			if (Row)
+				MaterialItemItmeData_Arr.Add(*Row);
+		}
+	}
+
+}
+
+void UCGameInstance::IconDataTableToArr()
+{
+	if (!ConversationIcon_DataTable)
+	{
+		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
+	}
+	else
+	{
+		TArray<FConversationIcon_DataTable*> AllRows;
+		MaterialItem_DataTable->GetAllRows<FConversationIcon_DataTable>(L"", AllRows);
+
+
+		for (FConversationIcon_DataTable* Row : AllRows)
+		{
+			if (Row)
+				ConversationIcon_Arr.Add(*Row);
+		}
+	}
+}
+
+
+
+
+
+
+// ----------------------------------------------------SaveGame-------------------------------------------------------
 
 void UCGameInstance::SaveData(FString SlotName, int Index)
 {
@@ -120,11 +151,7 @@ void UCGameInstance::SaveData(FString SlotName, int Index)
 
 bool UCGameInstance::LoadData(FString SlotName, int Index)
 {
-
-
 	UCItmeData_SaveGame* loadData = Cast<UCItmeData_SaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, Index));
-
-
 
 
 
@@ -149,7 +176,6 @@ bool UCGameInstance::LoadData(FString SlotName, int Index)
 		return false;
 	}
 
-	
 }
 
 void UCGameInstance::DeleteData(FString SlotName, int Index)
@@ -218,4 +244,6 @@ void UCGameInstance::AddMoney(int AddMoney)
 		}
 	}
 }
+
+
 

@@ -6,6 +6,7 @@
 #include "Datas/Data_Character.h"
 #include "Datas/Data_Inventory.h"
 #include "Datas/Data_NPC.h"
+#include "Datas/Data_Widget.h"
 #include "CGameInstance.generated.h"
 
 
@@ -25,35 +26,19 @@ public:
 
 public:
 
-	void ItemDataTableToArr(); // 아이템 데이터테이블에서 가져온 데이터를 배열으로 옮김	
-	void NPCDataTableToArr(); // NPC 데이터테이블에서 가져온 데이터를 배열으로 옮김	
-	
 	
 
-public:
-	// SaveGame
-	UFUNCTION(BlueprintCallable)
-		void SaveData(FString SlotName = "SaveData", int Index = 0);
-	UFUNCTION(BlueprintCallable)
-		bool LoadData(FString SlotName = "SaveData", int Index = 0);
-	UFUNCTION(BlueprintCallable)
-		void DeleteData(FString SlotName = "SaveData", int Index = 0);
-
-
-public:
-	FORCEINLINE int GetMoney() { return Money; }
 
 
 	
-public:
-	// 배열에 아이템의 갯수를 추가함
-	UFUNCTION(BlueprintCallable)
-		void AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount); 
-	UFUNCTION(BlueprintCallable)
-		void AddMoney(int AddMoney);
+
+
+
+
+
 
 	
-
+// ------------------------------------------------Delegate-------------------------------------------------------
 public:
 	// 델리게이트 호출 함수
 	FORCEINLINE void TriggerUpdateMaterialItem() { Update_MaterialItem.Broadcast(); }
@@ -72,44 +57,96 @@ public:
 
 
 
-public:
+
+// ------------------------------------------------DataTable-------------------------------------------------------
+public: // 캐릭터 데이터
+
 	// 플레이어 데이터
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FPlayer_DataTable> Playe_Data_Arr;
+	UDataTable* Player_DataTable;
 
-		// NPC 데이터
+	// 몬스터 데이터
+	UDataTable* Enemy_DataTable;
+	// 보스 몬스터 데이터
+	UDataTable* Boss_DataTable;
+
+
+
+public: // NPC 데이터
+	void NPCDataTableToArr();
+
+	// NPC 데이터
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FNPC_DataTable> NPCData_Arr;
+	UDataTable* NPC_DataTable;
 
-	// 유저가 가지고 있는 아이템 배열
+
+
+public: // 아이템 데이터
+	void ItemDataTableToArr(); 
+
+	// 유저가 가지고 있는 아이템
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FMaterialItem_DataTable> MaterialItemItmeData_Arr;
+	UDataTable* MaterialItem_DataTable;
+
+	
+
+public: // 기타 데이터
+	void IconDataTableToArr();
+
+	// 위젯 대화 아이콘
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FConversationIcon_DataTable> ConversationIcon_Arr;
+	UDataTable* ConversationIcon_DataTable;
+
+
+
 
 	UPROPERTY(BlueprintReadWrite)
 		FItemRarityColor RatingColor;
 
 
 
-	// 유저가 가지고 있는 소지금 
+
+
+
+// ----------------------------------------------------SaveGame-------------------------------------------------------
+public: 
+	// SaveGame
+	UFUNCTION(BlueprintCallable)
+		void SaveData(FString SlotName = "SaveData", int Index = 0);
+	UFUNCTION(BlueprintCallable)
+		bool LoadData(FString SlotName = "SaveData", int Index = 0);
+	UFUNCTION(BlueprintCallable)
+		void DeleteData(FString SlotName = "SaveData", int Index = 0);
+
+
+public: // Get
+		FORCEINLINE int GetMoney() { return Money; }
+
+
+public:
+	// 배열에 아이템의 갯수를 추가함
+	UFUNCTION(BlueprintCallable)
+		void AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount);
+	UFUNCTION(BlueprintCallable)
+		void AddMoney(int AddMoney);
+
+
+public:
+
+// 유저가 가지고 있는 소지금 
 	UPROPERTY(BlueprintReadWrite)
 		int Money = 0;
 
 
-
-
-public: // DataTable
-	UDataTable* Player_DataTable;
-	UDataTable* Enemy_DataTable;
-	UDataTable* Boss_DataTable;
-
-	UDataTable* NPC_DataTable;
-
-	UDataTable* MaterialItem_DataTable;
-
-
 private:
-	
-
 	// 아이템데이터를 저장할 SaveGame
 	class UCItmeData_SaveGame* ItmeData_SaveGame;
+
+
+
+
 };

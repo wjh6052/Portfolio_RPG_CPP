@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "../../../Datas/Data_NPC.h"
 #include "CInteractionComponent.generated.h"
 
 
@@ -32,5 +33,11 @@ public:
 
 
 private:
+	TArray<FConversation> Conversation;
+
+
+private:
+	class UCGameInstance* CGameInstance;
+
 	class ACCharacter_Player* OwnerPlayer;
 };

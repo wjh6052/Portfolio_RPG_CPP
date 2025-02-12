@@ -1,9 +1,11 @@
 #include "CInteractionComponent.h"
 #include "../../../Global.h"
+
+#include "../../../CGameInstance.h"
 #include "../../../Character/Player/CCharacter_Player.h"
 #include "../../../Character/NPC/CCharacter_NPC.h"
 #include "../../../Object/Interaction/CInteraction_NPC.h"
-#include "../../../Datas/Data_NPC.h"
+
 
 
 #include "../../../Widgets/CWMain.h"
@@ -21,7 +23,8 @@ void UCInteractionComponent::BeginPlay()
 	Super::BeginPlay();
 
 	OwnerPlayer = Cast<ACCharacter_Player>(GetOwner());
-	CheckNull(OwnerPlayer);
+	
+	CGameInstance = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerPlayer->GetWorld()));
 }
 
 void UCInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -45,11 +48,23 @@ void UCInteractionComponent::RemovalInteraction(AActor* InIteminteraction)
 
 void UCInteractionComponent::StartNPCInteraction(AActor* InNpc)
 {
-	ACInteraction_NPC* interaction_NPC = Cast<ACInteraction_NPC>(InNpc);
-	FString a = CHelpers::GetEnumDisplayName<ENPCName>(interaction_NPC->OwnerNPC->NPCName);
-	a += L"NPC대화시작";
+	ACCharacter_NPC* Character_NPC = Cast<ACInteraction_NPC>(InNpc)->OwnerNPC;
 
-	CLog::Print(a);
+	if (CGameInstance == nullptr && Character_NPC == nullptr)
+		return;
+
+
+	for(FNPC_DataTable arr : CGameInstance->NPCData_Arr)
+	{		
+		if (Character_NPC->NPCName == arr.NPCName && arr.Conversation.Num() > 0)
+		{
+			Conversation = arr.Conversation;			
+			break;
+		}
+
+	}
+	
+	CLog::Print(Conversation[0].ConversationName.ToString());
 }
 
 
