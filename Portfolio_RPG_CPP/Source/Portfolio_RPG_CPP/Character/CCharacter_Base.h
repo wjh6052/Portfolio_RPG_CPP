@@ -43,8 +43,10 @@ public:
 	//Get
 	FORCEINLINE class USkeletalMeshComponent* GetMainMesh() { return Main_SkeletalMesh; }
 	FORCEINLINE class USkeletalMeshComponent* GetOutLineMesh() { return OutLine_SkeletalMesh; }
-	FORCEINLINE class UCStatComponent* GetStatComponent() const { return StatComponent; }
 	FORCEINLINE ECharacterType GetCharacterType() const { return CharacterType; }
+
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE class UCStatComponent* GetStatComponent() const { return StatComponent; }
 
 	//Set
 
@@ -60,8 +62,8 @@ protected:
 	virtual void OnMoveRight(float InAxis);
 	void OnMoveRight_Unarmed(float InAxis);
 
-	void OnHorizontalLook(float InAxis);
-	void OnVerticalLook(float InAxis);
+	virtual void OnHorizontalLook(float InAxis);
+	virtual void OnVerticalLook(float InAxis);
 	virtual void OnCameraZoom(float InAxis);
 
 

@@ -67,7 +67,8 @@ public:
 
 	FORCEINLINE EStateType GetStateType() const { return StateType; }
 	FORCEINLINE EStatusType GetStatusType() const { return StatusType; }
-	FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
 
 	FORCEINLINE FPlayer_DataTable GetPlayerDataTable() const { return Player_DataTable; }
 	FORCEINLINE FEnemy_DataTable GetEnemyDataTable() const { return Enemy_DataTable; }
@@ -81,7 +82,8 @@ public:
 
 	FORCEINLINE void SetStateType(EStateType input) { StateType = input; }
 	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }
-	FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }
 
 	FORCEINLINE void SetPlayerDataTable(FPlayer_DataTable input) { Player_DataTable = input; }
 	FORCEINLINE void SetEnemyDataTable(FEnemy_DataTable input) { Enemy_DataTable = input; }

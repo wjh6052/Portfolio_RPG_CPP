@@ -174,6 +174,18 @@ void ACCharacter_Player::OffJump()
 
 }
 
+void ACCharacter_Player::OnHorizontalLook(float InAxis)
+{
+	if(GetWidgetComponent()->CurrentUi == ECurrentUi::InGameUI)
+		Super::OnHorizontalLook(InAxis);
+}
+
+void ACCharacter_Player::OnVerticalLook(float InAxis)
+{
+	if (GetWidgetComponent()->CurrentUi == ECurrentUi::InGameUI)
+		Super::OnVerticalLook(InAxis);
+}
+
 void ACCharacter_Player::OnWalk()
 {
 	switch (GetStatComponent()->GetSpeedType())
@@ -247,14 +259,16 @@ void ACCharacter_Player::OffSprint()
 
 }
 
+// 인벤토리창 열기
 void ACCharacter_Player::OnInventory()
 {
 	GetWidgetComponent()->SetViewInventory();
 }
 
+// 상호작용
 void ACCharacter_Player::OnInteraction()
 {
-	GetWidgetComponent()->GetMainWidget()->GetWInteractionBox()->UseInteraction();
+	GetWidgetComponent()->GetMainWidget()->UseInteraction();
 
 }
 
@@ -262,13 +276,14 @@ void ACCharacter_Player::OnCameraZoom(float InAxis)
 {
 	CheckFalse(InAxis != 0);
 
-	if (GetWidgetComponent()->GetMainWidget()->GetWInteractionBox()->GetOnInteractionBox())
+	if (GetWidgetComponent()->GetMainWidget()->CanZoomScroll())
 	{
-		GetWidgetComponent()->GetMainWidget()->GetWInteractionBox()->ChoiceInteraction(InAxis);
+		Super::OnCameraZoom(InAxis);
 	}
 	else
 	{
-		Super::OnCameraZoom(InAxis);
+		GetWidgetComponent()->GetMainWidget()->SetInScroll(InAxis);
+		
 	}
 }
 

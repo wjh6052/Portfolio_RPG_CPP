@@ -42,6 +42,10 @@ public:
 	virtual void OnJump() override;
 	virtual void OffJump() override;
 
+	virtual void OnHorizontalLook(float InAxis) override;
+	virtual void OnVerticalLook(float InAxis) override;
+
+
 	void OnWalk();
 	void OnRun();
 	void OffRun();

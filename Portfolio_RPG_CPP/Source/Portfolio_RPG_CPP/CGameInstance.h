@@ -10,8 +10,8 @@
 #include "CGameInstance.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateMaterialItem);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdate_Money);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdataMaterialItem);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdata_Money);
 
 UCLASS()
 class PORTFOLIO_RPG_CPP_API UCGameInstance : public UGameInstance
@@ -41,17 +41,17 @@ public:
 // ------------------------------------------------Delegate-------------------------------------------------------
 public:
 	// 델리게이트 호출 함수
-	FORCEINLINE void TriggerUpdateMaterialItem() { Update_MaterialItem.Broadcast(); }
-	FORCEINLINE void TriggerUpdateMoney() { Update_Money.Broadcast(); }
+	FORCEINLINE void TriggerUpdataMaterialItem() { Updata_MaterialItem.Broadcast(); }
+	FORCEINLINE void TriggerUpdataMoney() { Updata_Money.Broadcast(); }
 
 
 
 	// 델리게이트 변수
 	UPROPERTY(BlueprintAssignable)
-		FUpdateMaterialItem Update_MaterialItem;
+		FUpdataMaterialItem Updata_MaterialItem;
 
 	UPROPERTY(BlueprintAssignable)
-		FUpdate_Money Update_Money;
+		FUpdata_Money Updata_Money;
 	
 
 

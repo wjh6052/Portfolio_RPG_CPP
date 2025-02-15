@@ -52,18 +52,21 @@ public:
 		TArray<int32> NextChoices;
 
 
-	// 선택지의 타입
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Type")
-		EConversationType ConversationType;
+	// 대화 선택지의 타입
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Choice")
+		EConversationType ChoiceType;
 
 
 	// 위젯에서나올 선택지이름
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dialogue")
-		FText ConversationName;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Choice")
+		FText ChoiceName;
 
-	// 선택지를 선택했을때
+
+
+
+	// 선택지를 선택했을때 나올 대화
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Dialogue")
-		TArray<FText> DialogueText;
+		TArray<FText> ConversationTextArr;
 };
 
 
@@ -80,6 +83,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "NPCType")
 		ENPCName NPCName;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "NPCType")
+		FText NPCTitle;
+
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
 		FMesh Mesh;
@@ -90,10 +96,13 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
 		class UClass* MannequinAnimInstance;
 
+	// 말을 걸었을때 처음 나올 대화
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Conversation")
+		FText FirstConversationText;
 	
 	// 대화를 시작해서 나오는 내용을 담은 FConversation
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Conversation")
-		TArray<FConversation> Conversation;
+		TArray<FConversation> ConversationArr;
 
 };
 

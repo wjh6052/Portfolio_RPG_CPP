@@ -134,38 +134,54 @@ struct FMaterialItem_DataTable : public FTableRowBase // 재료아이템 데이�
 public:
 
 
-	// =====Category=====
+	// 아이템 카테고리 종류
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Category")
-		EItemCategory ItemCategory; // 아이템 카테고리 종류
+		EItemCategory ItemCategory; 
 
+	// 아이템의 사용처
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Category")
-		EItemUseType ItemUseType; // 아이템의 사용처
+		EItemUseType ItemUseType; 
+
+	//등급 설정
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Category")
+		EStarRating StarRating;
 
 
-	// =====Description=====
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		EStarRating StarRating; //등급 설정
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		FString ItemName; // 아이템 이름
 
+		
+	// 아이템 이름
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		int ItemCount = 0; // 아이템 갯수
+		FString ItemName; 
 
+	// 아이템 갯수
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		int ItemPrice = 0; // 아이템 가격
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		UTexture2D* ItemImage; // 위젯에 표시될 이미지
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		FString ItemSimpleDescription; // 아이템 간단 설명
+		int ItemCount = 0; 
 
+
+
+	// 판매 가격
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Transaction")
+		int buyPrice;
+
+	// 구매 가격
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Transaction")
+		int sellPrice;
+
+
+
+	// 위젯에 표시될 이미지
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
-		FString ItemDescription; // 아이템 설명
+		UTexture2D* ItemImage; 
+	
+	// 아이템 간단 설명
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
+		FString ItemSimpleDescription; 
+
+	// 아이템 설명
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
+		FString ItemDescription; 
 	
 	
-	// 인게임에서 월드에서 표시될 블루프린트 오브젝트 추가 예정
 };
 
 

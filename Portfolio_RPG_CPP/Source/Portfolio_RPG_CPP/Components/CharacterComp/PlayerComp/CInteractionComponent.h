@@ -29,11 +29,10 @@ public:
 	void RemovalInteraction(AActor* InIteminteraction);
 	
 	UFUNCTION(BlueprintCallable)
-		void StartNPCInteraction(AActor* InNpc);
+		void StartNPCTalk(AActor* InNpc);
+	UFUNCTION(BlueprintCallable)
+		void EndNPCTalk(AActor* InNpc);
 
-
-private:
-	TArray<FConversation> Conversation;
 
 
 private:

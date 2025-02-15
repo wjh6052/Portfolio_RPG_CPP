@@ -12,8 +12,7 @@ UCWidgetComponent::UCWidgetComponent()
 	OwnerPlayer = Cast<ACCharacter_Player>(GetOwner());
 
 
-	CHelpers::GetClass<UCWMain>(&MainWidgetClass, "WidgetBlueprint'/Game/Widgets/CW_Main.CW_Main_C'");
-	CHelpers::GetClass<UCWInventory>(&InventoryClass, "WidgetBlueprint'/Game/Widgets/Inventory/CBP_WInventory.CBP_WInventory_C'");
+	CHelpers::GetClass<UCWMain>(&MainWidgetClass, "WidgetBlueprint'/Game/Widgets/CWB_Main.CWB_Main_C'");
 }
 
 
@@ -28,40 +27,29 @@ void UCWidgetComponent::BeginPlay()
 
 	// Spawn Widget	
 	MainWidget = Cast<UCWMain>(CreateWidget(PlayerController, MainWidgetClass));
-	InventoryWidget = Cast<UCWInventory>(CreateWidget(PlayerController, InventoryClass));
 	
 	
 
 	// 메인 위젯 켜기
-	MainWidget->AddToViewport();
+	GetMainWidget()->AddToViewport();
+	
 }
 
 void UCWidgetComponent::SetViewInventory()
 {
-	if (!InventoryWidget->IsVisible())
+	if (CurrentUi != ECurrentUi::Inventory)
 	{
-		InventoryWidget->AddToViewport();
-		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-		FInputModeGameAndUI InputMode;
-		InputMode.SetWidgetToFocus(InventoryWidget->TakeWidget());
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		PlayerController->SetInputMode(InputMode);
+		BackCurrentUi = CurrentUi;
+		CurrentUi = ECurrentUi::Inventory;
 
-		PlayerController->bShowMouseCursor = InventoryWidget->IsVisible();
 
-		OwnerPlayer->GetStatComponent()->SetSpeedType(ESpeedType::Stop);
-
+		GetMainWidget()->SetWidgetSwitcher(CurrentUi);
 	}
 	else
 	{
-		InventoryWidget->AddToViewport();
-		InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
-		FInputModeGameOnly InputMode;	
-		PlayerController->SetInputMode(InputMode);
+		CurrentUi = BackCurrentUi;
 
-		PlayerController->bShowMouseCursor = InventoryWidget->IsVisible();
-
-		OwnerPlayer->GetStatComponent()->SetSpeedType(ESpeedType::Walk);
+		GetMainWidget()->SetWidgetSwitcher(CurrentUi);
 	}
 }
 

@@ -47,7 +47,7 @@ public: //
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "UI Data")
 		EItemCategory ItemCategory;
 	
-	UPROPERTY(BlueprintReadWrite, Category = "UI Data")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "UI Data")
 		FMaterialItem_DataTable MaterialItemData;
 
 	UPROPERTY(BlueprintReadWrite, Category = "UI Data")

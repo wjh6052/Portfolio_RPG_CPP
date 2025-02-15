@@ -19,7 +19,4 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void UseInteraction();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintPure)
-		bool GetOnInteractionBox();
-
 };

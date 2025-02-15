@@ -6,9 +6,8 @@
 #include "../../../Character/NPC/CCharacter_NPC.h"
 #include "../../../Object/Interaction/CInteraction_NPC.h"
 
-
-
 #include "../../../Widgets/CWMain.h"
+#include "../../../Widgets/NPC/CWNPCTalkUI.h"
 
 
 
@@ -46,7 +45,7 @@ void UCInteractionComponent::RemovalInteraction(AActor* InIteminteraction)
 
 
 
-void UCInteractionComponent::StartNPCInteraction(AActor* InNpc)
+void UCInteractionComponent::StartNPCTalk(AActor* InNpc)
 {
 	ACCharacter_NPC* Character_NPC = Cast<ACInteraction_NPC>(InNpc)->OwnerNPC;
 
@@ -56,15 +55,27 @@ void UCInteractionComponent::StartNPCInteraction(AActor* InNpc)
 
 	for(FNPC_DataTable arr : CGameInstance->NPCData_Arr)
 	{		
-		if (Character_NPC->NPCName == arr.NPCName && arr.Conversation.Num() > 0)
+		if (Character_NPC->NPCName == arr.NPCName && arr.ConversationArr.Num() > 0)
 		{
-			Conversation = arr.Conversation;			
+
+			OwnerPlayer->GetWidgetComponent()->CurrentUi = ECurrentUi::NPCDialogue;
+			OwnerPlayer->GetWidgetComponent()->GetMainWidget()->SetWidgetSwitcher(OwnerPlayer->GetWidgetComponent()->CurrentUi);
+
+			// 대화 ui에 택스트 변경
+			OwnerPlayer->GetWidgetComponent()->GetMainWidget()->GetNPCTalkUI()->SetNPCTalkUI(arr);
 			break;
 		}
 
 	}
-	
-	CLog::Print(Conversation[0].ConversationName.ToString());
+
+		
+}
+
+void UCInteractionComponent::EndNPCTalk(AActor* InNpc)
+{
+
+	//OwnerPlayer->GetWidgetComponent()->CurrentUi = ECurrentUi::NPCDialogue;
+	//OwnerPlayer->GetWidgetComponent()->GetMainWidget()->SetWidgetSwitcher(OwnerPlayer->GetWidgetComponent()->CurrentUi);
 }
 
 

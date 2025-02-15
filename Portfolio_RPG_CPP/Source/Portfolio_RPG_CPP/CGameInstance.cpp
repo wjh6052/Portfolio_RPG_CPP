@@ -94,7 +94,7 @@ void UCGameInstance::IconDataTableToArr()
 	else
 	{
 		TArray<FConversationIcon_DataTable*> AllRows;
-		MaterialItem_DataTable->GetAllRows<FConversationIcon_DataTable>(L"", AllRows);
+		ConversationIcon_DataTable->GetAllRows<FConversationIcon_DataTable>(L"", AllRows);
 
 
 		for (FConversationIcon_DataTable* Row : AllRows)
@@ -207,7 +207,7 @@ void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemR
 		if (MaterialItemItmeData_Arr[i].ItemUseType == ItemUseType && MaterialItemItmeData_Arr[i].StarRating == ItemRating)
 		{
 			MaterialItemItmeData_Arr[i].ItemCount += AddCount;
-			TriggerUpdateMaterialItem();
+			TriggerUpdataMaterialItem();
 
 			UEnum* enumUseType = StaticEnum<EItemUseType>();
 			FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
@@ -226,7 +226,7 @@ void UCGameInstance::AddMoney(int AddMoney)
 	if (AddMoney >= 0)
 	{
 		Money += AddMoney;
-		TriggerUpdateMoney();
+		TriggerUpdataMoney();
 
 
 
@@ -234,10 +234,10 @@ void UCGameInstance::AddMoney(int AddMoney)
 	}
 	else
 	{
-		if (Money + AddMoney <= 0)
+		if (Money + AddMoney >= 0)
 		{
 			Money += AddMoney;
-			TriggerUpdateMoney();
+			TriggerUpdataMoney();
 
 
 			CLog::Print(FString::Printf(TEXT("%d머니 소모"), AddMoney));
