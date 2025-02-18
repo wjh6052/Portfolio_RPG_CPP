@@ -12,21 +12,21 @@
 UENUM(BlueprintType)
 enum class EStateType : uint8
 {
-	Idling,
-	Rolling,
-	Attacking,
-	Hitted,
-	Groggy,
-	Dying
+	Idling			UMETA(DisplayName = "대기중"),
+	Rolling			UMETA(DisplayName = "구르기"),
+	Attacking		UMETA(DisplayName = "공격 중"),
+	Hitted			UMETA(DisplayName = "피격됨"),
+	Groggy			UMETA(DisplayName = "기절"),
+	Dying			UMETA(DisplayName = "사망")
 };
 
 UENUM(BlueprintType)
 enum class EStatusType : uint8
 {
-	Unarmed,
-	Flight,
-	Climbing,
-	Melee
+	Unarmed		UMETA(DisplayName = "평상시"),
+	Flight		UMETA(DisplayName = "비행"),
+	Climbing	UMETA(DisplayName = "등반"),
+	Combat		UMETA(DisplayName = "전투")
 };
 
 UENUM(BlueprintType)
@@ -121,7 +121,10 @@ public:
 
 
 	class ACCharacter_Base* OwnerCharacter_Base;
+
 	class ACCharacter_Player* OwnerACCharacter_Player;
+	class ACCharacter_Enemy* OwnerCharacter_Enemy;
+
 	class ACCharacter_NPC* OwnerACCharacter_NPC;
 
 };

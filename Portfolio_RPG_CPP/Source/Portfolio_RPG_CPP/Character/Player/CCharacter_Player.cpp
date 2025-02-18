@@ -56,9 +56,28 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInventory);
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInteraction);
+
+	PlayerInputComponent->BindAction("Attack", EInputEvent::IE_Released, this, &ACCharacter_Player::OnAttack);
+
+
+	PlayerInputComponent->BindAction("Test1", EInputEvent::IE_Released, this, &ACCharacter_Player::OnTest1);
+	PlayerInputComponent->BindAction("Test2", EInputEvent::IE_Released, this, &ACCharacter_Player::OnTest2);
+
 }
 
 
+// 테스트 1
+void ACCharacter_Player::OnTest1()
+{
+	GetCombatComponent()->StartCombat();
+	
+}
+
+// 테스트 2
+void ACCharacter_Player::OnTest2()
+{
+	GetCombatComponent()->EndCombat();
+}
 
 void ACCharacter_Player::OnMoveForward(float InAxis)
 {
@@ -91,8 +110,8 @@ void ACCharacter_Player::OnMoveForward(float InAxis)
 		break;
 
 
-	case EStatusType::Melee:
-		break;
+	//case EStatusType::Combat:
+	//	break;
 
 
 	default:
@@ -116,8 +135,8 @@ void ACCharacter_Player::OnMoveRight(float InAxis)
 	case EStatusType::Climbing:
 		break;
 
-	case EStatusType::Melee:
-		break;
+	//case EStatusType::Combat:
+	//	break;
 
 
 	default:
@@ -159,7 +178,7 @@ void ACCharacter_Player::OnJump()
 	case EStatusType::Climbing:
 		break;
 
-	case EStatusType::Melee:
+	case EStatusType::Combat:
 		break;
 
 
@@ -238,9 +257,6 @@ void ACCharacter_Player::OnSprint()
 	}
 
 	CheckFalse(GetStatComponent()->IsState(EStateType::Idling));
-
-
-	PlayAnimMontage(GetStatComponent()->GetPlayerDataTable().RollAnimMontage.AnimMontage, GetStatComponent()->GetPlayerDataTable().RollAnimMontage.PlayRate);
 }
 
 void ACCharacter_Player::OffSprint()
@@ -284,6 +300,16 @@ void ACCharacter_Player::OnCameraZoom(float InAxis)
 	{
 		GetWidgetComponent()->GetMainWidget()->SetInScroll(InAxis);
 		
+	}
+}
+
+// 마우스 왼쪽 클릭
+void ACCharacter_Player::OnAttack()
+{
+	if (GetStatComponent()->IsStatus(EStatusType::Combat))
+	{
+		GetCombatComponent()->OnAttack();
+
 	}
 }
 

@@ -36,6 +36,9 @@ public:
 
 
 public:
+	void OnTest1();
+	void OnTest2();
+
 	virtual void OnMoveForward(float InAxis) override;
 	virtual void OnMoveRight(float InAxis) override;
 
@@ -58,6 +61,8 @@ public:
 
 	void OnCameraZoom(float InAxis) override;
 
+
+	void OnAttack();
 
 
 

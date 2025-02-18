@@ -67,17 +67,9 @@ void UCStatComponent::PlayerDataSetting()
 
 	// 나중에 무기마다 캐릭터 변경될 예정
 
-	// GameInstance에서 데이터 테이블 가져오기
-	UDataTable* dataTable = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerACCharacter_Player->GetWorld()))->Player_DataTable;
-	CheckNull(dataTable);
-
-	TArray<FName> rowNames = dataTable->GetRowNames();
-	CheckTrue(rowNames.Num() < 0);
-
-	FName firstRowName = rowNames[0];
 
 	// 데이터테이블에서 가져온 데이터를 변수에 대입
-	Player_DataTable = *dataTable->FindRow<FPlayer_DataTable>(firstRowName, TEXT(""));
+	Player_DataTable = CGameInstance->Playe_Data_Arr[0];
 
 
 
@@ -89,7 +81,7 @@ void UCStatComponent::PlayerDataSetting()
 	OwnerACCharacter_Player->GetMesh()->SetRelativeRotation(GetPlayerDataTable().Mesh.Character_Rotation);
 
 	// 매쉬 OutLine 
-	OwnerACCharacter_Player->GetOutLineMesh()->SetSkeletalMesh(GetPlayerDataTable().MeshOutLineAsset);
+	OwnerACCharacter_Player->GetOutLineMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshOutLineAsset);
 
 	// 애님인스턴스
 	OwnerACCharacter_Player->GetMainMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
@@ -135,7 +127,7 @@ void UCStatComponent::NPCDataSetting()
 
 				
 				// 매쉬 OutLine 
-				OwnerACCharacter_NPC->GetOutLineMesh()->SetSkeletalMesh(CGameInstance->NPCData_Arr[i].MeshOutLineMesh);
+				OwnerACCharacter_NPC->GetOutLineMesh()->SetSkeletalMesh(CGameInstance->NPCData_Arr[i].Mesh.MeshOutLineAsset);
 
 
 				// 애님인스턴스

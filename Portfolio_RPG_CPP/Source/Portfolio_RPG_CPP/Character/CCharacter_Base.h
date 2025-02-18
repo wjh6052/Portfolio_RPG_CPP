@@ -4,20 +4,12 @@
 #include "GameFramework/Character.h"
 #include "../Datas/Data_Character.h"
 #include "../Components/CharacterComp/CStatComponent.h"
+#include "../Components/CharacterComp/CCombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CCharacter_Base.generated.h"
 
 
-//--enum---------------------------------------------------------------------
-UENUM(BlueprintType)
-enum class ECharacterType : uint8
-{
-	None,
-	Player,
-	Enemy,
-	Boss,
-	NPC
-};
+
 
 
 
@@ -47,6 +39,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE class UCStatComponent* GetStatComponent() const { return StatComponent; }
+	FORCEINLINE class UCCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
 	//Set
 
@@ -93,4 +86,7 @@ private:
 	//Actor Component
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCStatComponent> StatComponent;	
+
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<UCCombatComponent> CombatComponent;
 };

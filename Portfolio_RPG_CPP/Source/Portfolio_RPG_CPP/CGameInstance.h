@@ -4,6 +4,7 @@
 #include "Engine/GameInstance.h"
 #include "Engine/DataTable.h"
 #include "Datas/Data_Character.h"
+#include "Datas/Data_Combat.h"
 #include "Datas/Data_Inventory.h"
 #include "Datas/Data_NPC.h"
 #include "Datas/Data_Widget.h"
@@ -60,6 +61,8 @@ public:
 
 // ------------------------------------------------DataTable-------------------------------------------------------
 public: // 캐릭터 데이터
+	void PlayerDataTableToArr();
+	void EnemyDataTableToArr();
 
 	// 플레이어 데이터
 	UPROPERTY(BlueprintReadWrite)
@@ -67,8 +70,13 @@ public: // 캐릭터 데이터
 	UDataTable* Player_DataTable;
 
 	// 몬스터 데이터
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FEnemy_DataTable> Enemy_Data_Arr;
 	UDataTable* Enemy_DataTable;
+
 	// 보스 몬스터 데이터
+	//UPROPERTY(BlueprintReadWrite)
+	//	TArray<FBoss_DataTable> Boss_Data_Arr;
 	UDataTable* Boss_DataTable;
 
 
@@ -83,6 +91,8 @@ public: // NPC 데이터
 
 
 
+
+
 public: // 아이템 데이터
 	void ItemDataTableToArr(); 
 
@@ -91,7 +101,19 @@ public: // 아이템 데이터
 		TArray<FMaterialItem_DataTable> MaterialItemItmeData_Arr;
 	UDataTable* MaterialItem_DataTable;
 
+
+
+
+public: // 아이템 데이터
+	void CombatPlayerDataTableToArr();
+
+	// 유저가 가지고 있는 아이템
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FCombatPlayer_DataTable> CombatPlayerData_Arr;
+	UDataTable* CombatPlayer_DataTable;
 	
+
+
 
 public: // 기타 데이터
 	void IconDataTableToArr();

@@ -34,6 +34,7 @@ ACCharacter_Base::ACCharacter_Base()
 
 	//Create Actor Component
 	StatComponent = CreateDefaultSubobject<UCStatComponent>(L"StatComponent");
+	CombatComponent = CreateDefaultSubobject<UCCombatComponent>(L"CombatComponent");
 
 	
 	// Main Mesh

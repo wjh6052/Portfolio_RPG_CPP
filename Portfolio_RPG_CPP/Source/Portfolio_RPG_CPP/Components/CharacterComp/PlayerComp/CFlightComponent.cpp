@@ -16,7 +16,7 @@ UCFlightComponent::UCFlightComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
-	CHelpers::GetAsset<UDataTable>(&FlightDataTable, "DataTable'/Game/Data/DA_Player_Flight.DA_Player_Flight'");
+	CHelpers::GetAsset<UDataTable>(&FlightDataTable, "DataTable'/Game/Data/Player/DA_Player_Flight.DA_Player_Flight'");
 }
 
 

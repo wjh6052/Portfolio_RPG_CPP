@@ -123,6 +123,31 @@ public:
 };
 
 
+USTRUCT(BlueprintType)
+struct FEnemyDropItem
+{
+	GENERATED_BODY()
+		
+public:
+	// 아이템 카테고리 종류
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	EItemCategory ItemCategory;
+
+	// 아이템의 사용처
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		EItemUseType ItemUseType;
+
+	//등급 설정
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		EStarRating StarRating;
+
+};
+
+
+
+
+
+
 //---------------------------DataTable---------------------------------------------
 
 
