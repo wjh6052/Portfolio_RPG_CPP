@@ -23,9 +23,14 @@ protected:
 
 	void SwitchWeapon();
 
-public:	
+public:
+	void TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
+
+
 	void StartCombat();
 	void EndCombat();
+
+
 
 
 	void OnAttack();

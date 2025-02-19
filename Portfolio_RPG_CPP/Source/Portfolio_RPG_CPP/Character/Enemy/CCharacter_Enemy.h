@@ -14,11 +14,17 @@ class PORTFOLIO_RPG_CPP_API ACCharacter_Enemy : public ACCharacter_Base
 public:
 	ACCharacter_Enemy();
 
-//protected:
-//	virtual void BeginPlay() override;
-//
-//
-//public:
-//	virtual void Tick(float DeltaTime) override;
-//	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+protected:
+	virtual void BeginPlay() override;
+
+
+public:
+
+
+
+
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
+		EEnemyName EnemyName;
 };

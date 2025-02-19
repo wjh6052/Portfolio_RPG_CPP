@@ -31,7 +31,8 @@ void ACCharacter_Player::BeginPlay()
 	Super::BeginPlay();
 
 
-	
+	// 테스트
+	GetCombatComponent()->StartCombat();
 
 }
 
@@ -162,14 +163,7 @@ void ACCharacter_Player::OnJump()
 	switch (GetStatComponent()->GetStatusType())
 	{
 
-	case EStatusType::Unarmed:
-		if (IsMovementMode(EMovementMode::MOVE_Falling))
-		{
-			if (GetStatComponent()->IsStatus(EStatusType::Unarmed))
-				GetFlightComponent()->StartFlight();
-		}
-		Super::OnJump();
-		break;
+
 
 	case EStatusType::Flight:
 		GetFlightComponent()->EndFlight();
@@ -178,11 +172,15 @@ void ACCharacter_Player::OnJump()
 	case EStatusType::Climbing:
 		break;
 
-	case EStatusType::Combat:
-		break;
 
 
 	default:
+		if (IsMovementMode(EMovementMode::MOVE_Falling))
+		{
+			if (GetStatComponent()->IsStatus(EStatusType::Unarmed))
+				GetFlightComponent()->StartFlight();
+		}
+		Super::OnJump();
 		break;
 	}
 }

@@ -3,6 +3,7 @@
 #include "../../CGameInstance.h"
 #include "../../Character/CCharacter_Base.h"
 #include "../../Character/Player/CCharacter_Player.h"
+#include "../../Character/Enemy/CCharacter_Enemy.h"
 #include "../../Character/NPC/CCharacter_NPC.h"
 #include "../../Maps/CLevel_Main.h"
 
@@ -42,7 +43,7 @@ void UCStatComponent::BeginPlay()
 		break;
 
 	case ECharacterType::Boss:
-		BossDataSetting();
+		//BossDataSetting();
 		break;
 
 	case ECharacterType::NPC:
@@ -99,7 +100,45 @@ void UCStatComponent::PlayerDataSetting()
 
 void UCStatComponent::EnemyDataSetting()
 {
-	
+	OwnerCharacter_Enemy = Cast<ACCharacter_Enemy>(OwnerCharacter_Base);
+
+	// 데이터테이블에서 가져와 매쉬에 적용 예정
+	if (OwnerCharacter_Enemy->EnemyName != EEnemyName::None)
+	{
+		
+		for (int i = 0; i < CGameInstance->Enemy_Data_Arr.Num(); i++)
+		{
+			if (OwnerCharacter_Enemy->EnemyName == CGameInstance->Enemy_Data_Arr[i].EnemyName)
+			{
+				// 매쉬
+				OwnerCharacter_Enemy->GetMainMesh()->SetSkeletalMesh(CGameInstance->Enemy_Data_Arr[i].Mesh.MeshAsset);
+				OwnerCharacter_Enemy->GetMainMesh()->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+				OwnerCharacter_Enemy->GetMainMesh()->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+				OwnerCharacter_Enemy->GetMesh()->SetRelativeLocation(CGameInstance->Enemy_Data_Arr[i].Mesh.Character_Location);
+				OwnerCharacter_Enemy->GetMesh()->SetRelativeRotation(CGameInstance->Enemy_Data_Arr[i].Mesh.Character_Rotation);
+
+
+				// 매쉬 OutLine 
+				OwnerCharacter_Enemy->GetOutLineMesh()->SetSkeletalMesh(CGameInstance->Enemy_Data_Arr[i].Mesh.MeshOutLineAsset);
+
+
+				// 애님인스턴스
+				OwnerCharacter_Enemy->GetMesh()->SetAnimInstanceClass(CGameInstance->Enemy_Data_Arr[i].MannequinAnimInstance);
+				OwnerCharacter_Enemy->GetMainMesh()->SetAnimInstanceClass(CGameInstance->Enemy_Data_Arr[i].Mesh.AnimInstance);
+				OwnerCharacter_Enemy->GetOutLineMesh()->SetAnimInstanceClass(CGameInstance->Enemy_Data_Arr[i].Mesh.AnimInstance);
+
+
+				// 매쉬 콜리전 크기 조정
+				OwnerCharacter_Enemy->GetCapsuleComponent()->SetCapsuleRadius(CGameInstance->Enemy_Data_Arr[i].Mesh.CapsuleRadius);
+				OwnerCharacter_Enemy->GetCapsuleComponent()->SetCapsuleHalfHeight(CGameInstance->Enemy_Data_Arr[i].Mesh.CapsuleHalfHeight);
+
+				
+
+				break;
+			}
+		}
+	}
+
 }
 
 void UCStatComponent::BossDataSetting()
@@ -147,6 +186,8 @@ void UCStatComponent::NPCDataSetting()
 
 
 }
+
+
 
 
 

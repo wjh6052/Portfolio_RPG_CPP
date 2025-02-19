@@ -216,7 +216,8 @@ public
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
 		FMesh Mesh;
 
-
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
+		class UClass* MannequinAnimInstance;
 
 
 	// 몬스터 사망시 드랍될 아이템 배열

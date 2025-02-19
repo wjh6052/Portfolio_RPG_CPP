@@ -1,6 +1,7 @@
 ﻿ #include "CGameInstance.h"
 #include "Global.h"
 #include "Sava/CItmeData_SaveGame.h"
+#include "Datas/DA/DA_DamageText.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -11,7 +12,7 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&Player_DataTable, "DataTable'/Game/Data/Player/DT_PlayerData.DT_PlayerData'");
 
 	// 몬스터 데이터 테이블 추가예정
-	//CHelpers::GetAsset<UDataTable>(&Enemy_DataTable, "DataTable'/Game/Data/DT_Enemy.DT_Enemy'");
+	CHelpers::GetAsset<UDataTable>(&Enemy_DataTable, "DataTable'/Game/Data/DT_Enemy.DT_Enemy'");
 	
 	// 보스 데이터 테이블 추가예정
 	
@@ -32,7 +33,10 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&ConversationIcon_DataTable, "DataTable'/Game/Data/Widget/DT_ConversationIcon.DT_ConversationIcon'");
 
 
-	
+	// 데이터에셋
+
+	// 데미지 텍스트
+	CHelpers::GetAsset<UDA_DamageText>(&DamageText_DA, "DA_DamageText'/Game/Data/DA/DA_DamageText.DA_DamageText'");
 }
 
 void UCGameInstance::Init()
@@ -40,7 +44,7 @@ void UCGameInstance::Init()
 	Super::Init();
 
 	PlayerDataTableToArr();
-	//EnemyDataTableToArr();
+	EnemyDataTableToArr();
 	NPCDataTableToArr();
 	IconDataTableToArr();
 	CombatPlayerDataTableToArr();

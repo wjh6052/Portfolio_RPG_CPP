@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../../Character/CCharacter_Base.h"
 #include "CCombat_Base.generated.h"
 
 
@@ -23,28 +24,23 @@ protected:
 
 
 public:
-	UFUNCTION(BlueprintCosmetic, BlueprintNativeEvent)
-		void SpawnWeapon();
-	void SpawnWeapon_Implementation();
+	// 무기가 생길때와 사라질때를 타임라인으로 제어할 함수
+	UFUNCTION(BlueprintImplementableEvent)
+		void SpawnWeapon(bool bSpawn);
 
 
-	UFUNCTION(BlueprintCosmetic, BlueprintNativeEvent)
-		void StartWeapon();
-	void StartWeapon_Implementation();
 
-	UFUNCTION(BlueprintCosmetic, BlueprintNativeEvent)
-		void EndWeapon();
-	void EndWeapon_Implementation();
+	virtual void StartWeapon();
+	virtual void EndWeapon();
+
+
+
 
 
 
 
 public:	
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-		class USceneComponent* DefaultRoot;
 
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-		class UStaticMeshComponent* WeaponMesh;
 
 
 

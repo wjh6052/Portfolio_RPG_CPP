@@ -1,16 +1,12 @@
 #include "CCombat_Base.h"
 #include "../../Global.h"
-#include "../../Character/CCharacter_Base.h"
+
 
 
 
 ACCombat_Base::ACCombat_Base()
 {
-	CHelpers::CreateSceneComponent(this, &DefaultRoot, "DefaultRoot", GetRootComponent());
-	CHelpers::CreateSceneComponent(this, &WeaponMesh, "WeaponMesh", DefaultRoot);
-
-
-	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
 
 }
 
@@ -20,24 +16,20 @@ void ACCombat_Base::BeginPlay()
 	
 
 	OwnerCharacter = Cast<ACCharacter_Base>(GetOwner());
-
-	SpawnWeapon();
+	SetActorHiddenInGame(true);
 	
 }
 
-void ACCombat_Base::SpawnWeapon_Implementation()
-{
-	SetActorHiddenInGame(true);
-}
 
-void ACCombat_Base::StartWeapon_Implementation()
+void ACCombat_Base::StartWeapon()
 {
 	SetActorHiddenInGame(false);
 }
 
-void ACCombat_Base::EndWeapon_Implementation()
+void ACCombat_Base::EndWeapon()
 {
 	SetActorHiddenInGame(true);
 }
+
 
 

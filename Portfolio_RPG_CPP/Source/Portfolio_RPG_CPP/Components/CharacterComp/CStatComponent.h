@@ -59,6 +59,8 @@ protected:
 
 
 public:
+	
+
 	void SetSpeed(ESpeedType input);
 	
 public:

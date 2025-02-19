@@ -79,6 +79,15 @@ void ACCharacter_Base::Tick(float DeltaTime)
 
 }
 
+float ACCharacter_Base::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	GetCombatComponent()->TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	
+	
+
+	return 0.0f;
+}
+
 void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
