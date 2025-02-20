@@ -66,6 +66,7 @@ public:
 
 
 
+public:
 	//Actor Component
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCFlightComponent> FlightComponent;
@@ -75,6 +76,7 @@ public:
 
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCInteractionComponent> InteractionComponent;
+
 
 private:
 	// 달리기

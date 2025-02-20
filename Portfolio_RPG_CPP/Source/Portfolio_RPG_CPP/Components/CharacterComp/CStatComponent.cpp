@@ -30,11 +30,11 @@ void UCStatComponent::BeginPlay()
 
 
 	CGameInstance = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerCharacter_Base->GetWorld()));
-
+	
 	
 	switch (OwnerCharacter_Base->GetCharacterType())
 	{
-	case ECharacterType::Player:		
+	case ECharacterType::Player:
 		PlayerDataSetting();
 		break;
 
@@ -66,35 +66,48 @@ void UCStatComponent::PlayerDataSetting()
 {
 	OwnerACCharacter_Player = Cast<ACCharacter_Player>(OwnerCharacter_Base);
 
-	// 나중에 무기마다 캐릭터 변경될 예정
 
-
-	// 데이터테이블에서 가져온 데이터를 변수에 대입
-	Player_DataTable = CGameInstance->Playe_Data_Arr[0];
+	
+	if (CGameInstance->CombatType == ECombatType::None)
+	{		
+		Player_Data = CGameInstance->Playe_Data_Arr[0];
+		CGameInstance->CombatType = Player_Data.CombatType;
+	}
+	else
+	{
+		for (FPlayer_DataTable palyerData : CGameInstance->Playe_Data_Arr)
+		{
+			if (palyerData.CombatType == CGameInstance->CombatType)
+			{
+				Player_Data = palyerData;
+			}
+		}
+	}
+	
 
 
 
 	// 매쉬
-	OwnerACCharacter_Player->GetMainMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshAsset);
+	OwnerACCharacter_Player->GetMainMesh()->SetSkeletalMesh(GetPlayerData().Mesh.MeshAsset);
 	OwnerACCharacter_Player->GetMainMesh()->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 	OwnerACCharacter_Player->GetMainMesh()->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
-	OwnerACCharacter_Player->GetMesh()->SetRelativeLocation(GetPlayerDataTable().Mesh.Character_Location);
-	OwnerACCharacter_Player->GetMesh()->SetRelativeRotation(GetPlayerDataTable().Mesh.Character_Rotation);
+	OwnerACCharacter_Player->GetMesh()->SetRelativeLocation(GetPlayerData().Mesh.Character_Location);
+	OwnerACCharacter_Player->GetMesh()->SetRelativeRotation(GetPlayerData().Mesh.Character_Rotation);
 
 	// 매쉬 OutLine 
-	OwnerACCharacter_Player->GetOutLineMesh()->SetSkeletalMesh(GetPlayerDataTable().Mesh.MeshOutLineAsset);
+	OwnerACCharacter_Player->GetOutLineMesh()->SetSkeletalMesh(GetPlayerData().Mesh.MeshOutLineAsset);
 
 	// 애님인스턴스
-	OwnerACCharacter_Player->GetMainMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
-	OwnerACCharacter_Player->GetOutLineMesh()->SetAnimInstanceClass(GetPlayerDataTable().Mesh.AnimInstance);
+	OwnerACCharacter_Player->GetMainMesh()->SetAnimInstanceClass(GetPlayerData().Mesh.AnimInstance);
+	OwnerACCharacter_Player->GetOutLineMesh()->SetAnimInstanceClass(GetPlayerData().Mesh.AnimInstance);
 
 
 	// 매쉬 콜리전 크기 조정
-	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleRadius(GetPlayerDataTable().Mesh.CapsuleRadius);
-	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleHalfHeight(GetPlayerDataTable().Mesh.CapsuleHalfHeight);
+	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleRadius(GetPlayerData().Mesh.CapsuleRadius);
+	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleHalfHeight(GetPlayerData().Mesh.CapsuleHalfHeight);
 
 	// 카메라 스프링암 위지 조정
-	OwnerACCharacter_Player->SpringArm->SetRelativeLocation(GetPlayerDataTable().Mesh.CameraSpringArm_Location);
+	OwnerACCharacter_Player->SpringArm->SetRelativeLocation(GetPlayerData().Mesh.CameraSpringArm_Location);
 
 }
 
@@ -199,22 +212,23 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 	{
 	case ESpeedType::Stop:
 		SetSpeedType(ESpeedType::Stop);
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Stop;
-		break;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Stop;
+		bCanMove = false;
+		return;
 
 	case ESpeedType::Walk:
 		SetSpeedType(ESpeedType::Walk);
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Walk;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Walk;
 		break;
 
 	case ESpeedType::Joging:
 		SetSpeedType(ESpeedType::Joging);
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Joging;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Joging;
 		break;
 
 	case ESpeedType::Run:
 		SetSpeedType(ESpeedType::Run);
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerDataTable().Speed.Run;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Run;
 		break;
 
 	case ESpeedType::Sprint:
@@ -224,4 +238,6 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 	default:
 		break;
 	}
+
+	bCanMove = true;
 }

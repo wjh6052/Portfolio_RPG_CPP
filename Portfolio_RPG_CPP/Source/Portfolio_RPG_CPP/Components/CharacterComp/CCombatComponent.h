@@ -25,12 +25,12 @@ protected:
 
 public:
 	void TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
+	
+	void AttractToTarget(AActor* Target);
+	void ShowDamageText(float Damage, class AController* TargetController, bool bCritical = false, bool bHill = false);
 
 
-	void StartCombat();
-	void EndCombat();
-
-
+	void SpawnCombat();
 
 
 	void OnAttack();

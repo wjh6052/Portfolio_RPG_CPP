@@ -160,10 +160,12 @@ public:
 
 public:
 
-// 유저가 가지고 있는 소지금 
+	// 유저가 가지고 있는 소지금 
 	UPROPERTY(BlueprintReadWrite)
 		int Money = 0;
 
+	// 유저의 현제 캐릭터
+	ECombatType CombatType;
 
 private:
 	// 아이템데이터를 저장할 SaveGame

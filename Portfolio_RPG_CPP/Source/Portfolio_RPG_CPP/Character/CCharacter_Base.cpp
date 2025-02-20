@@ -108,8 +108,7 @@ void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void ACCharacter_Base::OnMoveForward(float InAxis)
 {
-	CheckTrue(InAxis == 0);
-	CheckFalse(GetStatComponent()->IsCanMove());
+
 }
 
 void ACCharacter_Base::OnMoveForward_Unarmed(float InAxis)
@@ -123,8 +122,7 @@ void ACCharacter_Base::OnMoveForward_Unarmed(float InAxis)
 
 void ACCharacter_Base::OnMoveRight(float InAxis)
 {
-	CheckFalse(GetStatComponent()->IsCanMove());
-	CheckTrue(InAxis == 0);
+
 }
 
 void ACCharacter_Base::OnMoveRight_Unarmed(float InAxis)

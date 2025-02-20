@@ -32,7 +32,7 @@ void ACCharacter_Player::BeginPlay()
 
 
 	// 테스트
-	GetCombatComponent()->StartCombat();
+	GetCombatComponent()->SpawnCombat();
 
 }
 
@@ -70,14 +70,14 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 // 테스트 1
 void ACCharacter_Player::OnTest1()
 {
-	GetCombatComponent()->StartCombat();
+	GetCombatComponent()->SpawnCombat();
 	
 }
 
 // 테스트 2
 void ACCharacter_Player::OnTest2()
 {
-	GetCombatComponent()->EndCombat();
+	
 }
 
 void ACCharacter_Player::OnMoveForward(float InAxis)
@@ -111,9 +111,6 @@ void ACCharacter_Player::OnMoveForward(float InAxis)
 		break;
 
 
-	//case EStatusType::Combat:
-	//	break;
-
 
 	default:
 		OnMoveForward_Unarmed(InAxis);
@@ -136,8 +133,6 @@ void ACCharacter_Player::OnMoveRight(float InAxis)
 	case EStatusType::Climbing:
 		break;
 
-	//case EStatusType::Combat:
-	//	break;
 
 
 	default:
@@ -231,7 +226,7 @@ void ACCharacter_Player::OnRun()
 
 void ACCharacter_Player::OffRun()
 {
-	GetWorld()->GetTimerManager().SetTimer(RunTimer, this, &ACCharacter_Player::RunDelay, GetStatComponent()->GetPlayerDataTable().Run_Time, false);
+	GetWorld()->GetTimerManager().SetTimer(RunTimer, this, &ACCharacter_Player::RunDelay, GetStatComponent()->GetPlayerData().Run_Time, false);
 }
 
 void ACCharacter_Player::RunDelay()

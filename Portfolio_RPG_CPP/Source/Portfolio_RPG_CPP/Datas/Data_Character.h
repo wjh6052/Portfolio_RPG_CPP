@@ -101,7 +101,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		float Defense = 5;
 	UPROPERTY(EditAnywhere)
-		float Critical_Damage = 1.5;
+		float Critical_Damage = 50;
 	UPROPERTY(EditAnywhere)
 		float Critical_Chance = 20;
 };

@@ -32,11 +32,11 @@ enum class EStatusType : uint8
 UENUM(BlueprintType)
 enum class ESpeedType : uint8
 {
-	Stop,
-	Walk,
-	Joging,
-	Run,
-	Sprint
+	Stop		UMETA(DisplayName = "정지"),
+	Walk		UMETA(DisplayName = "걷기"),
+	Joging		UMETA(DisplayName = "조깅"),
+	Run			UMETA(DisplayName = "달리기"),
+	Sprint		UMETA(DisplayName = "전력질주")
 };
 
 
@@ -72,9 +72,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
 
-	FORCEINLINE FPlayer_DataTable GetPlayerDataTable() const { return Player_DataTable; }
-	FORCEINLINE FEnemy_DataTable GetEnemyDataTable() const { return Enemy_DataTable; }
-	FORCEINLINE FBoss_DataTable GetBossDataTable() const { return Boss_DataTable; }
+	FORCEINLINE FPlayer_DataTable GetPlayerData() const { return Player_Data; }
+	FORCEINLINE FEnemy_DataTable GetEnemyData() const { return Enemy_Data; }
+	FORCEINLINE FBoss_DataTable GetBossData() const { return Boss_Data; }
 
 	
 
@@ -87,13 +87,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }
 
-	FORCEINLINE void SetPlayerDataTable(FPlayer_DataTable input) { Player_DataTable = input; }
-	FORCEINLINE void SetEnemyDataTable(FEnemy_DataTable input) { Enemy_DataTable = input; }
-	FORCEINLINE void SetBossDataTable(FBoss_DataTable input) { Boss_DataTable = input; }
+	FORCEINLINE void SetPlayerData(FPlayer_DataTable input) { Player_Data = input; }
+	FORCEINLINE void SetEnemyData(FEnemy_DataTable input) { Enemy_Data = input; }
+	FORCEINLINE void SetBossData(FBoss_DataTable input) { Boss_Data = input; }
 
 
 	//Is
-	FORCEINLINE bool IsCanMove() { return SpeedType != ESpeedType::Stop; }
+	FORCEINLINE bool IsCanMove() { return bCanMove; }
 
 	FORCEINLINE bool IsSpeedType(ESpeedType input) { return SpeedType == input; }
 
@@ -104,9 +104,9 @@ public:
 
 private:
 	// 
-	FPlayer_DataTable Player_DataTable;
-	FEnemy_DataTable Enemy_DataTable;
-	FBoss_DataTable Boss_DataTable;
+	FPlayer_DataTable Player_Data;
+	FEnemy_DataTable Enemy_Data;
+	FBoss_DataTable Boss_Data;
 
 
 	//
@@ -115,6 +115,7 @@ private:
 	ESpeedType SpeedType;
 
 
+	bool bCanMove = true;
 	bool bSprint = false;
 
 

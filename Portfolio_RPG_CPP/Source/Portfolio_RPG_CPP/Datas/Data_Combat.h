@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
 		int ComboID;
 
+	UPROPERTY(EditAnywhere, Category = "Anim Montage")
+		bool bOnWeaponCollision = true;
+
 	// 데미지
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
 		float Damage;
@@ -39,6 +42,8 @@ public:
 	// 크리티컬 확률
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
 		float CriticalChance;
+
+	bool bOnCritical = false;
 
 	// 뒤로 넉백
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
@@ -81,6 +86,134 @@ public:
 
 };
 
+USTRUCT(BlueprintType)
+struct FCombatData
+{
+	GENERATED_BODY()
+
+public:
+	// 무기
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+		TSubclassOf<class ACCombat_Base> CombatWeapon;
+
+	// 무기를 붙일 본 이름
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+		FName AttachBoneName;
+
+
+	// 무기가 스폰할때나 디스폰할때 임팩트를 만들 머티리얼
+	UPROPERTY(EditAnywhere, Category = "Material")
+		class UMaterialInterface* WeaponMaterial;
+
+	UPROPERTY(EditAnywhere, Category = "Material")
+		FName ParameterName;
+
+
+	// 무기를 꺼낼때
+	UPROPERTY(EditAnywhere, Category = "EquipWeapon")
+		FAnimMontageBase EquipWeapon;
+
+	// 무기를 넣을때
+	UPROPERTY(EditAnywhere, Category = "EquipWeapon")
+		FAnimMontageBase UnequipWeapon;
+
+
+
+	// 데미지를 받을때의 애님인스턴스
+	UPROPERTY(EditAnywhere, Category = "Hit")
+		FAnimMontageBase Hit_Montage;
+
+
+
+	// 콤보 공격
+	UPROPERTY(EditAnywhere, Category = "Combo")
+		TArray<FAttack> Combo_Attack;
+
+
+
+	// 스킬 1
+	UPROPERTY(EditAnywhere, Category = "Skill 1")
+		TArray<FAttack> Skill_1;
+
+	// 스킬 1의 쿨타임과 이미지
+	UPROPERTY(EditAnywhere, Category = "Skill 1")
+		FSkillUI Skill_1_UI;
+
+
+	// 스킬 2
+	UPROPERTY(EditAnywhere, Category = "Skill 2")
+		TArray<FAttack> Skill_2;
+
+	// 스킬 2의 쿨타임과 이미지
+	UPROPERTY(EditAnywhere, Category = "Skill 2")
+		FSkillUI Skill_2_UI;
+
+
+	// 스킬 3
+	UPROPERTY(EditAnywhere, Category = "Skill 3")
+		TArray<FAttack> Skill_3;
+
+	// 스킬 3의 쿨타임과 이미지
+	UPROPERTY(EditAnywhere, Category = "Skill 3")
+		FSkillUI Skill_3_UI;
+
+
+
+	// 달리기 도중 공격
+	UPROPERTY(EditAnywhere, Category = "Run to Attack")
+		TArray<FAttack> RuntoAttack;
+
+
+
+	// 점프 도중 공격
+	UPROPERTY(EditAnywhere, Category = "Jump to Attack")
+		TArray<FAttack> JumptoAttack;
+
+
+
+	// 막기
+	UPROPERTY(EditAnywhere, Category = "Block")
+		FAnimMontageBase Block;
+
+	// 막기 중 맞을때
+	UPROPERTY(EditAnywhere, Category = "Block")
+		FAnimMontageBase Block_Hit;
+
+
+	// 죽을 때 애님인스턴스
+	UPROPERTY(EditAnywhere, Category = "Die")
+		FAnimMontageBase Die_Montage;
+
+
+
+	UPROPERTY(EditAnywhere, Category = "Impact Flares")
+		FImpactFlares Impact_Flares;
+
+	UPROPERTY(EditAnywhere, Category = "Impact Flares")
+		FImpactFlares Impact_Flares_Projectile;
+
+
+};
+
+
+
+USTRUCT(BlueprintType)
+struct FThrowableWeapon
+{
+	GENERATED_BODY()
+
+public:
+	// 투사체 무기 블루프린트
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+		TSubclassOf<class ACCombat_Base> CombatWeapon;
+
+	// 무기를 붙일 본 이름
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+		FName AttachBoneName;
+};
+
+
+
 
 
 //--DataTable---------------------------------------------------------------------
@@ -98,99 +231,13 @@ public:
 		ECombatType CombatType;
 
 
+	// 무기 타입
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatData")
+		FCombatData CombatData;
 
-	// 무기
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon")
-		TSubclassOf<class ACCombat_Base> CombatWeapon;
-
-	// 무기를 붙일 본 이름
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon")
-		FName AttachBoneName;
-
-
-
-	// 무기를 꺼낼때
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "EquipWeapon")
-		FAnimMontageBase EquipWeapon;
-
-	// 무기를 넣을때
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "EquipWeapon")
-		FAnimMontageBase UnequipWeapon;
-
-
-
-	// 데미지를 받을때의 애님인스턴스
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Hit")
-		FAnimMontageBase Hit_Montage;
-
-
-
-	// 콤보 공격
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combo")
-		TArray<FAttack> Combo_Attack;
-
-
-
-	// 스킬 1
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 1")
-		TArray<FAttack> Skill_1;
-
-	// 스킬 1의 쿨타임과 이미지
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 1")
-		FSkillUI Skill_1_UI;
-
-
-	// 스킬 2
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 2")
-		TArray<FAttack> Skill_2;
-
-	// 스킬 2의 쿨타임과 이미지
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 2")
-		FSkillUI Skill_2_UI;
-
-
-	// 스킬 3
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 3")
-		TArray<FAttack> Skill_3;
-
-	// 스킬 3의 쿨타임과 이미지
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 3")
-		FSkillUI Skill_3_UI;
-
-
-
-	// 달리기 도중 공격
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Run to Attack")
-		TArray<FAttack> RuntoAttack;
-
-
-
-	// 점프 도중 공격
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Jump to Attack")
-		TArray<FAttack> JumptoAttack;
-
-
-
-	// 막기
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Block")
-		FAnimMontageBase Block;
-
-	// 막기 중 맞을때
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Block")
-		FAnimMontageBase Block_Hit;
-
-
-	// 죽을 때 애님인스턴스
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Die")
-		FAnimMontageBase Die_Montage;
-
-
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Impact Flares")
-		FImpactFlares Impact_Flares;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Impact Flares")
-		FImpactFlares Impact_Flares_Projectile;
+	// 투척 무기
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "ThrowableWeapon")
+		FThrowableWeapon ThrowableWeapon;
 };
 
 
