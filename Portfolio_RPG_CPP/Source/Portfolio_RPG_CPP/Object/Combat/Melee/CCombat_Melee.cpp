@@ -120,17 +120,18 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 			
 			FAttack attackData = GetCurrentAttackData();
 
-			if (attackData.bOnCritical)
-			{
-				
-				attackData.Damage += (OwnerCharacter->GetStatComponent()->GetPlayerData().Stat.Critical_Damage * 0.01 * attackData.Damage);
+			// 크리티컬 체크 및 데미지 증가
+			if (attackData.AttackDamage.bOnCritical)
+			{				
+				attackData.AttackDamage.Damage += (OwnerCharacter->GetStatComponent()->GetPlayerData().Stat.Critical_Damage * 0.01 * attackData.AttackDamage.Damage);
 			}
 
 			// 공격시 나의 방향을 적의 방향으로 전환
 			OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherCharacter);
 
-			OtherCharacter->GetCombatComponent()->ShowDamageText(attackData.Damage, OwnerCharacter->GetController(), attackData.bOnCritical);
-			UGameplayStatics::ApplyDamage(OtherActor, attackData.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
+			OtherCharacter->GetCombatComponent()->ShowDamageText(attackData.AttackDamage.Damage, OwnerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
+			OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);
+			UGameplayStatics::ApplyDamage(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
 		}
 			break;
 

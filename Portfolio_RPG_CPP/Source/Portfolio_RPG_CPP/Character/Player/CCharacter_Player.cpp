@@ -3,6 +3,9 @@
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/Interaction/CWInteractionBox.h"
 
+// Test
+#include "../../Object/Combat/CCombat_Base.h"
+
 
 
 #include "Components/SkeletalMeshComponent.h"
@@ -77,7 +80,7 @@ void ACCharacter_Player::OnTest1()
 // 테스트 2
 void ACCharacter_Player::OnTest2()
 {
-	
+	GetCombatComponent()->Current_Combat->SpawnThrowableWeapon("");
 }
 
 void ACCharacter_Player::OnMoveForward(float InAxis)

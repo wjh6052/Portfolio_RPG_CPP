@@ -80,16 +80,62 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	
 }
 
+void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* OverlappedComponent)
+{
+	if (bThrowable)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			OwnerCharacter_Base->GetWorld(),
+			Current_CombatPlayer_Data.CombatData.ImpactFlaresThrowable,
+			OverlappedComponent->K2_GetComponentLocation(),
+			UKismetMathLibrary::Conv_VectorToRotator(OwnerCharacter_Base->GetMainMesh()->GetForwardVector()),
+			Current_CombatPlayer_Data.CombatData.ImpactFlaresThrowableScale
+		);
+	}
+	else
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			OwnerCharacter_Base->GetWorld(),
+			Current_CombatPlayer_Data.CombatData.ImpactFlares,
+			OverlappedComponent->K2_GetComponentLocation(),
+			UKismetMathLibrary::Conv_VectorToRotator(OwnerCharacter_Base->GetMainMesh()->GetForwardVector()),
+			Current_CombatPlayer_Data.CombatData.ImpactFlaresScale
+		);
+	}
+
+	
+
+
+
+
+
+}
+
 void UCCombatComponent::AttractToTarget(AActor* Target)
 {
-	FRotator rot = UKismetMathLibrary::FindLookAtRotation(OwnerCharacter_Base->GetActorLocation(), Target->GetActorLocation());
+	if (bLookOn)
+	{
+		FRotator rot = UKismetMathLibrary::FindLookAtRotation(OwnerCharacter_Base->GetActorLocation(), LookOn_Character->GetActorLocation());
 
-	OwnerCharacter_Base->SetActorRotation(
-		FRotator(
-			OwnerCharacter_Base->GetActorRotation().Pitch,
-			rot.Yaw,
-			rot.Roll
+		OwnerCharacter_Base->SetActorRotation(
+			FRotator(
+				OwnerCharacter_Base->GetActorRotation().Pitch,
+				rot.Yaw,
+				rot.Roll
 			));
+	}
+	else 
+	{
+		FRotator rot = UKismetMathLibrary::FindLookAtRotation(OwnerCharacter_Base->GetActorLocation(), Target->GetActorLocation());
+
+		OwnerCharacter_Base->SetActorRotation(
+			FRotator(
+				OwnerCharacter_Base->GetActorRotation().Pitch,
+				rot.Yaw,
+				rot.Roll
+			));
+	}
+	
 }
 
 

@@ -49,7 +49,7 @@ public:
 	// °ø°Ý ³¡
 	virtual void EndAttack();
 	
-
+	virtual void SpawnThrowableWeapon(FName InSocketName);
 
 
 	virtual void SetWeaponCollision(bool bOnCollision);

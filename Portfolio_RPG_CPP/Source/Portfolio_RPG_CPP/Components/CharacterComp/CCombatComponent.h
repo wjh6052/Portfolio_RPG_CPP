@@ -24,8 +24,12 @@ protected:
 	void SwitchWeapon();
 
 public:
+	// ø¨√‚
 	void TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
-	
+	void OnHitImpact(bool bThrowable, class UPrimitiveComponent* OverlappedComponent);
+
+
+
 	void AttractToTarget(AActor* Target);
 	void ShowDamageText(float Damage, class AController* TargetController, bool bCritical = false, bool bHill = false);
 
@@ -53,6 +57,9 @@ public:
 
 	class ACCombat_Base* Current_Combat;
 
+
+	bool bLookOn = false;
+	class ACCharacter_Base* LookOn_Character;
 
 public:
 	class UCGameInstance* CGameInstance;

@@ -1,5 +1,6 @@
 #include "CCombat_Base.h"
 #include "../../Global.h"
+#include "ThrowableWeapon/CThrowableWeapon.h"
 
 #include "Kismet/KismetMaterialLibrary.h"
 
@@ -54,6 +55,63 @@ void ACCombat_Base::EndAttack()
 
 	// 중복방지 초기화
 	BeginCharacter.Empty();
+}
+
+void ACCombat_Base::SpawnThrowableWeapon(FName InSocketName)
+{
+	if (CombatData.ThrowableWeaponClass == nullptr)
+		return;
+
+	FAttack attackData = GetCurrentAttackData();
+
+	FRotator spawnRotation;
+
+	if (OwnerCharacter->GetCombatComponent()->bLookOn && OwnerCharacter->GetCombatComponent()->LookOn_Character != nullptr)
+	{
+		spawnRotation = UKismetMathLibrary::FindLookAtRotation(
+			OwnerCharacter->GetMainMesh()->GetSocketLocation(InSocketName),
+			OwnerCharacter->GetCombatComponent()->LookOn_Character->GetActorLocation()
+		);
+	}
+	else
+	{
+		if (attackData.bJumpAttack)
+		{
+			FVector target = (OwnerCharacter->GetMainMesh()->GetSocketLocation(InSocketName) +
+				(OwnerCharacter->GetActorForwardVector() * 100.0f) + 
+				(OwnerCharacter->GetActorUpVector() * -80.0f)
+				);
+
+			spawnRotation = UKismetMathLibrary::FindLookAtRotation(
+				OwnerCharacter->GetMainMesh()->GetSocketLocation(InSocketName),
+				target
+			);
+		}
+		else
+		{
+			FVector target = UKismetMathLibrary::Add_VectorVector(OwnerCharacter->GetMainMesh()->GetSocketLocation(InSocketName), 
+				UKismetMathLibrary::Multiply_VectorFloat(OwnerCharacter->GetActorForwardVector(), 100.0f)		
+				);
+
+			spawnRotation = UKismetMathLibrary::FindLookAtRotation(
+				OwnerCharacter->GetMainMesh()->GetSocketLocation(InSocketName),
+				target
+			);
+		}
+
+		FActorSpawnParameters currentOwner;
+		currentOwner.Owner = Cast<AActor>(OwnerCharacter);
+
+		ACThrowableWeapon* throwableWeapon = OwnerCharacter->GetWorld()->SpawnActor<ACThrowableWeapon>(
+			CombatData.ThrowableWeaponClass,
+			OwnerCharacter->GetMainMesh()->GetSocketLocation(InSocketName),
+			spawnRotation,
+			currentOwner
+			);	
+	}
+
+	
+
 }
 
 void ACCombat_Base::SetWeaponCollision(bool bOnCollision)
@@ -120,7 +178,7 @@ FAttack ACCombat_Base::GetCurrentAttackData()
 	else // 콤보공격
 	{
 		temp = CombatData.Combo_Attack[ComboNum];
-		temp.bOnCritical = FMath::RandRange(0, 100) < temp.CriticalChance;
+		temp.AttackDamage.bOnCritical = FMath::RandRange(0, 100) < temp.AttackDamage.CriticalChance;
 		
 	}
 

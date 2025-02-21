@@ -3,7 +3,6 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Data_Character.h"
-
 #include "Data_Combat.generated.h"
 
 
@@ -17,6 +16,32 @@
 
 
 //--struct---------------------------------------------------------------------
+
+USTRUCT(BlueprintType)
+struct FAttackDamage
+{
+	GENERATED_BODY()
+
+public:
+
+	// 데미지
+	UPROPERTY(EditAnywhere)
+		float Damage;
+
+	// 크리티컬 확률
+	UPROPERTY(EditAnywhere)
+		float CriticalChance;
+
+	bool bOnCritical = false;
+
+	// 뒤로 넉백
+	UPROPERTY(EditAnywhere)
+		float KnockbackStrength;
+
+	// 공중 넉백
+	UPROPERTY(EditAnywhere)
+		float KnockUpStrength;
+};
 
 USTRUCT(BlueprintType)
 struct FAttack
@@ -37,22 +62,31 @@ public:
 
 	// 데미지
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
-		float Damage;
+		FAttackDamage AttackDamage;
 
-	// 크리티컬 확률
-	UPROPERTY(EditAnywhere, Category = "Anim Montage")
-		float CriticalChance;
+	
 
-	bool bOnCritical = false;
+	// 점프공격
+	UPROPERTY(EditAnywhere, Category = "JumpAttack")
+		bool bJumpAttack = false;
 
-	// 뒤로 넉백
-	UPROPERTY(EditAnywhere, Category = "Anim Montage")
-		float KnockbackStrength;
 
-	// 공중 넉백
-	UPROPERTY(EditAnywhere, Category = "Anim Montage")
-		float KnockUpStrength;
 
+
+	// 투척무기
+	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon")
+		bool bThrowableWeapon = false;
+
+	// 데미지
+	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon", meta = (EditCondition = "bThrowableWeapon"))
+		FAttackDamage AttackDamage_ThrowableWeapon;
+
+	// 투사체가 유지될 수명 시간
+	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon", meta = (EditCondition = "bThrowableWeapon"))
+		float Lifespan = 0.0f;
+
+	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon", meta = (EditCondition = "bThrowableWeapon"))
+		bool bTargeting = false;
 };
 
 
@@ -86,6 +120,7 @@ public:
 
 };
 
+
 USTRUCT(BlueprintType)
 struct FCombatData
 {
@@ -100,6 +135,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 		FName AttachBoneName;
 
+	// 투척 무기
+	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon")
+		TSubclassOf<class ACThrowableWeapon> ThrowableWeaponClass;
+
+
+
 
 	// 무기가 스폰할때나 디스폰할때 임팩트를 만들 머티리얼
 	UPROPERTY(EditAnywhere, Category = "Material")
@@ -107,6 +148,20 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Material")
 		FName ParameterName;
+
+
+	UPROPERTY(EditAnywhere, Category = "Niagara")
+		class UNiagaraSystem* ImpactFlares;
+
+	UPROPERTY(EditAnywhere, Category = "Niagara")
+		FVector ImpactFlaresScale;
+
+	UPROPERTY(EditAnywhere, Category = "Niagara")
+		class UNiagaraSystem* ImpactFlaresThrowable;
+
+	UPROPERTY(EditAnywhere, Category = "Niagara")
+		FVector ImpactFlaresThrowableScale;
+
 
 
 	// 무기를 꺼낼때
@@ -197,20 +252,7 @@ public:
 
 
 
-USTRUCT(BlueprintType)
-struct FThrowableWeapon
-{
-	GENERATED_BODY()
 
-public:
-	// 투사체 무기 블루프린트
-	UPROPERTY(EditAnywhere, Category = "Weapon")
-		TSubclassOf<class ACCombat_Base> CombatWeapon;
-
-	// 무기를 붙일 본 이름
-	UPROPERTY(EditAnywhere, Category = "Weapon")
-		FName AttachBoneName;
-};
 
 
 
@@ -235,9 +277,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatData")
 		FCombatData CombatData;
 
-	// 투척 무기
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "ThrowableWeapon")
-		FThrowableWeapon ThrowableWeapon;
+	
 };
 
 
