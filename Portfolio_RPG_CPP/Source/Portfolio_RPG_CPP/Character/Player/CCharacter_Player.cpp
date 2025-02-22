@@ -23,8 +23,9 @@ ACCharacter_Player::ACCharacter_Player()
 	InteractionComponent = CreateDefaultSubobject<UCInteractionComponent>(L"InteractionComponent");
 
 
-	
-
+	// 포스트프로세스 설정
+	GetMainMesh()->SetRenderCustomDepth(true);
+	GetMainMesh()->CustomDepthStencilValue = 255;
 
 }
 

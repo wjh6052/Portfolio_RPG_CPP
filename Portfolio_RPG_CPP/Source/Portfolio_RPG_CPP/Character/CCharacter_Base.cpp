@@ -64,6 +64,14 @@ ACCharacter_Base::ACCharacter_Base()
 	bUseControllerRotationRoll = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
+
+
+
+	// 포스트프로세스 설정
+
+	// 포스트프로세스를 통해 캐릭터를 회색으로 표현하기 위해 카메라 암을 물체들에 막히지 않도록 설정
+	SpringArm->bDoCollisionTest = false;
+
 }
 
 void ACCharacter_Base::BeginPlay()
