@@ -111,6 +111,19 @@ void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* Overla
 
 }
 
+void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp)
+{
+	ACharacter* damageCharacter = Cast<ACharacter>(DamageOwner);
+	damageCharacter->LaunchCharacter(
+		UKismetMathLibrary::Add_VectorVector(
+			UKismetMathLibrary::Multiply_VectorFloat(OwnerCharacter_Base->GetActorForwardVector(), InKnockBackForward),
+			UKismetMathLibrary::Multiply_VectorFloat(OwnerCharacter_Base->GetActorUpVector(), InKnockBackForward)
+		),
+		true,
+		true
+	);
+}
+
 void UCCombatComponent::AttractToTarget(AActor* Target)
 {
 	if (bLookOn)
@@ -140,7 +153,7 @@ void UCCombatComponent::AttractToTarget(AActor* Target)
 
 
 // 데미지를 월드상에 나이아가라 텍스트로 보여줌
-void UCCombatComponent::ShowDamageText(float Damage, AController* TargetController, bool bCritical, bool bHealing)
+void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AController* TargetController, bool bCritical, bool bHealing)
 {
 	TArray<int32> IntArray;
 	float textLocatonY = 0;
@@ -152,11 +165,11 @@ void UCCombatComponent::ShowDamageText(float Damage, AController* TargetControll
 	}
 
 	for (int32 number : IntArray)
-	{
+	{		
 		UNiagaraComponent* digitSystem = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-			OwnerCharacter_Base->GetWorld(),
+			DamageOwner->GetWorld(),
 			CGameInstance->DamageText_DA->NiagaraSystem,
-			OwnerCharacter_Base->GetActorLocation(),
+			DamageOwner->GetActorLocation(),
 			FRotator(180.0, TargetController->GetControlRotation().Yaw, 0.0),
 			FVector(0.5, 0.5, 0.5),
 			true,
@@ -165,7 +178,8 @@ void UCCombatComponent::ShowDamageText(float Damage, AController* TargetControll
 			true
 		);
 
-		//크리티컬 추가 예정
+
+		//크리티컬
 		if(bCritical)
 			digitSystem->SetColorParameter(CGameInstance->DamageText_DA->ColorParameterName, CGameInstance->DamageText_DA->CriticalColor);
 		else if(bHealing)
@@ -184,21 +198,27 @@ void UCCombatComponent::ShowDamageText(float Damage, AController* TargetControll
 
 void UCCombatComponent::SpawnCombat()
 {
-	if (Current_Combat->bSpawn == false)
+	if (Current_Combat->bSpawn == false) // 스폰
 	{
 		OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Combat);
 
 
 		Current_Combat->StartWeapon();
 		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.CombatData.EquipWeapon.AnimMontage, Current_CombatPlayer_Data.CombatData.EquipWeapon.PlayRate);
+	
+		// 점프 높이 설정
+		OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().JumpVelocity;
 	}
-	else
+	else // 디스폰
 	{
 		OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Unarmed);
 
 
 		Current_Combat->EndWeapon();
 		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.CombatData.UnequipWeapon.AnimMontage, Current_CombatPlayer_Data.CombatData.UnequipWeapon.PlayRate);
+		
+		// 점프 높이 설정
+		OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = 420.0f;
 	}
 
 	

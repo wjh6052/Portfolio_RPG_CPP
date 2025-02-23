@@ -34,6 +34,13 @@ protected:
 		EStatusType StatusType;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		ECombatType CombatType;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		bool bLookOn;
+
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	class ACCharacter_Base* OwnerCharacter;
 	
 };

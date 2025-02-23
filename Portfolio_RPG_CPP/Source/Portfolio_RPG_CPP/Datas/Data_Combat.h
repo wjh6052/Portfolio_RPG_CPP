@@ -83,7 +83,7 @@ public:
 
 	// 투사체가 유지될 수명 시간
 	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon", meta = (EditCondition = "bThrowableWeapon"))
-		float Lifespan = 0.0f;
+		float Lifespan = 10.0f;
 
 	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon", meta = (EditCondition = "bThrowableWeapon"))
 		bool bTargeting = false;

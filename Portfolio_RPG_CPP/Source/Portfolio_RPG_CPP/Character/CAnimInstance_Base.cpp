@@ -37,6 +37,12 @@ void UCAnimInstance_Base::NativeUpdateAnimation(float DeltaSeconds)
 
 	StatusType = OwnerCharacter->GetStatComponent()->GetStatusType();
 
+
+	CombatType = OwnerCharacter->GetStatComponent()->GetPlayerData().CombatType;
+
+
+	//bLookOn = OwnerCharacter->GetCombatComponent()->bLookOn;
+
 }
 
 void UCAnimInstance_Base::PawnOwnerIsValid()

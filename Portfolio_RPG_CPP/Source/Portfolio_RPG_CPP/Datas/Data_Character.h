@@ -185,6 +185,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;
 
+	// 점프 높이 (기본 : 420)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
+		float JumpVelocity = 420.0f;
+
 
 	// 스피드
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Speed")

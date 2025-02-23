@@ -59,6 +59,7 @@ void ACThrowableWeapon::BeginPlay()
 
 	AttackData = OwnerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
 
+	//SetLifeSpan(AttackData.Lifespan);
 	
 	
 }
@@ -101,9 +102,15 @@ void ACThrowableWeapon::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCom
 		}
 	
 
+		// 데미지를 월드상 숫자로 나이아가라 효과스폰
+		OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, AttackData.AttackDamage_ThrowableWeapon.Damage, OwnerCharacter->GetController(), AttackData.bThrowableWeapon);
 		
-		OtherCharacter->GetCombatComponent()->ShowDamageText(AttackData.AttackDamage_ThrowableWeapon.Damage, OwnerCharacter->GetController(), AttackData.bThrowableWeapon);
+		// 데미지를 받은 위치에 나이아가라 효과 스폰
 		OwnerCharacter->GetCombatComponent()->OnHitImpact(true, OverlappedComponent);
+
+		// 넉백 효과
+		OwnerCharacter->GetCombatComponent()->AttackKnockBack(OwnerCharacter, AttackData.AttackDamage_ThrowableWeapon.KnockbackStrength, AttackData.AttackDamage_ThrowableWeapon.KnockUpStrength);
+
 		UGameplayStatics::ApplyDamage(OtherActor, AttackData.AttackDamage_ThrowableWeapon.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
 
 

@@ -99,17 +99,12 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 {
 	if (GetOwner() != OtherActor)
 	{		
-		ACCharacter_Base* OtherCharacter = Cast<ACCharacter_Base>(OtherActor);
-
-		// 캐릭터형이 아닐때 중지
-		CheckNull(OtherCharacter);
-
 		// 다중공격이 될 경우 중지
-		for (ACCharacter_Base* character : BeginCharacter)
-			if (character == OtherCharacter)
+		for (AActor* actor : BeginActor)
+			if (actor == OtherActor)
 				return;
 
-		BeginCharacter.AddUnique(OtherCharacter);
+		BeginActor.AddUnique(OtherActor);
 
 		switch (OwnerCharacter->GetCharacterType())
 		{
@@ -127,10 +122,18 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 			}
 
 			// 공격시 나의 방향을 적의 방향으로 전환
-			OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherCharacter);
+			OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherActor);
 
-			OtherCharacter->GetCombatComponent()->ShowDamageText(attackData.AttackDamage.Damage, OwnerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
+			// 데미지를 월드상 숫자로 나이아가라 효과스폰
+			OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
+			
+			// 데미지를 받은 위치에 나이아가라 효과 스폰
 			OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);
+
+			// 넉백 효과
+			OwnerCharacter->GetCombatComponent()->AttackKnockBack(OtherActor, attackData.AttackDamage.KnockbackStrength, attackData.AttackDamage.KnockUpStrength);
+
+
 			UGameplayStatics::ApplyDamage(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
 		}
 			break;

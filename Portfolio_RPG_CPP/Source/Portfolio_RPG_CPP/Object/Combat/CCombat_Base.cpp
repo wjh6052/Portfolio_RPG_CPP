@@ -54,7 +54,7 @@ void ACCombat_Base::EndAttack()
 
 
 	// 중복방지 초기화
-	BeginCharacter.Empty();
+	BeginActor.Empty();
 }
 
 void ACCombat_Base::SpawnThrowableWeapon(FName InSocketName)
@@ -138,7 +138,7 @@ void ACCombat_Base::NextComboAttack()
 	{
 		bCanNextCombo = false;
 		// 중복방지 초기화
-		BeginCharacter.Empty();
+		BeginActor.Empty();
 
 
 		if (CombatData.Combo_Attack.Num() - 1 >= ++ComboNum)

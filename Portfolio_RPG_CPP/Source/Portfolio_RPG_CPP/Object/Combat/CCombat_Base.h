@@ -98,7 +98,7 @@ public:
 	
 
 	// 다중공격 방지 캐릭터 배열
-	TArray<class ACCharacter_Base*> BeginCharacter;
+	TArray<class AActor*> BeginActor;
 
 public:	
 	class ACCharacter_Base* OwnerCharacter;

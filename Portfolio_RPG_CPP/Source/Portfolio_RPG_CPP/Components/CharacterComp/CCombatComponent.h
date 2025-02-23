@@ -27,11 +27,11 @@ public:
 	// ø¨√‚
 	void TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
 	void OnHitImpact(bool bThrowable, class UPrimitiveComponent* OverlappedComponent);
-
+	void AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp);
 
 
 	void AttractToTarget(AActor* Target);
-	void ShowDamageText(float Damage, class AController* TargetController, bool bCritical = false, bool bHill = false);
+	void ShowDamageText(AActor* DamageOwner, float Damage, class AController* TargetController, bool bCritical = false, bool bHill = false);
 
 
 	void SpawnCombat();
@@ -60,6 +60,9 @@ public:
 
 	bool bLookOn = false;
 	class ACCharacter_Base* LookOn_Character;
+
+
+	bool bCanBeKnockedBack = true;
 
 public:
 	class UCGameInstance* CGameInstance;
