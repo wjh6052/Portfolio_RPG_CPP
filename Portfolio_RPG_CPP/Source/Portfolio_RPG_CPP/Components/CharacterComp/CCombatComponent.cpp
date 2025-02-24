@@ -149,7 +149,7 @@ void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackFo
 	damageCharacter->LaunchCharacter(
 		UKismetMathLibrary::Add_VectorVector(
 			UKismetMathLibrary::Multiply_VectorFloat(OwnerCharacter_Base->GetActorForwardVector(), InKnockBackForward),
-			UKismetMathLibrary::Multiply_VectorFloat(OwnerCharacter_Base->GetActorUpVector(), InKnockBackForward)
+			UKismetMathLibrary::Multiply_VectorFloat(OwnerCharacter_Base->GetActorUpVector(), InKnockBackUp)
 		),
 		true,
 		true
@@ -272,6 +272,7 @@ void UCCombatComponent::OnAttack()
 // 스킬 1번
 void UCCombatComponent::Skill_1()
 {
+	Current_Combat->StartSkill(0);
 }
 
 // 스킬 2번

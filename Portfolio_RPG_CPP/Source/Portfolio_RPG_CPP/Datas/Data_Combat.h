@@ -57,9 +57,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
 		int ComboID;
 
-	UPROPERTY(EditAnywhere, Category = "Anim Montage")
-		bool bOnWeaponCollision = true;
-
 	// 데미지
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
 		FAttackDamage AttackDamage;

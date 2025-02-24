@@ -64,6 +64,9 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInteraction);
 
 	PlayerInputComponent->BindAction("Attack", EInputEvent::IE_Released, this, &ACCharacter_Player::OnAttack);
+	PlayerInputComponent->BindAction("Skill_1", EInputEvent::IE_Released, this, &ACCharacter_Player::OnSkill_1);
+	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Released, this, &ACCharacter_Player::OnSkill_2);
+	PlayerInputComponent->BindAction("Skill_3", EInputEvent::IE_Released, this, &ACCharacter_Player::OnSkill_3);
 
 
 	PlayerInputComponent->BindAction("Test1", EInputEvent::IE_Released, this, &ACCharacter_Player::OnTest1);
@@ -82,7 +85,7 @@ void ACCharacter_Player::OnTest1()
 // 테스트 2
 void ACCharacter_Player::OnTest2()
 {
-	GetCombatComponent()->Current_Combat->SpawnThrowableWeapon("");
+	
 }
 
 void ACCharacter_Player::OnMoveForward(float InAxis)
@@ -309,6 +312,21 @@ void ACCharacter_Player::OnAttack()
 		GetCombatComponent()->OnAttack();
 
 	}
+}
+
+void ACCharacter_Player::OnSkill_1()
+{
+	GetCombatComponent()->Skill_1();
+}
+
+void ACCharacter_Player::OnSkill_2()
+{
+	GetCombatComponent()->Skill_2();
+}
+
+void ACCharacter_Player::OnSkill_3()
+{
+	GetCombatComponent()->Skill_3();
 }
 
 

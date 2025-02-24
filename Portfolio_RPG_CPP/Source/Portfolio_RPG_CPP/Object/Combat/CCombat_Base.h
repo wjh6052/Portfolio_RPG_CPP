@@ -22,6 +22,9 @@ protected:
 	virtual void BeginPlay() override;
 
 
+	void CooldownTick();  // 0.1초마다 실행되는 함수
+	FTimerHandle CooldownTimerHandle;  // 쿨타임을 위한 타이머 핸들
+
 
 public:
 	// 무기가 생길때와 사라질때를 타임라인으로 제어할 함수
@@ -72,15 +75,14 @@ public: // 콤보
 public: // 스킬
 
 	virtual void StartSkill(int InSkillNum);
-	virtual void EndSkill();
-
 
 
 	bool bSkill = false;
-	int SkillNum = 0;
-	int SkillComboNum = 0;
+	int SkillNum = -1;
+	int SkillComboNum = -1;
 
-
+	float SkillCoolDowns[3];
+	float CurrentSkillCooldowns[3];
 
 
 public:

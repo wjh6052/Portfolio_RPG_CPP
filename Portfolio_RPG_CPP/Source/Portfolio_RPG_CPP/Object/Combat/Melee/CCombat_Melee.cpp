@@ -66,7 +66,6 @@ void ACCombat_Melee::EndWeapon()
 void ACCombat_Melee::StartAttack()
 {
 	Super::StartAttack();
-	CapsuleCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 void ACCombat_Melee::EndAttack()
@@ -79,6 +78,8 @@ void ACCombat_Melee::EndAttack()
 
 void ACCombat_Melee::SetWeaponCollision(bool bOnCollision)
 {
+	Super::SetWeaponCollision(bOnCollision);
+
 	if (bOnCollision)
 	{
 		CapsuleCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

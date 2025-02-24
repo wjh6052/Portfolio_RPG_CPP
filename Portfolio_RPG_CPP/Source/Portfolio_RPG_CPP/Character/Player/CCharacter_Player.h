@@ -63,6 +63,9 @@ public:
 
 
 	void OnAttack();
+	void OnSkill_1();
+	void OnSkill_2();
+	void OnSkill_3();
 
 
 
