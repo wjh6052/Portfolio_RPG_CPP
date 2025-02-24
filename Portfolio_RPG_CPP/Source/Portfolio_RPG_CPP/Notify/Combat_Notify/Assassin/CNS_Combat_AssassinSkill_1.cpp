@@ -41,11 +41,12 @@ void UCNS_Combat_AssassinSkill_1::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 		ObjectTypes,
 		false, // Complex Trace 여부
 		TArray<AActor*>(), // 무시할 액터 리스트
-		EDrawDebugTrace::ForDuration, // 디버그 드로잉 옵션
+		EDrawDebugTrace::None, // 디버그 드로잉 옵션
 		HitResult,
 		true // 실제 충돌 검사 여부	
 	);
 	
+
 	TargetArr.Empty();
 	if (bhit)
 	{
@@ -79,7 +80,7 @@ void UCNS_Combat_AssassinSkill_1::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 	for (AActor* target : TargetArr)
 	{
 		FAttack attackData = ownerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
-		CLog::Print(attackData.AttackDamage.Damage);
+
 		// 데미지를 월드상 숫자로 나이아가라 효과스폰
 		ownerCharacter->GetCombatComponent()->ShowDamageText(target, attackData.AttackDamage.Damage, ownerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
 		
