@@ -6,7 +6,7 @@
 
 ACCombat_Assassin::ACCombat_Assassin()
 {
-
+	CombatType = ECombatType::Assassin;
 }
 
 

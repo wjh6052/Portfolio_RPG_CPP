@@ -26,8 +26,26 @@ void UCCombatComponent::BeginPlay()
 
 	CGameInstance = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerCharacter_Base->GetWorld()));
 	
+
+	switch (OwnerCharacter_Base->GetCharacterType())
+	{
+	case ECharacterType::Player:
+		PlayerBeginPlay();
+		break;
+
+	case ECharacterType::Enemy:
+		//EnemyBeginPlay();
+		break;
+
+	case ECharacterType::Boss:
+		//BossBeginPlay();
+		break;
+
+	default:
+		break;
+	}
 	
-	SwitchWeapon();
+
 	
 	
 
@@ -35,10 +53,28 @@ void UCCombatComponent::BeginPlay()
 
 }
 
+void UCCombatComponent::PlayerBeginPlay()
+{
+	// 데이터테이블의 모든 무기 스폰
+	for (FCombatPlayer_DataTable Row : CGameInstance->CombatPlayerData_Arr)
+	{
+		Current_CombatPlayer_Data = Row;
+
+		FActorSpawnParameters currentOwner;
+		currentOwner.Owner = Cast<AActor>(OwnerCharacter_Base);
+
+		ACCombat_Base* CombatWeapon = OwnerCharacter_Base->GetWorld()->SpawnActor<ACCombat_Base>(Current_CombatPlayer_Data.CombatData.CombatWeapon, FVector::ZeroVector, FRotator::ZeroRotator, currentOwner);
+		
+		CombatArr.AddUnique(CombatWeapon);
+	}
+
+	SwitchWeapon();
+}
+
+// 무기 변경
 void UCCombatComponent::SwitchWeapon()
 {
 	CheckNull(CGameInstance);
-
 
 
 	for (FCombatPlayer_DataTable Row : CGameInstance->CombatPlayerData_Arr)
@@ -47,19 +83,20 @@ void UCCombatComponent::SwitchWeapon()
 		{
 			Current_CombatPlayer_Data = Row;
 
-			if (Current_CombatPlayer_Data.CombatData.CombatWeapon != nullptr)
+			for (ACCombat_Base* RowCombat : CombatArr)
 			{
-				FActorSpawnParameters currentOwner;
-				currentOwner.Owner = Cast<AActor>(OwnerCharacter_Base);
-				Current_Combat = OwnerCharacter_Base->GetWorld()->SpawnActor<ACCombat_Base>(Current_CombatPlayer_Data.CombatData.CombatWeapon, FVector::ZeroVector, FRotator::ZeroRotator, currentOwner);
-				Current_Combat->AttachToComponent(OwnerCharacter_Base->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), Current_CombatPlayer_Data.CombatData.AttachBoneName);
-			}
-			break;
+				if (Current_CombatPlayer_Data.CombatType == RowCombat->CombatType)
+				{
+					Current_Combat = RowCombat;
+					return;
+				}
+			}		
 		}
 	}
 
 }
 
+// 데미지 적용
 void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	float InDamage = DamageAmount;
@@ -80,6 +117,7 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	
 }
 
+// 히트 임팩트
 void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* OverlappedComponent)
 {
 	if (bThrowable)
@@ -102,15 +140,9 @@ void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* Overla
 			Current_CombatPlayer_Data.CombatData.ImpactFlaresScale
 		);
 	}
-
-	
-
-
-
-
-
 }
 
+// 넉백
 void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp)
 {
 	ACharacter* damageCharacter = Cast<ACharacter>(DamageOwner);
@@ -124,6 +156,7 @@ void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackFo
 	);
 }
 
+// 적의 뱡향으로 돌아서기
 void UCCombatComponent::AttractToTarget(AActor* Target)
 {
 	if (bLookOn)
@@ -196,6 +229,7 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AContr
 	}
 }
 
+
 void UCCombatComponent::SpawnCombat()
 {
 	if (Current_Combat->bSpawn == false) // 스폰
@@ -226,6 +260,7 @@ void UCCombatComponent::SpawnCombat()
 }
 
 
+// 마우스 좌클릭
 void UCCombatComponent::OnAttack()
 {
 	
@@ -234,14 +269,17 @@ void UCCombatComponent::OnAttack()
 
 }
 
+// 스킬 1번
 void UCCombatComponent::Skill_1()
 {
 }
 
+// 스킬 2번
 void UCCombatComponent::Skill_2()
 {
 }
 
+// 스킬 3번
 void UCCombatComponent::Skill_3()
 {
 }

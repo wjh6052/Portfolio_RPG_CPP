@@ -1,6 +1,7 @@
 #include "CCombat_Base.h"
 #include "../../Global.h"
 #include "ThrowableWeapon/CThrowableWeapon.h"
+#include "../../CGameInstance.h"
 
 #include "Kismet/KismetMaterialLibrary.h"
 
@@ -18,6 +19,11 @@ void ACCombat_Base::BeginPlay()
 	SetActorHiddenInGame(true);
 
 	OwnerCharacter = Cast<ACCharacter_Base>(GetOwner());
+
+	CGameInstance = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerCharacter->GetWorld()));
+
+
+
 	CombatData = OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data.CombatData;
 	
 
@@ -28,6 +34,7 @@ void ACCombat_Base::BeginPlay()
 
 void ACCombat_Base::StartWeapon()
 {
+	AttachToComponent(OwnerCharacter->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data.CombatData.AttachBoneName);
 	SetActorHiddenInGame(false);
 	bSpawn = true;
 	SpawnWeapon();
@@ -120,6 +127,10 @@ void ACCombat_Base::SetWeaponCollision(bool bOnCollision)
 
 void ACCombat_Base::ComboAttack()
 {
+	if (bSkill)
+		return;
+
+
 	if (bCanNextComboTiming)
 	{
 		bCanNextCombo = true;
@@ -160,6 +171,15 @@ void ACCombat_Base::NextComboAttack()
 		
 		
 	}
+}
+
+void ACCombat_Base::StartSkill(int InSkillNum)
+{
+
+}
+
+void ACCombat_Base::EndSkill()
+{
 }
 
 

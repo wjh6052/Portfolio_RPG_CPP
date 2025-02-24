@@ -69,6 +69,16 @@ public: // ÄÞº¸
 	bool bCanNextCombo = false;
 
 
+public: // ½ºÅ³
+
+	virtual void StartSkill(int InSkillNum);
+	virtual void EndSkill();
+
+
+
+	bool bSkill = false;
+	int SkillNum = 0;
+	int SkillComboNum = 0;
 
 
 
@@ -81,14 +91,6 @@ public:
 
 
 
-public:	
-
-	
-
-
-	bool bSkill = false;
-	int SkillNum = 0;
-	int SkillComboNum = 0;
 
 
 	
@@ -101,5 +103,9 @@ public:
 	TArray<class AActor*> BeginActor;
 
 public:	
+	class UCGameInstance* CGameInstance;
+
 	class ACCharacter_Base* OwnerCharacter;
+
+	ECombatType CombatType;
 };

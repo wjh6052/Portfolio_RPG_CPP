@@ -19,6 +19,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void PlayerBeginPlay();
 
 
 	void SwitchWeapon();
@@ -54,8 +55,11 @@ public:
 
 
 	FCombatPlayer_DataTable Current_CombatPlayer_Data;
-
 	class ACCombat_Base* Current_Combat;
+
+
+	TArray<class ACCombat_Base*> CombatArr;
+
 
 
 	bool bLookOn = false;

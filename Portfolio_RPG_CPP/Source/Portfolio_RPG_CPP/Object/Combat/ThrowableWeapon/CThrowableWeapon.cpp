@@ -59,7 +59,7 @@ void ACThrowableWeapon::BeginPlay()
 
 	AttackData = OwnerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
 
-	//SetLifeSpan(AttackData.Lifespan);
+	SetLifeSpan(AttackData.Lifespan);
 	
 	
 }
