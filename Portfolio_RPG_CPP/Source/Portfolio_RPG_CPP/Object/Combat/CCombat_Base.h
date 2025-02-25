@@ -76,6 +76,8 @@ public: // 스킬
 
 	virtual void StartSkill(int InSkillNum);
 
+	virtual void MoveTarget(const class AActor* InTarget, float InForward = 0, float InRight = 0, float InUp = 0, bool bNotMove = false, bool bNotTurn = false);
+	virtual void DamagesTarget(class AActor* InTarget);
 
 	bool bSkill = false;
 	int SkillNum = -1;
@@ -103,6 +105,12 @@ public:
 
 	// 다중공격 방지 캐릭터 배열
 	TArray<class AActor*> BeginActor;
+
+
+	// 스킬 단일 타깃
+	TArray<class AActor*> SkillTargetArr;
+	class AActor* SkillSingleTarget;
+
 
 public:	
 	class UCGameInstance* CGameInstance;

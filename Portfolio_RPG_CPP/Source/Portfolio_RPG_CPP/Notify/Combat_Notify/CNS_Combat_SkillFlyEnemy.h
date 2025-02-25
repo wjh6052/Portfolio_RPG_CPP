@@ -2,16 +2,16 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "CNS_Combat_AssassinSkill_1.generated.h"
+#include "CNS_Combat_SkillFlyEnemy.generated.h"
 
 
 
 
 UCLASS()
-class PORTFOLIO_RPG_CPP_API UCNS_Combat_AssassinSkill_1 : public UAnimNotifyState
+class PORTFOLIO_RPG_CPP_API UCNS_Combat_SkillFlyEnemy : public UAnimNotifyState
 {
 	GENERATED_BODY()
-	
+
 public:
 	FString GetNotifyName_Implementation() const override;
 
@@ -20,13 +20,8 @@ public:
 
 
 
+	class ACCharacter_Base* Target;
 
-	UPROPERTY(EditAnywhere, Category = "RushLength")
-		float RushLength = 500;
 
-	UPROPERTY(EditAnywhere, Category = "RushLength")
-		bool RushLengthTest = false;
-
-	TArray<class AActor*> TargetArr;
-
+	FTimerHandle TimerHandle;
 };

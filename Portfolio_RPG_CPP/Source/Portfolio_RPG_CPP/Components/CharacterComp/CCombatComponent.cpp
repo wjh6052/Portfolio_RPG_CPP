@@ -278,10 +278,12 @@ void UCCombatComponent::Skill_1()
 // 스킬 2번
 void UCCombatComponent::Skill_2()
 {
+	Current_Combat->StartSkill(1);
 }
 
 // 스킬 3번
 void UCCombatComponent::Skill_3()
 {
+	Current_Combat->StartSkill(2);
 }
 

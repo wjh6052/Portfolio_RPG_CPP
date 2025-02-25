@@ -4,6 +4,9 @@
 #include "../../CGameInstance.h"
 
 #include "Kismet/KismetMaterialLibrary.h"
+#include "GameFramework/Character.h"
+#include "Components/CapsuleComponent.h"
+
 
 
 ACCombat_Base::ACCombat_Base()
@@ -93,6 +96,15 @@ void ACCombat_Base::EndAttack()
 		SkillComboNum = -1;
 		SkillNum = -1;
 		bSkill = false;
+		if(SkillSingleTarget)
+			Cast<ACCharacter_Base>(SkillSingleTarget)->GetCharacterMovement()->GravityScale = 1.0f;
+		OwnerCharacter->GetCharacterMovement()->GravityScale = 1.0f;
+
+		SkillTargetArr.Empty();
+		SkillSingleTarget = nullptr;
+
+		// 콜리젼 되돌리기
+		OwnerCharacter->GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
 	}
 
 	OwnerCharacter->GetStatComponent()->SetStateType(EStateType::Idling);
@@ -251,6 +263,10 @@ void ACCombat_Base::StartSkill(int InSkillNum)
 	SkillNum = InSkillNum;
 	SkillComboNum = 0;
 
+	// 오너캐릭터가 돌진 중 다른 캐릭터와 붙이치지 않도록 설정
+	OwnerCharacter->GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+
 	switch (SkillNum)
 	{
 		case 0:
@@ -269,6 +285,56 @@ void ACCombat_Base::StartSkill(int InSkillNum)
 	
 
 }
+
+
+
+void ACCombat_Base::MoveTarget(const AActor* InTarget, float InForward, float InRight, float InUp, bool bNotMove, bool bNotTurn)
+{
+	
+	FVector location = InTarget->GetActorLocation() + (InTarget->GetActorForwardVector() * InForward) + (InTarget->GetActorRightVector() * InRight) + (InTarget->GetActorUpVector() * InUp);
+
+
+	// 이동
+	if (!bNotMove)
+		OwnerCharacter->SetActorLocation(location);
+
+	// 회전	
+	FRotator rotator = UKismetMathLibrary::FindLookAtRotation(OwnerCharacter->GetActorLocation(), InTarget->GetActorLocation());
+	
+	if(!bNotTurn)
+		OwnerCharacter->SetActorRotation(FRotator(OwnerCharacter->GetActorRotation().Pitch, rotator.Yaw, OwnerCharacter->GetActorRotation().Roll));
+
+
+
+	
+	
+}
+
+
+void ACCombat_Base::DamagesTarget(AActor* InTarget)
+{
+	ACCharacter_Base* target = Cast<ACCharacter_Base>(InTarget);
+	if (target == nullptr)
+	{
+		return;
+	}
+
+	FAttack attackData = OwnerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
+
+	// 데미지를 월드상 숫자로 나이아가라 효과스폰
+	OwnerCharacter->GetCombatComponent()->ShowDamageText(InTarget, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
+
+	// 데미지를 받은 위치에 나이아가라 효과 스폰
+	OwnerCharacter->GetCombatComponent()->OnHitImpact(false, target->GetMesh());
+
+	// 넉백
+	OwnerCharacter->GetCombatComponent()->AttackKnockBack(InTarget, attackData.AttackDamage.KnockbackStrength, attackData.AttackDamage.KnockUpStrength);
+
+	// 데미지 입력
+	UGameplayStatics::ApplyDamage(InTarget, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), OwnerCharacter->GetCombatComponent()->Current_Combat, UDamageType::StaticClass());
+}
+
+
 
 
 

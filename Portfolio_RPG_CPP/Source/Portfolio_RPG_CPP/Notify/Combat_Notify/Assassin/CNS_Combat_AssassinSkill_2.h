@@ -2,13 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "CNS_Combat_AssassinSkill_1.generated.h"
-
-
+#include "CNS_Combat_AssassinSkill_2.generated.h"
 
 
 UCLASS()
-class PORTFOLIO_RPG_CPP_API UCNS_Combat_AssassinSkill_1 : public UAnimNotifyState
+class PORTFOLIO_RPG_CPP_API UCNS_Combat_AssassinSkill_2 : public UAnimNotifyState
 {
 	GENERATED_BODY()
 	
@@ -21,12 +19,5 @@ public:
 
 
 
-	UPROPERTY(EditAnywhere, Category = "RushLength")
-		float RushLength = 500;
-
-	UPROPERTY(EditAnywhere, Category = "RushLength")
-		bool RushLengthTest = false;
-
 	TArray<class AActor*> TargetArr;
-
 };

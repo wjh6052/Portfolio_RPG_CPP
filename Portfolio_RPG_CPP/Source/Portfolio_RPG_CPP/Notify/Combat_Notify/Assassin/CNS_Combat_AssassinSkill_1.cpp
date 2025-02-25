@@ -23,25 +23,29 @@ void UCNS_Combat_AssassinSkill_1::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 	CheckFalse(Cast<ACCharacter_Base>(MeshComp->GetOwner()));
 	ACCharacter_Base* ownerCharacter = Cast<ACCharacter_Base>(MeshComp->GetOwner());
 
-	// 오너캐릭터가 돌진 중 다른 캐릭터와 붙이치지 않도록 설정
-	ownerCharacter->GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	
 
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn)); // 캐릭터 포함
 
+	// 무시할 액터 리스트
+	TArray<AActor*> outHits;
+	outHits.Add(ownerCharacter);
+
 	TArray<FHitResult> HitResult;
+
 
 	bool bhit = UKismetSystemLibrary::BoxTraceMultiForObjects(
 		ownerCharacter->GetWorld(),
 		ownerCharacter->GetActorLocation(),
-		UKismetMathLibrary::Add_VectorVector(ownerCharacter->GetActorLocation(), UKismetMathLibrary::Multiply_VectorFloat(ownerCharacter->GetActorForwardVector(), 520.0f)),
+		UKismetMathLibrary::Add_VectorVector(ownerCharacter->GetActorLocation(), UKismetMathLibrary::Multiply_VectorFloat(ownerCharacter->GetActorForwardVector(), RushLength)),
 		FVector(50, 50, 50),
 		FRotator::ZeroRotator,
 		ObjectTypes,
 		false, // Complex Trace 여부
-		TArray<AActor*>(), // 무시할 액터 리스트
-		EDrawDebugTrace::None, // 디버그 드로잉 옵션
+		outHits, // 무시할 액터 리스트
+		RushLengthTest ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None, // 디버그 드로잉 옵션
 		HitResult,
 		true // 실제 충돌 검사 여부	
 	);
@@ -73,8 +77,7 @@ void UCNS_Combat_AssassinSkill_1::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 	CheckFalse(Cast<ACCharacter_Base>(MeshComp->GetOwner()));
 	ACCharacter_Base* ownerCharacter = Cast<ACCharacter_Base>(MeshComp->GetOwner());
 
-	// 콜리젼 되돌리기
-	ownerCharacter->GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
+	
 
 
 	for (AActor* target : TargetArr)
