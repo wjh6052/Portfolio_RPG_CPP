@@ -61,12 +61,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Anim Montage")
 		FAttackDamage AttackDamage;
 
-	
-
-	// 점프공격
-	UPROPERTY(EditAnywhere, Category = "JumpAttack")
-		bool bJumpAttack = false;
-
 
 
 
@@ -213,13 +207,13 @@ public:
 
 	// 달리기 도중 공격
 	UPROPERTY(EditAnywhere, Category = "Run to Attack")
-		TArray<FAttack> RuntoAttack;
+		FAttack RunToAttack;
 
 
 
 	// 점프 도중 공격
 	UPROPERTY(EditAnywhere, Category = "Jump to Attack")
-		TArray<FAttack> JumptoAttack;
+		FAttack JumpToAttack;
 
 
 

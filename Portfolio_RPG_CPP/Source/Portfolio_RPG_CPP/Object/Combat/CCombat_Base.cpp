@@ -33,14 +33,19 @@ void ACCombat_Base::BeginPlay()
 	DissolveMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(OwnerCharacter->GetWorld(), CombatData.WeaponMaterial);
 
 
+
+
 	SkillCoolDowns[0] = CombatData.Skill_1_UI.SkillCooldown;
 	CurrentSkillCooldowns[0] = SkillCoolDowns[0];
+	bOnSkill[0] = false;
 
 	SkillCoolDowns[1] = CombatData.Skill_2_UI.SkillCooldown;
 	CurrentSkillCooldowns[1] = SkillCoolDowns[1];
+	bOnSkill[1] = false;
 
 	SkillCoolDowns[2] = CombatData.Skill_3_UI.SkillCooldown;
 	CurrentSkillCooldowns[2] = SkillCoolDowns[2];
+	bOnSkill[2] = false;
 
 
 
@@ -51,20 +56,27 @@ void ACCombat_Base::BeginPlay()
 // 쿨타임 틱
 void ACCombat_Base::CooldownTick()
 {
-	if (CurrentSkillCooldowns[0] >= 0.0f)
-	{
+	if (CurrentSkillCooldowns[0] > 0.0f)
 		CurrentSkillCooldowns[0] -= 0.1f;
-	}
-	if (CurrentSkillCooldowns[1] >= 0.0f)
-	{
+	else
+		bOnSkill[0] = true;
+
+
+	if (CurrentSkillCooldowns[1] > 0.0f)
 		CurrentSkillCooldowns[1] -= 0.1f;
-	}
-	if (CurrentSkillCooldowns[2] >= 0.0f)
-	{
+	else
+		bOnSkill[1] = true;
+
+
+	if (CurrentSkillCooldowns[2] > 0.0f)
 		CurrentSkillCooldowns[2] -= 0.1f;
-	}
+	else
+		bOnSkill[2] = true;
 
 
+	CLog::Print(CurrentSkillCooldowns[0], 1);
+	CLog::Print(CurrentSkillCooldowns[1], 2);
+	CLog::Print(CurrentSkillCooldowns[2], 3);
 }
 
 
@@ -78,7 +90,14 @@ void ACCombat_Base::StartWeapon()
 
 void ACCombat_Base::EndWeapon()
 {
+	if (bRunToAttack)
+		bRunToAttack = !bRunToAttack;
+
+	if (bJumpAttack)
+		bJumpAttack = !bJumpAttack;
+
 	bSpawn = false;
+	
 	SpawnWeapon();
 }
 
@@ -134,7 +153,7 @@ void ACCombat_Base::SpawnThrowableWeapon(FName InSocketName)
 	}
 	else
 	{
-		if (attackData.bJumpAttack)
+		if (bJumpAttack)
 		{
 			FVector target = (OwnerCharacter->GetMainMesh()->GetSocketLocation(InSocketName) +
 				(OwnerCharacter->GetActorForwardVector() * 100.0f) + 
@@ -183,6 +202,20 @@ void ACCombat_Base::ComboAttack()
 {
 	CheckTrue(bSkill);
 
+
+	if (OwnerCharacter->GetStatComponent()->IsSpeedType(ESpeedType::Run))
+	{
+		bRunToAttack = true;
+		OwnerCharacter->PlayAnimMontage(CombatData.RunToAttack.AnimMontage.AnimMontage, CombatData.RunToAttack.AnimMontage.PlayRate);
+		return;
+	}
+	
+	if (OwnerCharacter->IsMovementMode(EMovementMode::MOVE_Falling))
+	{
+		bJumpAttack = true;
+		OwnerCharacter->PlayAnimMontage(CombatData.JumpToAttack.AnimMontage.AnimMontage, CombatData.JumpToAttack.AnimMontage.PlayRate);
+		return;
+	}
 
 	if (bCanNextComboTiming)
 	{
@@ -257,11 +290,19 @@ void ACCombat_Base::NextComboAttack()
 
 void ACCombat_Base::StartSkill(int InSkillNum)
 {
+	// 스킬 사용중일때 종료
 	CheckTrue(bSkill);
+
+	// 스킬 쿨타임일때 종료
+	CheckFalse(bOnSkill[SkillNum]);
+
 
 	bSkill = true;
 	SkillNum = InSkillNum;
 	SkillComboNum = 0;
+
+	bOnSkill[SkillNum] = false;
+	CurrentSkillCooldowns[SkillNum] = SkillCoolDowns[SkillNum];
 
 	// 오너캐릭터가 돌진 중 다른 캐릭터와 붙이치지 않도록 설정
 	OwnerCharacter->GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
@@ -364,7 +405,12 @@ FAttack ACCombat_Base::GetCurrentAttackData()
 
 		temp.AttackDamage.bOnCritical = FMath::RandRange(0, 100) < temp.AttackDamage.CriticalChance;
 	}
-	else // 콤보공격
+	else if (bRunToAttack)
+	{
+		temp = CombatData.RunToAttack;
+		temp.AttackDamage.bOnCritical = FMath::RandRange(0, 100) < temp.AttackDamage.CriticalChance;
+	}
+	else// 콤보공격
 	{
 		temp = CombatData.Combo_Attack[ComboNum];
 		temp.AttackDamage.bOnCritical = FMath::RandRange(0, 100) < temp.AttackDamage.CriticalChance;

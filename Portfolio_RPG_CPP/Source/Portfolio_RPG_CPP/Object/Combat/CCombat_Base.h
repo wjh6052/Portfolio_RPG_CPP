@@ -71,6 +71,8 @@ public: // 콤보
 	bool bCanNextComboTiming = false;
 	bool bCanNextCombo = false;
 
+	bool bRunToAttack = false;
+	bool bJumpAttack = false;
 
 public: // 스킬
 
@@ -85,6 +87,7 @@ public: // 스킬
 
 	float SkillCoolDowns[3];
 	float CurrentSkillCooldowns[3];
+	bool bOnSkill[3];
 
 
 public:

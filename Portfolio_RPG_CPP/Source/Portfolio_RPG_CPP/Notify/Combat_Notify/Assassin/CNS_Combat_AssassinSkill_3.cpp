@@ -60,7 +60,11 @@ void UCNS_Combat_AssassinSkill_3::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 
 	if(ownerCharacter->GetCombatComponent()->Current_Combat->SkillSingleTarget)
 		ownerCharacter->GetCombatComponent()->Current_Combat->MoveTarget(ownerCharacter->GetCombatComponent()->Current_Combat->SkillSingleTarget, TargetForward, TargetRight, TargetUp, bNotMove, bNotTurn);
-
+	else
+	{
+		ownerCharacter->GetCombatComponent()->Current_Combat->EndAttack();
+		ownerCharacter->GetMesh()->GetAnimInstance()->Montage_Stop(0.2f);
+	}
 
 
 
