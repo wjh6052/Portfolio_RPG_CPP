@@ -1,7 +1,12 @@
 ﻿#include "CCombat_Base.h"
 #include "../../Global.h"
-#include "ThrowableWeapon/CThrowableWeapon.h"
 #include "../../CGameInstance.h"
+#include "../../Character/Player/CCharacter_Player.h"
+#include "../../Widgets/CWMain.h"
+#include "../../Widgets/GameplayUI/CWGameplayUI.h"
+#include "ThrowableWeapon/CThrowableWeapon.h"
+
+
 
 #include "Kismet/KismetMaterialLibrary.h"
 #include "GameFramework/Character.h"
@@ -23,11 +28,14 @@ void ACCombat_Base::BeginPlay()
 
 	OwnerCharacter = Cast<ACCharacter_Base>(GetOwner());
 
+	
+
+
 	CGameInstance = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerCharacter->GetWorld()));
 
 
 
-	CombatData = OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data.CombatData;
+	CombatData = OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data;
 	
 
 	DissolveMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(OwnerCharacter->GetWorld(), CombatData.WeaponMaterial);
@@ -56,33 +64,33 @@ void ACCombat_Base::BeginPlay()
 // 쿨타임 틱
 void ACCombat_Base::CooldownTick()
 {
-	if (CurrentSkillCooldowns[0] > 0.0f)
-		CurrentSkillCooldowns[0] -= 0.1f;
-	else
-		bOnSkill[0] = true;
+	for (int i = 0; i < 3; i++)
+	{
+		if (CurrentSkillCooldowns[i] > 0.0f)
+		{
+			CurrentSkillCooldowns[i] -= 0.1f;
+			bOnSkill[i] = false;
+			
+			if (OwnerCharacter->GetCharacterType() == ECharacterType::Player)
+				Cast<ACCharacter_Player>(OwnerCharacter)->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetSkillCooldownTime(CombatData.CombatType, i, CurrentSkillCooldowns[i]);
+		}
+		else
+		{
+			bOnSkill[i] = true;
+		}		
+	}
 
-
-	if (CurrentSkillCooldowns[1] > 0.0f)
-		CurrentSkillCooldowns[1] -= 0.1f;
-	else
-		bOnSkill[1] = true;
-
-
-	if (CurrentSkillCooldowns[2] > 0.0f)
-		CurrentSkillCooldowns[2] -= 0.1f;
-	else
-		bOnSkill[2] = true;
-
-
-	CLog::Print(CurrentSkillCooldowns[0], 1);
-	CLog::Print(CurrentSkillCooldowns[1], 2);
-	CLog::Print(CurrentSkillCooldowns[2], 3);
+	// 공중 공격 중복 방지
+	if (OwnerCharacter->IsMovementMode(EMovementMode::MOVE_Walking))
+	{
+		bJumpAttack = false;
+	}
 }
 
 
 void ACCombat_Base::StartWeapon()
 {
-	AttachToComponent(OwnerCharacter->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data.CombatData.AttachBoneName);
+	AttachToComponent(OwnerCharacter->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data.AttachBoneName);
 	SetActorHiddenInGame(false);
 	bSpawn = true;
 	SpawnWeapon();
@@ -92,9 +100,6 @@ void ACCombat_Base::EndWeapon()
 {
 	if (bRunToAttack)
 		bRunToAttack = !bRunToAttack;
-
-	if (bJumpAttack)
-		bJumpAttack = !bJumpAttack;
 
 	bSpawn = false;
 	
@@ -203,6 +208,13 @@ void ACCombat_Base::ComboAttack()
 	CheckTrue(bSkill);
 
 
+	if (OwnerCharacter->IsMovementMode(EMovementMode::MOVE_Falling) && !bJumpAttack)
+	{
+		bJumpAttack = true;
+		OwnerCharacter->PlayAnimMontage(CombatData.JumpToAttack.AnimMontage.AnimMontage, CombatData.JumpToAttack.AnimMontage.PlayRate);
+		return;
+	}
+
 	if (OwnerCharacter->GetStatComponent()->IsSpeedType(ESpeedType::Run))
 	{
 		bRunToAttack = true;
@@ -210,12 +222,7 @@ void ACCombat_Base::ComboAttack()
 		return;
 	}
 	
-	if (OwnerCharacter->IsMovementMode(EMovementMode::MOVE_Falling))
-	{
-		bJumpAttack = true;
-		OwnerCharacter->PlayAnimMontage(CombatData.JumpToAttack.AnimMontage.AnimMontage, CombatData.JumpToAttack.AnimMontage.PlayRate);
-		return;
-	}
+	
 
 	if (bCanNextComboTiming)
 	{
@@ -294,21 +301,20 @@ void ACCombat_Base::StartSkill(int InSkillNum)
 	CheckTrue(bSkill);
 
 	// 스킬 쿨타임일때 종료
-	CheckFalse(bOnSkill[SkillNum]);
+	CheckFalse(bOnSkill[InSkillNum]);
 
 
 	bSkill = true;
 	SkillNum = InSkillNum;
 	SkillComboNum = 0;
-
-	bOnSkill[SkillNum] = false;
-	CurrentSkillCooldowns[SkillNum] = SkillCoolDowns[SkillNum];
+	
+	CurrentSkillCooldowns[InSkillNum] = SkillCoolDowns[InSkillNum];
 
 	// 오너캐릭터가 돌진 중 다른 캐릭터와 붙이치지 않도록 설정
 	OwnerCharacter->GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 
-	switch (SkillNum)
+	switch (InSkillNum)
 	{
 		case 0:
 			OwnerCharacter->PlayAnimMontage(CombatData.Skill_1[SkillComboNum].AnimMontage.AnimMontage, CombatData.Skill_1[SkillComboNum].AnimMontage.PlayRate);

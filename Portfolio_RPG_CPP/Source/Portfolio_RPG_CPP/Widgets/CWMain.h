@@ -35,23 +35,20 @@ public:
 
 
 
-public: // ------------------------------------------------인벤토리------------------------------------------------
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Interaction")
-		void AddInteraction(AActor* InActor);
-	
-	UFUNCTION(BlueprintImplementableEvent, Category = "Interaction")
-		void RemovalInteraction(AActor* InActor);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintPure, Category = "Interaction")
-		class UCWInteractionBox* GetWInteractionBox();
-
+public: // ------------------------------------------------기본UI------------------------------------------------
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintPure, Category = "GameplayUI")
+		class UCWGameplayUI* GetGameplayUI();
 
 
 public: // ------------------------------------------------NPC대화------------------------------------------------
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintPure, Category = "NPCTalk")
 		class UCWNPCTalkUI* GetNPCTalkUI();
+
+
+
 
 
 

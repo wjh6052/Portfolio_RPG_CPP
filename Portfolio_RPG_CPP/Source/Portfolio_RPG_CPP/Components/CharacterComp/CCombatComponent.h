@@ -35,7 +35,8 @@ public:
 	void ShowDamageText(AActor* DamageOwner, float Damage, class AController* TargetController, bool bCritical = false, bool bHill = false);
 
 
-	void SpawnCombat();
+	// 무기를 꺼낼때와 넣을때 호출
+	void EquipCombat();
 
 
 	void OnAttack();
@@ -72,6 +73,7 @@ public:
 	class UCGameInstance* CGameInstance;
 
 	class ACCharacter_Base* OwnerCharacter_Base;
+	class ACCharacter_Player* OwnerCharacter_Player = nullptr;
 
 
 

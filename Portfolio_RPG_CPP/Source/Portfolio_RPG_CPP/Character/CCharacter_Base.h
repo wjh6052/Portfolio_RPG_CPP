@@ -46,6 +46,7 @@ public:
 
 	//IS
 	FORCEINLINE bool IsMovementMode(EMovementMode input) { return input == GetCharacterMovement()->MovementMode; }
+	FORCEINLINE bool IsCharacterType(ECharacterType input) { return input == CharacterType; }
 
 
 protected:

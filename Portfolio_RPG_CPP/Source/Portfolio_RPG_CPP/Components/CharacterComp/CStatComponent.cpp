@@ -208,31 +208,32 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 {
 	CheckNull(OwnerCharacter_Base);
 
+	
 	switch (input)
 	{
 	case ESpeedType::Stop:
-		SetSpeedType(ESpeedType::Stop);
+		SpeedType = input;
 		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Stop;
 		bCanMove = false;
 		return;
 
 	case ESpeedType::Walk:
-		SetSpeedType(ESpeedType::Walk);
+		SpeedType = input;
 		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Walk;
 		break;
 
 	case ESpeedType::Joging:
-		SetSpeedType(ESpeedType::Joging);
+		SpeedType = input;
 		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Joging;
 		break;
 
 	case ESpeedType::Run:
-		SetSpeedType(ESpeedType::Run);
+		SpeedType = input;
 		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Run;
 		break;
 
 	case ESpeedType::Sprint:
-		SetSpeedType(ESpeedType::Sprint);
+		SpeedType = input;
 		break;
 
 	default:

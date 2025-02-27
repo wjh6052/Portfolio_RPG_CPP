@@ -60,8 +60,8 @@ protected:
 
 public:
 	
-
-	void SetSpeed(ESpeedType input);
+	UFUNCTION(BlueprintCallable)
+		void SetSpeed(ESpeedType input);
 	
 public:
 	//get
@@ -83,9 +83,8 @@ public:
 	FORCEINLINE void SetSprint(bool input) { bSprint = input; }
 
 	FORCEINLINE void SetStateType(EStateType input) { StateType = input; }
-	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }
-	UFUNCTION(BlueprintCallable)
-		FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }
+	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }	
+	FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }
 
 	FORCEINLINE void SetPlayerData(FPlayer_DataTable input) { Player_Data = input; }
 	FORCEINLINE void SetEnemyData(FEnemy_DataTable input) { Enemy_Data = input; }

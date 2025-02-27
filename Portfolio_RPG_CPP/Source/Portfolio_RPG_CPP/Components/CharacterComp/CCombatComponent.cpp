@@ -2,8 +2,11 @@
 #include "../../Global.h"
 #include "../../CGameInstance.h"
 #include "../../Character/CCharacter_Base.h"
+#include "../../Character/Player/CCharacter_Player.h"
 #include "../../Datas/DA/DA_DamageText.h"
 #include "../../Object/Combat/CCombat_Base.h"
+#include "../../Widgets/CWMain.h"
+#include "../../Widgets/GameplayUI/CWGameplayUI.h"
 
 
 #include "NiagaraComponent.h"
@@ -31,6 +34,7 @@ void UCCombatComponent::BeginPlay()
 	{
 	case ECharacterType::Player:
 		PlayerBeginPlay();
+		OwnerCharacter_Player = Cast<ACCharacter_Player>(OwnerCharacter_Base);
 		break;
 
 	case ECharacterType::Enemy:
@@ -45,12 +49,6 @@ void UCCombatComponent::BeginPlay()
 		break;
 	}
 	
-
-	
-	
-
-	
-
 }
 
 void UCCombatComponent::PlayerBeginPlay()
@@ -63,8 +61,9 @@ void UCCombatComponent::PlayerBeginPlay()
 		FActorSpawnParameters currentOwner;
 		currentOwner.Owner = Cast<AActor>(OwnerCharacter_Base);
 
-		ACCombat_Base* CombatWeapon = OwnerCharacter_Base->GetWorld()->SpawnActor<ACCombat_Base>(Current_CombatPlayer_Data.CombatData.CombatWeapon, FVector::ZeroVector, FRotator::ZeroRotator, currentOwner);
+		ACCombat_Base* CombatWeapon = OwnerCharacter_Base->GetWorld()->SpawnActor<ACCombat_Base>(Current_CombatPlayer_Data.CombatWeapon, FVector::ZeroVector, FRotator::ZeroRotator, currentOwner);
 		
+		CombatWeapon->CombatData = Row;
 		CombatArr.AddUnique(CombatWeapon);
 	}
 
@@ -85,9 +84,13 @@ void UCCombatComponent::SwitchWeapon()
 
 			for (ACCombat_Base* RowCombat : CombatArr)
 			{
-				if (Current_CombatPlayer_Data.CombatType == RowCombat->CombatType)
+				if (Current_CombatPlayer_Data.CombatType == RowCombat->CombatData.CombatType)
 				{
 					Current_Combat = RowCombat;
+					if (OwnerCharacter_Player)
+					{
+						OwnerCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetWidgetSwitcher(OwnerCharacter_Base->GetStatComponent()->IsStatus(EStatusType::Combat), Current_Combat->CombatData.CombatType);
+					}
 					return;
 				}
 			}		
@@ -124,20 +127,20 @@ void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* Overla
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 			OwnerCharacter_Base->GetWorld(),
-			Current_CombatPlayer_Data.CombatData.ImpactFlaresThrowable,
+			Current_CombatPlayer_Data.ImpactFlaresThrowable,
 			OverlappedComponent->K2_GetComponentLocation(),
 			UKismetMathLibrary::Conv_VectorToRotator(OwnerCharacter_Base->GetMainMesh()->GetForwardVector()),
-			Current_CombatPlayer_Data.CombatData.ImpactFlaresThrowableScale
+			Current_CombatPlayer_Data.ImpactFlaresThrowableScale
 		);
 	}
 	else
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 			OwnerCharacter_Base->GetWorld(),
-			Current_CombatPlayer_Data.CombatData.ImpactFlares,
+			Current_CombatPlayer_Data.ImpactFlares,
 			OverlappedComponent->K2_GetComponentLocation(),
 			UKismetMathLibrary::Conv_VectorToRotator(OwnerCharacter_Base->GetMainMesh()->GetForwardVector()),
-			Current_CombatPlayer_Data.CombatData.ImpactFlaresScale
+			Current_CombatPlayer_Data.ImpactFlaresScale
 		);
 	}
 }
@@ -230,7 +233,7 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AContr
 }
 
 
-void UCCombatComponent::SpawnCombat()
+void UCCombatComponent::EquipCombat()
 {
 	if (Current_Combat->bSpawn == false) // 스폰
 	{
@@ -238,10 +241,10 @@ void UCCombatComponent::SpawnCombat()
 
 
 		Current_Combat->StartWeapon();
-		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.CombatData.EquipWeapon.AnimMontage, Current_CombatPlayer_Data.CombatData.EquipWeapon.PlayRate);
+		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.EquipWeapon.AnimMontage, Current_CombatPlayer_Data.EquipWeapon.PlayRate);
 	
 		// 점프 높이 설정
-		OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().JumpVelocity;
+		OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().JumpVelocity;	
 	}
 	else // 디스폰
 	{
@@ -249,7 +252,7 @@ void UCCombatComponent::SpawnCombat()
 
 
 		Current_Combat->EndWeapon();
-		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.CombatData.UnequipWeapon.AnimMontage, Current_CombatPlayer_Data.CombatData.UnequipWeapon.PlayRate);
+		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.UnequipWeapon.AnimMontage, Current_CombatPlayer_Data.UnequipWeapon.PlayRate);
 		
 		// 점프 높이 설정
 		OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = 420.0f;
@@ -257,6 +260,10 @@ void UCCombatComponent::SpawnCombat()
 
 	
 
+	if (OwnerCharacter_Player)
+	{
+		OwnerCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetWidgetSwitcher(OwnerCharacter_Base->GetStatComponent()->IsStatus(EStatusType::Combat), Current_Combat->CombatData.CombatType);
+	}
 }
 
 

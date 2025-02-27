@@ -37,7 +37,7 @@ void ACCharacter_Player::BeginPlay()
 
 
 	// 테스트
-	GetCombatComponent()->SpawnCombat();
+	GetCombatComponent()->EquipCombat();
 
 }
 
@@ -78,7 +78,7 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 // 테스트 1
 void ACCharacter_Player::OnTest1()
 {
-	GetCombatComponent()->SpawnCombat();
+	GetCombatComponent()->EquipCombat();
 	
 }
 
@@ -191,7 +191,6 @@ void ACCharacter_Player::OnJump()
 void ACCharacter_Player::OffJump()
 {
 	Super::OffJump();
-
 }
 
 void ACCharacter_Player::OnHorizontalLook(float InAxis)

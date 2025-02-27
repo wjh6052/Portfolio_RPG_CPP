@@ -46,6 +46,11 @@ void ACCombat_Melee::BeginPlay()
 
 }
 
+void ACCombat_Melee::CooldownTick()
+{
+	Super::CooldownTick();
+}
+
 
 
 void ACCombat_Melee::StartWeapon()
@@ -98,8 +103,11 @@ void ACCombat_Melee::SetWeaponCollision(bool bOnCollision)
 
 void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (GetOwner() != OtherActor)
+	if (GetOwner() != OtherActor && Cast<ACCharacter_Base>(OtherActor))
 	{		
+		
+
+
 		// 다중공격이 될 경우 중지
 		for (AActor* actor : BeginActor)
 			if (actor == OtherActor)
@@ -124,13 +132,13 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 			// 공격시 나의 방향을 적의 방향으로 전환
 			OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherActor);
-
+			
 			// 데미지를 월드상 숫자로 나이아가라 효과스폰
 			OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
 			
 			// 데미지를 받은 위치에 나이아가라 효과 스폰
 			OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);
-
+			
 			// 넉백 효과
 			OwnerCharacter->GetCombatComponent()->AttackKnockBack(OtherActor, attackData.AttackDamage.KnockbackStrength, attackData.AttackDamage.KnockUpStrength);
 

@@ -22,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 
-	void CooldownTick();  // 0.1초마다 실행되는 함수
+	virtual void CooldownTick();  // 0.1초마다 실행되는 함수
 	FTimerHandle CooldownTimerHandle;  // 쿨타임을 위한 타이머 핸들
 
 
@@ -103,7 +103,7 @@ public:
 	
 
 
-	FCombatData CombatData;
+	FCombatPlayer_DataTable CombatData;
 	
 
 	// 다중공격 방지 캐릭터 배열
@@ -119,6 +119,4 @@ public:
 	class UCGameInstance* CGameInstance;
 
 	class ACCharacter_Base* OwnerCharacter;
-
-	ECombatType CombatType;
 };

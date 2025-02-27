@@ -40,7 +40,7 @@ void UCNS_Combat_AssassinSkill_2::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 		ObjectTypes,
 		false, // Complex Trace 여부
 		outHits, // 무시할 액터 리스트
-		EDrawDebugTrace::None, // 디버그 드로잉 옵션
+		EDrawDebugTrace::ForDuration, // 디버그 드로잉 옵션
 		HitResult,
 		true // 실제 충돌 검사 여부	
 	);
@@ -55,7 +55,7 @@ void UCNS_Combat_AssassinSkill_2::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 		{
 			ACCharacter_Base* ch = Cast<ACCharacter_Base>(hit.GetActor());
 
-			if (ch)
+			if (ch != nullptr && ch->IsCharacterType(ECharacterType::Enemy))
 			{
 				TargetArr.AddUnique(hit.GetActor());
 			}	
@@ -92,7 +92,7 @@ void UCNS_Combat_AssassinSkill_2::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 	}
 
 	if (selectTarget)
-	{
+	{		
 		ownerCharacter->SetActorRotation(selectTarget->GetActorRotation());
 		ownerCharacter->SetActorLocation(UKismetMathLibrary::Add_VectorVector(selectTarget->GetActorLocation(), UKismetMathLibrary::Multiply_VectorFloat(selectTarget->GetActorForwardVector(), -50.0f)));			
 	}

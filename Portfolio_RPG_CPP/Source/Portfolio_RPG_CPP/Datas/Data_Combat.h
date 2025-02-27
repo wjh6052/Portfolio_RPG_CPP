@@ -88,11 +88,11 @@ struct FSkillUI
 
 public:
 	// 스킬의 UI에 비춰질 이미지
-	UPROPERTY(EditAnywhere, Category = "Anim Montage")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anim Montage")
 		UTexture2D* SkillImage;
 
 	// 스킬의 쿨타임
-	UPROPERTY(EditAnywhere, Category = "Anim Montage")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anim Montage")
 		float SkillCooldown;
 };
 
@@ -112,12 +112,25 @@ public:
 };
 
 
+
+
+
+
+//--DataTable---------------------------------------------------------------------
+
+
 USTRUCT(BlueprintType)
-struct FCombatData
+struct FCombatPlayer_DataTable : public FTableRowBase
 {
 	GENERATED_BODY()
 
+
 public:
+	// 무기 타입
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatType")
+		ECombatType CombatType;
+
+
 	// 무기
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 		TSubclassOf<class ACCombat_Base> CombatWeapon;
@@ -182,7 +195,7 @@ public:
 		TArray<FAttack> Skill_1;
 
 	// 스킬 1의 쿨타임과 이미지
-	UPROPERTY(EditAnywhere, Category = "Skill 1")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 1")
 		FSkillUI Skill_1_UI;
 
 
@@ -191,7 +204,7 @@ public:
 		TArray<FAttack> Skill_2;
 
 	// 스킬 2의 쿨타임과 이미지
-	UPROPERTY(EditAnywhere, Category = "Skill 2")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 2")
 		FSkillUI Skill_2_UI;
 
 
@@ -200,7 +213,7 @@ public:
 		TArray<FAttack> Skill_3;
 
 	// 스킬 3의 쿨타임과 이미지
-	UPROPERTY(EditAnywhere, Category = "Skill 3")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 3")
 		FSkillUI Skill_3_UI;
 
 
@@ -229,44 +242,6 @@ public:
 	// 죽을 때 애님인스턴스
 	UPROPERTY(EditAnywhere, Category = "Die")
 		FAnimMontageBase Die_Montage;
-
-
-
-	UPROPERTY(EditAnywhere, Category = "Impact Flares")
-		FImpactFlares Impact_Flares;
-
-	UPROPERTY(EditAnywhere, Category = "Impact Flares")
-		FImpactFlares Impact_Flares_Projectile;
-
-
-};
-
-
-
-
-
-
-
-
-
-//--DataTable---------------------------------------------------------------------
-
-
-USTRUCT(BlueprintType)
-struct FCombatPlayer_DataTable : public FTableRowBase
-{
-	GENERATED_BODY()
-
-public:
-
-	// 무기 타입
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatType")
-		ECombatType CombatType;
-
-
-	// 무기 타입
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatData")
-		FCombatData CombatData;
 
 	
 };

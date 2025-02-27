@@ -8,6 +8,7 @@
 
 #include "../../../Widgets/CWMain.h"
 #include "../../../Widgets/NPC/CWNPCTalkUI.h"
+#include "../../../Widgets/GameplayUI/CWGameplayUI.h"
 
 
 
@@ -34,12 +35,12 @@ void UCInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UCInteractionComponent::AddInteraction(AActor* InIteminteraction)
 {
-	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->AddInteraction(InIteminteraction);
+	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->AddInteraction(InIteminteraction);
 }
 
 void UCInteractionComponent::RemovalInteraction(AActor* InIteminteraction)
 {
-	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->RemovalInteraction(InIteminteraction);
+	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->RemovalInteraction(InIteminteraction);
 }
 
 
