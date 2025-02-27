@@ -85,17 +85,14 @@ void UCStatComponent::PlayerDataSetting()
 	}
 	
 
-
+	
 
 	// 매쉬
 	OwnerACCharacter_Player->GetMainMesh()->SetSkeletalMesh(GetPlayerData().Mesh.MeshAsset);
-	OwnerACCharacter_Player->GetMainMesh()->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
-	OwnerACCharacter_Player->GetMainMesh()->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
-	OwnerACCharacter_Player->GetMesh()->SetRelativeLocation(GetPlayerData().Mesh.Character_Location);
-	OwnerACCharacter_Player->GetMesh()->SetRelativeRotation(GetPlayerData().Mesh.Character_Rotation);
-
-	// 매쉬 OutLine 
 	OwnerACCharacter_Player->GetOutLineMesh()->SetSkeletalMesh(GetPlayerData().Mesh.MeshOutLineAsset);
+
+	OwnerACCharacter_Player->GetMesh()->SetRelativeLocation(FVector(0, 0, -GetPlayerData().Mesh.CapsuleHalfHeight));
+	
 
 	// 애님인스턴스
 	OwnerACCharacter_Player->GetMainMesh()->SetAnimInstanceClass(GetPlayerData().Mesh.AnimInstance);
@@ -107,7 +104,7 @@ void UCStatComponent::PlayerDataSetting()
 	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleHalfHeight(GetPlayerData().Mesh.CapsuleHalfHeight);
 
 	// 카메라 스프링암 위지 조정
-	OwnerACCharacter_Player->SpringArm->SetRelativeLocation(GetPlayerData().Mesh.CameraSpringArm_Location);
+	OwnerACCharacter_Player->SpringArm->SetRelativeLocation(FVector(0, 0, GetPlayerData().Mesh.CapsuleHalfHeight / 2));
 
 }
 
@@ -115,42 +112,6 @@ void UCStatComponent::EnemyDataSetting()
 {
 	OwnerCharacter_Enemy = Cast<ACCharacter_Enemy>(OwnerCharacter_Base);
 
-	// 데이터테이블에서 가져와 매쉬에 적용 예정
-	if (OwnerCharacter_Enemy->EnemyName != EEnemyName::None)
-	{
-		
-		for (int i = 0; i < CGameInstance->Enemy_Data_Arr.Num(); i++)
-		{
-			if (OwnerCharacter_Enemy->EnemyName == CGameInstance->Enemy_Data_Arr[i].EnemyName)
-			{
-				// 매쉬
-				OwnerCharacter_Enemy->GetMainMesh()->SetSkeletalMesh(CGameInstance->Enemy_Data_Arr[i].Mesh.MeshAsset);
-				OwnerCharacter_Enemy->GetMainMesh()->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
-				OwnerCharacter_Enemy->GetMainMesh()->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
-				OwnerCharacter_Enemy->GetMesh()->SetRelativeLocation(CGameInstance->Enemy_Data_Arr[i].Mesh.Character_Location);
-				OwnerCharacter_Enemy->GetMesh()->SetRelativeRotation(CGameInstance->Enemy_Data_Arr[i].Mesh.Character_Rotation);
-
-
-				// 매쉬 OutLine 
-				OwnerCharacter_Enemy->GetOutLineMesh()->SetSkeletalMesh(CGameInstance->Enemy_Data_Arr[i].Mesh.MeshOutLineAsset);
-
-
-				// 애님인스턴스
-				OwnerCharacter_Enemy->GetMesh()->SetAnimInstanceClass(CGameInstance->Enemy_Data_Arr[i].MannequinAnimInstance);
-				OwnerCharacter_Enemy->GetMainMesh()->SetAnimInstanceClass(CGameInstance->Enemy_Data_Arr[i].Mesh.AnimInstance);
-				OwnerCharacter_Enemy->GetOutLineMesh()->SetAnimInstanceClass(CGameInstance->Enemy_Data_Arr[i].Mesh.AnimInstance);
-
-
-				// 매쉬 콜리전 크기 조정
-				OwnerCharacter_Enemy->GetCapsuleComponent()->SetCapsuleRadius(CGameInstance->Enemy_Data_Arr[i].Mesh.CapsuleRadius);
-				OwnerCharacter_Enemy->GetCapsuleComponent()->SetCapsuleHalfHeight(CGameInstance->Enemy_Data_Arr[i].Mesh.CapsuleHalfHeight);
-
-				
-
-				break;
-			}
-		}
-	}
 
 }
 
@@ -163,39 +124,7 @@ void UCStatComponent::NPCDataSetting()
 {
 	OwnerACCharacter_NPC = Cast<ACCharacter_NPC>(OwnerCharacter_Base);
 
-	// 데이터테이블에서 가져와 매쉬에 적용 예정
-	if (OwnerACCharacter_NPC->NPCName != ENPCName::None)
-	{
-		for (int i = 0; i < CGameInstance->NPCData_Arr.Num(); i++)
-		{
-			if (OwnerACCharacter_NPC->NPCName == CGameInstance->NPCData_Arr[i].NPCName)
-			{
-				// 매쉬
-				OwnerACCharacter_NPC->GetMainMesh()->SetSkeletalMesh(CGameInstance->NPCData_Arr[i].Mesh.MeshAsset);
-				OwnerACCharacter_NPC->GetMainMesh()->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
-				OwnerACCharacter_NPC->GetMainMesh()->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
-				OwnerACCharacter_NPC->GetMesh()->SetRelativeLocation(CGameInstance->NPCData_Arr[i].Mesh.Character_Location);
-				OwnerACCharacter_NPC->GetMesh()->SetRelativeRotation(CGameInstance->NPCData_Arr[i].Mesh.Character_Rotation);
 
-				
-				// 매쉬 OutLine 
-				OwnerACCharacter_NPC->GetOutLineMesh()->SetSkeletalMesh(CGameInstance->NPCData_Arr[i].Mesh.MeshOutLineAsset);
-
-
-				// 애님인스턴스
-				OwnerACCharacter_NPC->GetMesh()->SetAnimInstanceClass(CGameInstance->NPCData_Arr[i].MannequinAnimInstance);
-				OwnerACCharacter_NPC->GetMainMesh()->SetAnimInstanceClass(CGameInstance->NPCData_Arr[i].Mesh.AnimInstance);
-				OwnerACCharacter_NPC->GetOutLineMesh()->SetAnimInstanceClass(CGameInstance->NPCData_Arr[i].Mesh.AnimInstance);
-				
-
-				// 매쉬 콜리전 크기 조정
-				OwnerACCharacter_NPC->GetCapsuleComponent()->SetCapsuleRadius(CGameInstance->NPCData_Arr[i].Mesh.CapsuleRadius);
-				OwnerACCharacter_NPC->GetCapsuleComponent()->SetCapsuleHalfHeight(CGameInstance->NPCData_Arr[i].Mesh.CapsuleHalfHeight);
-
-				break;
-			}
-		}
-	}
 
 
 }

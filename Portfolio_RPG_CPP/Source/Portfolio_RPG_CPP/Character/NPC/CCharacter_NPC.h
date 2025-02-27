@@ -7,9 +7,8 @@
 #include "../../Datas/Data_NPC.h"
 #include "CCharacter_NPC.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class PORTFOLIO_RPG_CPP_API ACCharacter_NPC : public ACCharacter_Base
 {
@@ -22,8 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ACInteraction_NPC> InteractionNPC_Class;
+
 	
 
 
@@ -36,5 +34,7 @@ public:
 
 
 private:
+
+
 	class ACInteraction_NPC* Interaction_NPC;
 };

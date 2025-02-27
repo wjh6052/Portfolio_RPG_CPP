@@ -1,6 +1,6 @@
 #include "CAnimInstance_Player.h"
-#include "../../Global.h"
-#include "CCharacter_Player.h"
+#include "../Global.h"
+#include "../Character/Player/CCharacter_Player.h"
 
 #include "Kismet/KismetMathLibrary.h"
 

@@ -2,6 +2,7 @@
 #include "../../Global.h"
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/Interaction/CWInteractionBox.h"
+#include "../../AnimInstance/CAnimInstance_Player.h"
 
 // Test
 #include "../../Object/Combat/CCombat_Base.h"
@@ -21,6 +22,10 @@ ACCharacter_Player::ACCharacter_Player()
 	FlightComponent = CreateDefaultSubobject<UCFlightComponent>(L"FlightComponent");
 	WidgetComponent = CreateDefaultSubobject<UCWidgetComponent>(L"WidgetComponent");
 	InteractionComponent = CreateDefaultSubobject<UCInteractionComponent>(L"InteractionComponent");
+
+	TSubclassOf<UCAnimInstance_Player> animInstanceClass;
+	CHelpers::GetClass<UCAnimInstance_Player>(&animInstanceClass, "AnimBlueprint'/Game/AnimInstance/Player/ABP_Player_Mannequins'");
+	GetMesh()->SetAnimInstanceClass(animInstanceClass);
 
 
 

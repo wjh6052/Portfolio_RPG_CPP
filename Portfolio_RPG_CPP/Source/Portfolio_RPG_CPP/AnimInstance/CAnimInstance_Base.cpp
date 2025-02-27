@@ -1,6 +1,6 @@
 #include "CAnimInstance_Base.h"
 #include "../Global.h"
-#include "CCharacter_Base.h"
+#include "../Character/CCharacter_Base.h"
 
 
 #include "KismetAnimationLibrary.h"

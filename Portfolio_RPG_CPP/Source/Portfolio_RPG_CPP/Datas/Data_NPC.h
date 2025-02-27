@@ -87,13 +87,6 @@ public:
 		FText NPCTitle;
 
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
-		FMesh Mesh;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
-		class UClass* MannequinAnimInstance;
-
-
 	// 말을 걸었을때 처음 나올 대화
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Conversation")
 		FText FirstConversationText;

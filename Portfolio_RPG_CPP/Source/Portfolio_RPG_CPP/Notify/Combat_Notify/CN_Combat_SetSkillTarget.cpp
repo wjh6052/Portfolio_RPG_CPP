@@ -52,7 +52,7 @@ void UCN_Combat_SetSkillTarget::Notify(USkeletalMeshComponent* MeshComp, UAnimSe
 		{
 			ACCharacter_Base* ch = Cast<ACCharacter_Base>(hit.GetActor());
 
-			if (ch && ownerCharacter->IsCharacterType(ECharacterType::Enemy))
+			if (ch && ch->IsCharacterType(ECharacterType::Enemy))
 			{
 				ownerCharacter->GetCombatComponent()->Current_Combat->SkillTargetArr.AddUnique(hit.GetActor());
 			}

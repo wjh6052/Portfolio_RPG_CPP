@@ -58,7 +58,7 @@ void UCNS_Combat_AssassinSkill_1::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 		{
 			ACCharacter_Base* hitCharacter = Cast<ACCharacter_Base>(hit.GetActor());
 
-			if (hitCharacter && ownerCharacter != hitCharacter && ownerCharacter->IsCharacterType(ECharacterType::Enemy))
+			if (hitCharacter && hitCharacter->IsCharacterType(ECharacterType::Enemy))
 			{
 				TargetArr.AddUnique(hit.GetActor());
 			}

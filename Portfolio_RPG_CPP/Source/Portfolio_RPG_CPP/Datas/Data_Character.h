@@ -62,19 +62,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		class USkeletalMesh* MeshOutLineAsset;
 
-
-	UPROPERTY(EditAnywhere)
-		FVector Character_Location = FVector(0.f, 0.f, -80.f);
-
-	UPROPERTY(EditAnywhere)
-		FRotator Character_Rotation = FRotator(0.f, -90.f, 0.f);
-
-
-	
-	UPROPERTY(EditAnywhere)
-		FVector CameraSpringArm_Location = FVector(0.f, 0.f, 40.f);
-
-
 	
 	UPROPERTY(EditAnywhere)
 		float CapsuleHalfHeight = 80.f;
@@ -216,13 +203,6 @@ public
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Enemy Name")
 		EEnemyName EnemyName;
 
-	// 메쉬
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
-		FMesh Mesh;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
-		class UClass* MannequinAnimInstance;
-
 
 	// 몬스터 사망시 드랍될 아이템 배열
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
@@ -250,10 +230,6 @@ struct FBoss_DataTable : public FTableRowBase
 public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterType")
 		FName BossName_Type;
-
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
-		FMesh Mesh;
 
 	// 보스 마네킹 애님인스턴스
 

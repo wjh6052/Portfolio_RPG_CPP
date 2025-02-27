@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../CAnimInstance_Base.h"
+#include "CAnimInstance_Base.h"
 #include "CAnimInstance_Player.generated.h"
 
 
