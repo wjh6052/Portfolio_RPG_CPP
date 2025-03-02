@@ -4,7 +4,6 @@
 #include "Engine/GameInstance.h"
 #include "Engine/DataTable.h"
 #include "Datas/Data_Character.h"
-#include "Datas/Data_Combat.h"
 #include "Datas/Data_Inventory.h"
 #include "Datas/Data_NPC.h"
 #include "Datas/Data_Widget.h"
@@ -66,7 +65,7 @@ public: // 캐릭터 데이터
 
 	// 플레이어 데이터
 	UPROPERTY(BlueprintReadWrite)
-		TArray<FPlayer_DataTable> Playe_Data_Arr;
+		TArray<FPlayer_DataTable> Player_Data_Arr;
 	UDataTable* Player_DataTable;
 
 	// 몬스터 데이터
@@ -102,15 +101,6 @@ public: // 아이템 데이터
 	UDataTable* MaterialItem_DataTable;
 
 
-
-
-public: // 아이템 데이터
-	void CombatPlayerDataTableToArr();
-
-	// 유저가 가지고 있는 아이템
-	UPROPERTY(BlueprintReadWrite)
-		TArray<FCombatPlayer_DataTable> CombatPlayerData_Arr;
-	UDataTable* CombatPlayer_DataTable;
 	
 
 
@@ -164,7 +154,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		int Money = 0;
 
-	// 유저의 현제 캐릭터
+	// 유저의 현재 캐릭터
 	ECombatType CombatType;
 
 private:

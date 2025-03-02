@@ -27,7 +27,7 @@ UENUM(BlueprintType)
 enum class ENPCName : uint8 // NPC이름 열거형
 {
 	None		UMETA(DisplayName = "비어있음"),
-	Aventurine  UMETA(DisplayName = "어벤츄린"),
+	Evelyn		UMETA(DisplayName = "이블린"),
 	Citlali		UMETA(DisplayName = "시틀라리"),
 	Navia 		UMETA(DisplayName = "나비아")
 

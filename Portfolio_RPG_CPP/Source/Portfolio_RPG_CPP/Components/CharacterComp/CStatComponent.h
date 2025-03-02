@@ -52,10 +52,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+public:
 	void PlayerDataSetting();
 	void EnemyDataSetting();
 	void BossDataSetting();
 	void NPCDataSetting();
+
+
 
 
 public:

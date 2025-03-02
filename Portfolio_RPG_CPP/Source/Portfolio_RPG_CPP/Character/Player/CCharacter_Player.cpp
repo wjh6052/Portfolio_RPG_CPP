@@ -42,7 +42,7 @@ void ACCharacter_Player::BeginPlay()
 
 
 	// 테스트
-	GetCombatComponent()->EquipCombat();
+	//GetCombatComponent()->
 
 }
 
@@ -58,22 +58,40 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// 걷기
 	PlayerInputComponent->BindAction("Walk", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnWalk);
 
+	// 뛰기
 	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnRun);
 	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Released, this, &ACCharacter_Player::OffRun);
+
+	// 스프린트
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnSprint);
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ACCharacter_Player::OffSprint);
 
+	// 인벤토리
 	PlayerInputComponent->BindAction("Inventory", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInventory);
+
+	// 상호작용
 	PlayerInputComponent->BindAction("Interaction", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnInteraction);
 
+
+	// 무기 선택 창
+	PlayerInputComponent->BindAction("WeaponChoice", EInputEvent::IE_Pressed, this, &ACCharacter_Player::OnWeaponChoice);
+	PlayerInputComponent->BindAction("WeaponChoice", EInputEvent::IE_Released, this, &ACCharacter_Player::OffWeaponChoice);
+
+
+	//공격
 	PlayerInputComponent->BindAction("Attack", EInputEvent::IE_Released, this, &ACCharacter_Player::OnAttack);
 	PlayerInputComponent->BindAction("Skill_1", EInputEvent::IE_Released, this, &ACCharacter_Player::OnSkill_1);
 	PlayerInputComponent->BindAction("Skill_2", EInputEvent::IE_Released, this, &ACCharacter_Player::OnSkill_2);
 	PlayerInputComponent->BindAction("Skill_3", EInputEvent::IE_Released, this, &ACCharacter_Player::OnSkill_3);
 
 
+	
+
+
+	// 테스트
 	PlayerInputComponent->BindAction("Test1", EInputEvent::IE_Released, this, &ACCharacter_Player::OnTest1);
 	PlayerInputComponent->BindAction("Test2", EInputEvent::IE_Released, this, &ACCharacter_Player::OnTest2);
 
@@ -92,6 +110,7 @@ void ACCharacter_Player::OnTest2()
 {
 	
 }
+
 
 void ACCharacter_Player::OnMoveForward(float InAxis)
 {
@@ -198,6 +217,7 @@ void ACCharacter_Player::OffJump()
 	Super::OffJump();
 }
 
+
 void ACCharacter_Player::OnHorizontalLook(float InAxis)
 {
 	if(GetWidgetComponent()->CurrentUi == ECurrentUi::InGameUI)
@@ -209,6 +229,7 @@ void ACCharacter_Player::OnVerticalLook(float InAxis)
 	if (GetWidgetComponent()->CurrentUi == ECurrentUi::InGameUI)
 		Super::OnVerticalLook(InAxis);
 }
+
 
 void ACCharacter_Player::OnWalk()
 {
@@ -224,6 +245,7 @@ void ACCharacter_Player::OnWalk()
 	}
 
 }
+
 
 void ACCharacter_Player::OnRun()
 {
@@ -241,10 +263,12 @@ void ACCharacter_Player::OffRun()
 	GetWorld()->GetTimerManager().SetTimer(RunTimer, this, &ACCharacter_Player::RunDelay, GetStatComponent()->GetPlayerData().Run_Time, false);
 }
 
+
 void ACCharacter_Player::RunDelay()
 {
 	Run = 0;
 }
+
 
 void ACCharacter_Player::OnSprint()
 {
@@ -280,11 +304,13 @@ void ACCharacter_Player::OffSprint()
 
 }
 
+
 // 인벤토리창 열기
 void ACCharacter_Player::OnInventory()
 {
 	GetWidgetComponent()->SetViewInventory();
 }
+
 
 // 상호작용
 void ACCharacter_Player::OnInteraction()
@@ -293,6 +319,7 @@ void ACCharacter_Player::OnInteraction()
 
 }
 
+// 마우스 휠
 void ACCharacter_Player::OnCameraZoom(float InAxis)
 {
 	CheckFalse(InAxis != 0);
@@ -307,6 +334,19 @@ void ACCharacter_Player::OnCameraZoom(float InAxis)
 		
 	}
 }
+
+
+// 무기 선택 창
+void ACCharacter_Player::OnWeaponChoice()
+{
+	GetWidgetComponent()->OnWeaponChoice(true);
+}
+
+void ACCharacter_Player::OffWeaponChoice()
+{
+	GetWidgetComponent()->OnWeaponChoice(false);
+}
+
 
 // 마우스 왼쪽 클릭
 void ACCharacter_Player::OnAttack()

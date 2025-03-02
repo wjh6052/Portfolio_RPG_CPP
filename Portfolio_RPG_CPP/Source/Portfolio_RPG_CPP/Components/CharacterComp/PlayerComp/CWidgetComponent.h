@@ -31,6 +31,12 @@ public:
 	void SetViewInventory();
 
 
+	// 무기 선택 위젯 켜기
+	void OnWeaponChoice(bool InOn);
+
+	
+
+
 public:
 	FORCEINLINE class UCWMain* GetMainWidget() { return MainWidget; }
 	FORCEINLINE ECurrentUi GetCurrentUi() { return CurrentUi; }

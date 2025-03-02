@@ -61,6 +61,9 @@ public:
 
 	void OnCameraZoom(float InAxis) override;
 
+	void OnWeaponChoice();
+	void OffWeaponChoice();
+
 
 	void OnAttack();
 	void OnSkill_1();

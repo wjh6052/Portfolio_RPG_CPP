@@ -15,7 +15,7 @@ class PORTFOLIO_RPG_CPP_API UCWGameplayUI : public UUserWidget
 
 public:
 	
-
+	 
 
 
 public: // ------------------------------------------------상호작용------------------------------------------------
@@ -41,4 +41,11 @@ public: // ------------------------------------------------스킬아이콘-----------
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "SkillIconBox")
 		void SetIconOpacity(bool InOffSkill, ECombatType InCombatType, int InSkillNum);
+
+
+public: // ------------------------------------------------무기 선택 창------------------------------------------------
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon Choice")
+		void OnWeaponWheel(bool IbOn);
+
 };

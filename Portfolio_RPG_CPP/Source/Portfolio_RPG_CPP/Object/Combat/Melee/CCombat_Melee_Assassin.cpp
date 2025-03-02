@@ -49,7 +49,7 @@ void ACCombat_Melee_Assassin::CooldownTick()
 			ObjectTypes,
 			false, // Complex Trace 여부
 			outHits, // 무시할 액터 리스트
-			EDrawDebugTrace::ForOneFrame, // 디버그 드로잉 옵션
+			EDrawDebugTrace::None, // 디버그 드로잉 옵션
 			HitResult,
 			true // 실제 충돌 검사 여부	
 		);

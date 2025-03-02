@@ -103,7 +103,7 @@ public:
 	
 
 
-	FCombatPlayer_DataTable CombatData;
+	FCombatData CombatData;
 	
 
 	// 다중공격 방지 캐릭터 배열

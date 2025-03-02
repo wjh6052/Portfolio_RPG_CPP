@@ -25,15 +25,9 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&MaterialItem_DataTable, "DataTable'/Game/Data/DT_MaterialItem.DT_MaterialItem'");
 	
 
-	// 무기 데이터
-	CHelpers::GetAsset<UDataTable>(&CombatPlayer_DataTable, "DataTable'/Game/Data/Player/DT_Combat_Player.DT_Combat_Player'");
-
-
 	// 위젯 대화 아이콘 배열
 	CHelpers::GetAsset<UDataTable>(&ConversationIcon_DataTable, "DataTable'/Game/Data/Widget/DT_ConversationIcon.DT_ConversationIcon'");
 
-
-	// 데이터에셋
 
 	// 데미지 텍스트
 	CHelpers::GetAsset<UDA_DamageText>(&DamageText_DA, "DA_DamageText'/Game/Data/DA/DA_DamageText.DA_DamageText'");
@@ -47,7 +41,6 @@ void UCGameInstance::Init()
 	EnemyDataTableToArr();
 	NPCDataTableToArr();
 	IconDataTableToArr();
-	CombatPlayerDataTableToArr();
 
 	SaveData();
 	//if (!LoadData())
@@ -74,7 +67,7 @@ void UCGameInstance::PlayerDataTableToArr()
 		for (FPlayer_DataTable* Row : AllRows)
 		{
 			if (Row)
-				Playe_Data_Arr.Add(*Row);
+				Player_Data_Arr.Add(*Row);
 		}
 	}
 }
@@ -140,25 +133,6 @@ void UCGameInstance::ItemDataTableToArr()
 
 }
 
-void UCGameInstance::CombatPlayerDataTableToArr()
-{
-	if (!CombatPlayer_DataTable)
-	{
-		CLog::Print(L"플레이어 무기 데이터테이블을 읽어오지 못하였습니다");
-	}
-	else
-	{
-		TArray<FCombatPlayer_DataTable*> AllRows;
-		CombatPlayer_DataTable->GetAllRows<FCombatPlayer_DataTable>(L"", AllRows);
-
-
-		for (FCombatPlayer_DataTable* Row : AllRows)
-		{
-			if (Row)
-				CombatPlayerData_Arr.Add(*Row);
-		}
-	}
-}
 
 void UCGameInstance::IconDataTableToArr()
 {

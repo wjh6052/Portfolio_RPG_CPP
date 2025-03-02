@@ -22,7 +22,8 @@ protected:
 	void PlayerBeginPlay();
 
 
-	void SwitchWeapon();
+	UFUNCTION(BlueprintCallable)
+		void SwitchWeapon(ECombatType InCombatType);
 
 public:
 	// 연출
@@ -36,7 +37,10 @@ public:
 
 
 	// 무기를 꺼낼때와 넣을때 호출
-	void EquipCombat();
+	UFUNCTION(BlueprintCallable)
+		void EquipCombat(bool bPlayMontage = true);
+	UFUNCTION(BlueprintCallable)
+		void UnequipCombat(bool bPlayMontage = true);
 
 
 	void OnAttack();
@@ -55,7 +59,7 @@ public:
 
 
 
-	FCombatPlayer_DataTable Current_CombatPlayer_Data;
+	FCombatData Current_CombatData;
 	class ACCombat_Base* Current_Combat;
 
 

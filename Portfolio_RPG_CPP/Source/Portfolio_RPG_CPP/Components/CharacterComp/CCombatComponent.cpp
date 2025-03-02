@@ -54,46 +54,78 @@ void UCCombatComponent::BeginPlay()
 void UCCombatComponent::PlayerBeginPlay()
 {
 	// 데이터테이블의 모든 무기 스폰
-	for (FCombatPlayer_DataTable Row : CGameInstance->CombatPlayerData_Arr)
-	{
-		Current_CombatPlayer_Data = Row;
-
+	for (FPlayer_DataTable Row : CGameInstance->Player_Data_Arr)
+	{		
 		FActorSpawnParameters currentOwner;
 		currentOwner.Owner = Cast<AActor>(OwnerCharacter_Base);
 
-		ACCombat_Base* CombatWeapon = OwnerCharacter_Base->GetWorld()->SpawnActor<ACCombat_Base>(Current_CombatPlayer_Data.CombatWeapon, FVector::ZeroVector, FRotator::ZeroRotator, currentOwner);
+		Current_CombatData = Row.Player_CombatData.CombatData;
+		ACCombat_Base* CombatWeapon = OwnerCharacter_Base->GetWorld()->SpawnActor<ACCombat_Base>(Row.Player_CombatData.CombatData.CombatWeapon, FVector::ZeroVector, FRotator::ZeroRotator, currentOwner);
 		
-		CombatWeapon->CombatData = Row;
+		CombatWeapon->CombatData = Row.Player_CombatData.CombatData;
 		CombatArr.AddUnique(CombatWeapon);
 	}
 
-	SwitchWeapon();
+
+	for (FPlayer_DataTable data : CGameInstance->Player_Data_Arr)
+	{
+		for (ACCombat_Base* combat : CombatArr)
+		{
+			if (data.Player_CombatData.CombatData.CombatType == combat->CombatData.CombatType)
+			{			
+				Current_CombatData = combat->CombatData;
+				Current_Combat = combat;
+				return;
+			}
+		}
+	}
 }
 
 // 무기 변경
-void UCCombatComponent::SwitchWeapon()
+void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 {
 	CheckNull(CGameInstance);
 
-
-	for (FCombatPlayer_DataTable Row : CGameInstance->CombatPlayerData_Arr)
+	if (InCombatType == ECombatType::None && Current_Combat->bSpawn == true)
 	{
-		if (OwnerCharacter_Base->GetStatComponent()->GetPlayerData().CombatType == Row.CombatType)
-		{
-			Current_CombatPlayer_Data = Row;
+		UnequipCombat();
 
-			for (ACCombat_Base* RowCombat : CombatArr)
-			{
-				if (Current_CombatPlayer_Data.CombatType == RowCombat->CombatData.CombatType)
-				{
-					Current_Combat = RowCombat;
-					if (OwnerCharacter_Player)
-					{
-						OwnerCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetWidgetSwitcher(OwnerCharacter_Base->GetStatComponent()->IsStatus(EStatusType::Combat), Current_Combat->CombatData.CombatType);
-					}
-					return;
-				}
-			}		
+		return;
+	}
+
+	if (InCombatType == Current_CombatData.CombatType && Current_Combat->bSpawn == false)
+	{
+		EquipCombat();
+
+		return;
+	}
+
+	UnequipCombat(false);
+
+	// 캐릭터 변경
+	for (FPlayer_DataTable playerdata : CGameInstance->Player_Data_Arr)
+	{
+		if (playerdata.Player_CombatData.CombatData.CombatType == InCombatType)
+		{
+			CGameInstance->CombatType = InCombatType;
+			OwnerCharacter_Player->GetStatComponent()->PlayerDataSetting();
+			break;
+		}
+	}
+
+	
+
+
+	// 무기 변경
+	for (ACCombat_Base* Row : CombatArr)
+	{
+		if (InCombatType == Row->CombatData.CombatType)
+		{
+			Current_CombatData = Row->CombatData;
+			Current_Combat = Row;
+			
+			EquipCombat();
+			break;
 		}
 	}
 
@@ -127,20 +159,20 @@ void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* Overla
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 			OwnerCharacter_Base->GetWorld(),
-			Current_CombatPlayer_Data.ImpactFlaresThrowable,
+			Current_CombatData.ImpactFlaresThrowable,
 			OverlappedComponent->K2_GetComponentLocation(),
 			UKismetMathLibrary::Conv_VectorToRotator(OwnerCharacter_Base->GetMainMesh()->GetForwardVector()),
-			Current_CombatPlayer_Data.ImpactFlaresThrowableScale
+			Current_CombatData.ImpactFlaresThrowableScale
 		);
 	}
 	else
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
 			OwnerCharacter_Base->GetWorld(),
-			Current_CombatPlayer_Data.ImpactFlares,
+			Current_CombatData.ImpactFlares,
 			OverlappedComponent->K2_GetComponentLocation(),
 			UKismetMathLibrary::Conv_VectorToRotator(OwnerCharacter_Base->GetMainMesh()->GetForwardVector()),
-			Current_CombatPlayer_Data.ImpactFlaresScale
+			Current_CombatData.ImpactFlaresScale
 		);
 	}
 }
@@ -233,30 +265,19 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AContr
 }
 
 
-void UCCombatComponent::EquipCombat()
+void UCCombatComponent::EquipCombat(bool bPlayMontage)
 {
-	if (Current_Combat->bSpawn == false) // 스폰
-	{
-		OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Combat);
+
+	OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Combat);
 
 
-		Current_Combat->StartWeapon();
-		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.EquipWeapon.AnimMontage, Current_CombatPlayer_Data.EquipWeapon.PlayRate);
+	Current_Combat->StartWeapon();
+	if (bPlayMontage)
+		OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.EquipWeapon.AnimMontage, Current_CombatData.EquipWeapon.PlayRate);
 	
-		// 점프 높이 설정
-		OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().JumpVelocity;	
-	}
-	else // 디스폰
-	{
-		OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Unarmed);
+	// 점프 높이 설정
+	OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().JumpVelocity;	
 
-
-		Current_Combat->EndWeapon();
-		OwnerCharacter_Base->PlayAnimMontage(Current_CombatPlayer_Data.UnequipWeapon.AnimMontage, Current_CombatPlayer_Data.UnequipWeapon.PlayRate);
-		
-		// 점프 높이 설정
-		OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = 420.0f;
-	}
 
 	
 
@@ -265,6 +286,27 @@ void UCCombatComponent::EquipCombat()
 		OwnerCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetWidgetSwitcher(OwnerCharacter_Base->GetStatComponent()->IsStatus(EStatusType::Combat), Current_Combat->CombatData.CombatType);
 	}
 }
+
+void UCCombatComponent::UnequipCombat(bool bPlayMontage)
+{
+	OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Unarmed);
+
+
+	Current_Combat->EndWeapon();
+	if (bPlayMontage)
+		OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.UnequipWeapon.AnimMontage, Current_CombatData.UnequipWeapon.PlayRate);
+
+	// 점프 높이 설정
+	OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = 420.0f;
+
+	if (OwnerCharacter_Player)
+	{
+		OwnerCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetWidgetSwitcher(OwnerCharacter_Base->GetStatComponent()->IsStatus(EStatusType::Combat), Current_Combat->CombatData.CombatType);
+	}
+}
+
+
+
 
 
 // 마우스 좌클릭

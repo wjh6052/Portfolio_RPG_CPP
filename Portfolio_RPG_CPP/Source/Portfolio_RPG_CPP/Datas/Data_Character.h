@@ -4,6 +4,8 @@
 #include "UObject/NoExportTypes.h"
 #include "Engine/DataTable.h"
 #include "Data_Inventory.h"
+#include "Data_Base.h"
+#include "Data_Combat.h"
 #include "Data_Character.generated.h"
 
 
@@ -30,18 +32,7 @@ enum class ECharacterType : uint8
 	NPC		UMETA(DisplayName = "NPC")
 };
 
-UENUM(BlueprintType)
-enum class ECombatType : uint8
-{
-	None		UMETA(DisplayName = "비어있음"),
-	Assassin	UMETA(DisplayName = "어쌔신"),
-	Katana		UMETA(DisplayName = "사무라이"),
-	Greatsword	UMETA(DisplayName = "대검"),
-	Spear		UMETA(DisplayName = "창병"),
-	Warrior		UMETA(DisplayName = "방패병"),
-	Archer		UMETA(DisplayName = "궁수"),
-	Wizard		UMETA(DisplayName = "마법사")
-};
+
 
 
 //--struct---------------------------------------------------------------------
@@ -136,17 +127,7 @@ public:
 		FRotator RotationRate = FRotator(0.f, 720.f, 0.f);
 };
 
-USTRUCT(BlueprintType)
-struct FAnimMontageBase : public FTableRowBase
-{
-	GENERATED_BODY()
-public:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AnimMontage")
-		class UAnimMontage* AnimMontage;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AnimMontage")
-		float PlayRate = 1.0;
-};
 
 
 
@@ -162,10 +143,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Mesh")
 		FMesh Mesh;
 
-
-	// 캐릭터가 들 무기 타입
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatType")
-		ECombatType CombatType;
 
 
 	// 스텟
@@ -189,6 +166,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Speed")
 		float Run_Time = 0.25f;
 
+
+
+
+	// 플레이어의 무기
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat")
+		FPlayer_CombatData Player_CombatData;
 };
 
 

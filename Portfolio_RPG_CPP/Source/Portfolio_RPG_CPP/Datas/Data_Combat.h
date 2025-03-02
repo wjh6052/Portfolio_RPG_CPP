@@ -2,14 +2,25 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "Data_Character.h"
+#include "Data_Base.h"
 #include "Data_Combat.generated.h"
 
 
 
 //--enum---------------------------------------------------------------------
 
-
+UENUM(BlueprintType)
+enum class ECombatType : uint8
+{
+	None		UMETA(DisplayName = "비어있음"),
+	Assassin	UMETA(DisplayName = "어쌔신"),
+	Katana		UMETA(DisplayName = "사무라이"),
+	Greatsword	UMETA(DisplayName = "대검"),
+	Spear		UMETA(DisplayName = "창병"),
+	Warrior		UMETA(DisplayName = "방패병"),
+	Archer		UMETA(DisplayName = "궁수"),
+	Wizard		UMETA(DisplayName = "마법사")
+};
 
 
 
@@ -42,6 +53,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		float KnockUpStrength;
 };
+
 
 USTRUCT(BlueprintType)
 struct FAttack
@@ -81,21 +93,6 @@ public:
 };
 
 
-USTRUCT(BlueprintType)
-struct FSkillUI
-{
-	GENERATED_BODY()
-
-public:
-	// 스킬의 UI에 비춰질 이미지
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anim Montage")
-		UTexture2D* SkillImage;
-
-	// 스킬의 쿨타임
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anim Montage")
-		float SkillCooldown;
-};
-
 
 USTRUCT(BlueprintType)
 struct FImpactFlares
@@ -112,24 +109,16 @@ public:
 };
 
 
-
-
-
-
-//--DataTable---------------------------------------------------------------------
-
-
 USTRUCT(BlueprintType)
-struct FCombatPlayer_DataTable : public FTableRowBase
+struct FCombatData
 {
 	GENERATED_BODY()
 
 
 public:
-	// 무기 타입
+	// 캐릭터가 들 무기 타입
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatType")
 		ECombatType CombatType;
-
 
 	// 무기
 	UPROPERTY(EditAnywhere, Category = "Weapon")
@@ -194,27 +183,27 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Skill 1")
 		TArray<FAttack> Skill_1;
 
-	// 스킬 1의 쿨타임과 이미지
+	// 스킬 1의 쿨타임
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 1")
-		FSkillUI Skill_1_UI;
+		float Skill_1_Cooldown;
 
 
 	// 스킬 2
 	UPROPERTY(EditAnywhere, Category = "Skill 2")
 		TArray<FAttack> Skill_2;
 
-	// 스킬 2의 쿨타임과 이미지
+	// 스킬 2의 쿨타임
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 2")
-		FSkillUI Skill_2_UI;
+		float Skill_2_Cooldown;
 
 
 	// 스킬 3
 	UPROPERTY(EditAnywhere, Category = "Skill 3")
 		TArray<FAttack> Skill_3;
 
-	// 스킬 3의 쿨타임과 이미지
+	// 스킬 3의 쿨타임
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Skill 3")
-		FSkillUI Skill_3_UI;
+		float Skill_3_Cooldown;
 
 
 
@@ -242,6 +231,37 @@ public:
 	// 죽을 때 애님인스턴스
 	UPROPERTY(EditAnywhere, Category = "Die")
 		FAnimMontageBase Die_Montage;
+};
+
+
+USTRUCT(BlueprintType)
+struct FPlayer_CombatData
+{
+	GENERATED_BODY()
+
+
+public:
+	// UI에 표시될 텍스쳐
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatType")
+		UTexture2D* CombatImage;
+
+	// 스킬의 UI에 비춰질 이미지
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat UI")
+		UTexture2D* Skill_1_Image;
+
+	// 스킬의 UI에 비춰질 이미지
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat UI")
+		UTexture2D* Skill_2_Image;
+
+	// 스킬의 UI에 비춰질 이미지
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat UI")
+		UTexture2D* Skill_3_Image;
+
+
+
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat")
+		FCombatData CombatData;
 
 	
 };

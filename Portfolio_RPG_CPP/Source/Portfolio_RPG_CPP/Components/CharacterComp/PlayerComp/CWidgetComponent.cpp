@@ -2,6 +2,7 @@
 #include "../../../Global.h"
 #include "../../../Character/Player/CCharacter_Player.h"
 #include "../../../Widgets/CWMain.h"
+#include "../../../Widgets/GameplayUI/CWGameplayUI.h"
 #include "../../../Widgets/Inventory/CWInventory.h"
 
 #include "GameFramework/PlayerController.h"
@@ -51,6 +52,11 @@ void UCWidgetComponent::SetViewInventory()
 
 		GetMainWidget()->SetWidgetSwitcher(CurrentUi);
 	}
+}
+
+void UCWidgetComponent::OnWeaponChoice(bool InOn)
+{
+	GetMainWidget()->GetGameplayUI()->OnWeaponWheel(InOn);
 }
 
 

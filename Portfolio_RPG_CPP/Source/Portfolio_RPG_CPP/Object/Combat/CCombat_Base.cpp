@@ -35,7 +35,7 @@ void ACCombat_Base::BeginPlay()
 
 
 
-	CombatData = OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data;
+	CombatData = OwnerCharacter->GetCombatComponent()->Current_CombatData;
 	
 
 	DissolveMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(OwnerCharacter->GetWorld(), CombatData.WeaponMaterial);
@@ -43,15 +43,15 @@ void ACCombat_Base::BeginPlay()
 
 
 
-	SkillCoolDowns[0] = CombatData.Skill_1_UI.SkillCooldown;
+	SkillCoolDowns[0] = CombatData.Skill_1_Cooldown;
 	CurrentSkillCooldowns[0] = SkillCoolDowns[0];
 	bOnSkill[0] = false;
 
-	SkillCoolDowns[1] = CombatData.Skill_2_UI.SkillCooldown;
+	SkillCoolDowns[1] = CombatData.Skill_2_Cooldown;
 	CurrentSkillCooldowns[1] = SkillCoolDowns[1];
 	bOnSkill[1] = false;
 
-	SkillCoolDowns[2] = CombatData.Skill_3_UI.SkillCooldown;
+	SkillCoolDowns[2] = CombatData.Skill_3_Cooldown;
 	CurrentSkillCooldowns[2] = SkillCoolDowns[2];
 	bOnSkill[2] = false;
 
@@ -90,7 +90,7 @@ void ACCombat_Base::CooldownTick()
 
 void ACCombat_Base::StartWeapon()
 {
-	AttachToComponent(OwnerCharacter->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), OwnerCharacter->GetCombatComponent()->Current_CombatPlayer_Data.AttachBoneName);
+	AttachToComponent(OwnerCharacter->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), OwnerCharacter->GetCombatComponent()->Current_CombatData.AttachBoneName);
 	SetActorHiddenInGame(false);
 	bSpawn = true;
 	SpawnWeapon();

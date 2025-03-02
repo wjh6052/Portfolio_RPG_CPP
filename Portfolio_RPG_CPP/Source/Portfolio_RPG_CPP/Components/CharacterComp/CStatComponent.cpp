@@ -70,14 +70,15 @@ void UCStatComponent::PlayerDataSetting()
 	
 	if (CGameInstance->CombatType == ECombatType::None)
 	{		
-		Player_Data = CGameInstance->Playe_Data_Arr[0];
-		CGameInstance->CombatType = Player_Data.CombatType;
+		Player_Data = CGameInstance->Player_Data_Arr[0];
+		CGameInstance->CombatType = Player_Data.Player_CombatData.CombatData.CombatType;
+		
 	}
 	else
 	{
-		for (FPlayer_DataTable palyerData : CGameInstance->Playe_Data_Arr)
+		for (FPlayer_DataTable palyerData : CGameInstance->Player_Data_Arr)
 		{
-			if (palyerData.CombatType == CGameInstance->CombatType)
+			if (palyerData.Player_CombatData.CombatData.CombatType == CGameInstance->CombatType)
 			{
 				Player_Data = palyerData;
 			}
