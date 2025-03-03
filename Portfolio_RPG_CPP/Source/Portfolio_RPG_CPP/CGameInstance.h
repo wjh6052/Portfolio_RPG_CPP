@@ -10,8 +10,8 @@
 #include "CGameInstance.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdataMaterialItem);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdata_Money);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FUpdataMaterialItem, EItemUseType, ItemUseType, EStarRating, ItemRating, int, AddCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdata_Money, int, AddMoney);
 
 UCLASS()
 class PORTFOLIO_RPG_CPP_API UCGameInstance : public UGameInstance
@@ -41,8 +41,8 @@ public:
 // ------------------------------------------------Delegate-------------------------------------------------------
 public:
 	// 델리게이트 호출 함수
-	FORCEINLINE void TriggerUpdataMaterialItem() { Updata_MaterialItem.Broadcast(); }
-	FORCEINLINE void TriggerUpdataMoney() { Updata_Money.Broadcast(); }
+	FORCEINLINE void TriggerUpdataMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount) { Updata_MaterialItem.Broadcast(ItemUseType, ItemRating, AddCount); }
+	FORCEINLINE void TriggerUpdataMoney(int AddMoney) { Updata_Money.Broadcast(AddMoney); }
 
 
 
@@ -115,6 +115,9 @@ public: // 기타 데이터
 
 
 
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FColor GetRatingColor(EStarRating InRating);
 
 	UPROPERTY(BlueprintReadWrite)
 		FItemRarityColor RatingColor;

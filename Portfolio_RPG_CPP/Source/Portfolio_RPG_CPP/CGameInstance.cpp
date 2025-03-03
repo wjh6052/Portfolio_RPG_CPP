@@ -156,6 +156,33 @@ void UCGameInstance::IconDataTableToArr()
 
 
 
+FColor UCGameInstance::GetRatingColor(EStarRating InRating)
+{
+	switch (InRating)
+	{
+	case EStarRating::OneStar:
+		return RatingColor.OneStarColor;
+
+	case EStarRating::TwoStar:
+		return RatingColor.TwoStarColor;
+
+	case EStarRating::ThreeStar:
+		return RatingColor.ThreeStarColor;
+
+	case EStarRating::Fourstar:
+		return RatingColor.FourstarColor;
+
+	case EStarRating::Fivestar:
+		return RatingColor.FivestarColor;
+
+	}
+
+		//RatingColor
+	return FColor();
+}
+
+
+
 
 
 
@@ -255,16 +282,32 @@ void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemR
 	{
 		if (MaterialItemItmeData_Arr[i].ItemUseType == ItemUseType && MaterialItemItmeData_Arr[i].StarRating == ItemRating)
 		{
-			MaterialItemItmeData_Arr[i].ItemCount += AddCount;
-			TriggerUpdataMaterialItem();
+			if (AddCount > 0)
+			{
+				MaterialItemItmeData_Arr[i].ItemCount += AddCount;
+				TriggerUpdataMaterialItem(ItemUseType, ItemRating, AddCount);
 
-			UEnum* enumUseType = StaticEnum<EItemUseType>();
-			FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
-			UEnum* EnumRating = StaticEnum<EStarRating>();
-			FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
-			
+				UEnum* enumUseType = StaticEnum<EItemUseType>();
+				FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
+				UEnum* EnumRating = StaticEnum<EStarRating>();
+				FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
 
-			CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 획득"), *eUseType, *eStarRating, AddCount));
+
+				CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 획득"), *eUseType, *eStarRating, AddCount));
+			}
+			else if (AddCount < 0)
+			{
+				MaterialItemItmeData_Arr[i].ItemCount += AddCount;
+				TriggerUpdataMaterialItem(ItemUseType, ItemRating, AddCount);
+
+				UEnum* enumUseType = StaticEnum<EItemUseType>();
+				FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
+				UEnum* EnumRating = StaticEnum<EStarRating>();
+				FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
+
+
+				CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 소모"), *eUseType, *eStarRating, AddCount));
+			}			
 			return;
 		}
 	}
@@ -272,25 +315,20 @@ void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemR
 
 void UCGameInstance::AddMoney(int AddMoney)
 {
-	if (AddMoney >= 0)
+	if (AddMoney > 0)
 	{
 		Money += AddMoney;
-		TriggerUpdataMoney();
+		TriggerUpdataMoney(AddMoney);
 
 
 
 		CLog::Print(FString::Printf(TEXT("%d머니 획득!"), AddMoney));
 	}
-	else
+	else if (AddMoney < 0)
 	{
-		if (Money + AddMoney >= 0)
-		{
-			Money += AddMoney;
-			TriggerUpdataMoney();
-
-
-			CLog::Print(FString::Printf(TEXT("%d머니 소모"), AddMoney));
-		}
+		Money += AddMoney;
+		TriggerUpdataMoney(AddMoney);
+		CLog::Print(FString::Printf(TEXT("%d머니 소모"), AddMoney));
 	}
 }
 
