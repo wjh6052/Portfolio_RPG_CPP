@@ -22,6 +22,16 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "KawaiiPhysics",
+			"Enabled": true,
+			"MarketplaceURL": "KawaiiPhysics : Simple fake Physics for UnrealEngine4&5"
+		},
+		{
+			"Name": "SPCRJointDynamics",
+			"Enabled": true,
+			"MarketplaceURL": "SPCRJointDynamics : Cloth-like bone physics for UnrealEngine"
 		}
 	]
 }
