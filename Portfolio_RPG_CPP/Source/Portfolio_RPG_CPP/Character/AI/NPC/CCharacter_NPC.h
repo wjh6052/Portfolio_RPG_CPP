@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../CCharacter_Base.h"
-#include "../../Datas/Data_NPC.h"
+#include "../CCharacter_AI.h"
+#include "../../../Datas/Data_NPC.h"
 #include "CCharacter_NPC.generated.h"
 
 
 
 UCLASS()
-class PORTFOLIO_RPG_CPP_API ACCharacter_NPC : public ACCharacter_Base
+class PORTFOLIO_RPG_CPP_API ACCharacter_NPC : public ACCharacter_AI
 {
 	GENERATED_BODY()
 

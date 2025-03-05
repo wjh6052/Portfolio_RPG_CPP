@@ -124,9 +124,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 		TSubclassOf<class ACCombat_Base> CombatWeapon;
 
-	// 무기를 붙일 본 이름
-	UPROPERTY(EditAnywhere, Category = "Weapon")
-		FName AttachBoneName;
+	// 무기 사용할 때 붙일 본 이름
+	UPROPERTY(EditAnywhere, Category = "AttachBoneName")
+		FName EquipBoneName;
+
+	// 무기를 소지할 때 본 이름
+	UPROPERTY(EditAnywhere, Category = "AttachBoneName")
+		FName UnequipBoneName;
+
 
 	// 투척 무기
 	UPROPERTY(EditAnywhere, Category = "ThrowableWeapon")
@@ -241,6 +246,10 @@ struct FPlayer_CombatData
 
 
 public:
+	// UI에 표시될 텍스쳐
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "On")
+		bool bOn = false;
+
 	// UI에 표시될 텍스쳐
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CombatType")
 		UTexture2D* CombatImage;

@@ -90,7 +90,7 @@ void ACCombat_Base::CooldownTick()
 
 void ACCombat_Base::StartWeapon()
 {
-	AttachToComponent(OwnerCharacter->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), OwnerCharacter->GetCombatComponent()->Current_CombatData.AttachBoneName);
+	AttachToComponent(OwnerCharacter->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), OwnerCharacter->GetCombatComponent()->Current_CombatData.EquipBoneName);
 	SetActorHiddenInGame(false);
 	bSpawn = true;
 	SpawnWeapon();

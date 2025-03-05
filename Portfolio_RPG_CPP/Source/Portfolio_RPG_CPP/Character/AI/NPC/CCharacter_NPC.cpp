@@ -1,7 +1,7 @@
 #include "CCharacter_NPC.h"
-#include "../../Global.h"
-#include "../../Object/Interaction/CInteraction_NPC.h"
-#include "../../AnimInstance/CAnimInstance_Base.h"
+#include "../../../Global.h"
+#include "../../../Object/Interaction/CInteraction_NPC.h"
+#include "../../../AnimInstance/CAnimInstance_Base.h"
 
 
 #include "Components/SphereComponent.h"

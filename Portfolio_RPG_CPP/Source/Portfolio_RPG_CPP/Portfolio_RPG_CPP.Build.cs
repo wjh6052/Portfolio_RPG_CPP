@@ -14,7 +14,8 @@ public class Portfolio_RPG_CPP : ModuleRules
 			"Engine",
 			"InputCore",
 			"Niagara",
-			"AnimGraphRuntime"
+			"AnimGraphRuntime",
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

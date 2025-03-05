@@ -3,6 +3,7 @@
 #include "../../CGameInstance.h"
 #include "../../Character/CCharacter_Base.h"
 #include "../../Character/Player/CCharacter_Player.h"
+#include "../../Character/AI/Enemy/CCharacter_Enemy.h"
 #include "../../Datas/DA/DA_DamageText.h"
 #include "../../Object/Combat/CCombat_Base.h"
 #include "../../Widgets/CWMain.h"
@@ -33,12 +34,13 @@ void UCCombatComponent::BeginPlay()
 	switch (OwnerCharacter_Base->GetCharacterType())
 	{
 	case ECharacterType::Player:
-		PlayerBeginPlay();
 		OwnerCharacter_Player = Cast<ACCharacter_Player>(OwnerCharacter_Base);
+		PlayerBeginPlay();
 		break;
 
 	case ECharacterType::Enemy:
-		//EnemyBeginPlay();
+		OwnerCharacter_Enemy = Cast<ACCharacter_Enemy>(OwnerCharacter_Base);
+		EnemyBeginPlay();
 		break;
 
 	case ECharacterType::Boss:
@@ -79,6 +81,31 @@ void UCCombatComponent::PlayerBeginPlay()
 			}
 		}
 	}
+}
+
+void UCCombatComponent::EnemyBeginPlay()
+{
+	// 데이터테이블의 에너미의 이름에 맞는 무기 스폰
+	for (FEnemy_DataTable Row : CGameInstance->Enemy_Data_Arr)
+	{
+		if (OwnerCharacter_Enemy->EnemyName == Row.EnemyName)
+		{
+			FActorSpawnParameters currentOwner;
+			currentOwner.Owner = Cast<AActor>(OwnerCharacter_Enemy);
+
+			Current_CombatData = Row.CombatData;
+			ACCombat_Base* CombatWeapon = OwnerCharacter_Base->GetWorld()->SpawnActor<ACCombat_Base>(Row.CombatData.CombatWeapon, FVector::ZeroVector, FRotator::ZeroRotator, currentOwner);
+
+			CombatWeapon->CombatData = Row.CombatData;
+			Current_Combat = CombatWeapon;
+
+			// 테스트
+			Current_Combat->SetActorHiddenInGame(false);
+			Current_Combat->AttachToComponent(OwnerCharacter_Enemy->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), Current_CombatData.EquipBoneName);
+			break;
+		}	
+	}
+
 }
 
 // 무기 변경
@@ -143,8 +170,12 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 
 	
 
-	
-	
+	if (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) 
+		< InDamage)
+	{
+		PlayHitReaction();
+		CLog::Print(InDamage);
+	}
 	
 	
 	
@@ -180,7 +211,17 @@ void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* Overla
 // 넉백
 void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp)
 {
+	// 보스는 넉백을 받지 않을 예정
+	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss)
+	{
+		return;
+	}
+
+
 	ACharacter* damageCharacter = Cast<ACharacter>(DamageOwner);
+
+	
+
 	damageCharacter->LaunchCharacter(
 		UKismetMathLibrary::Add_VectorVector(
 			UKismetMathLibrary::Multiply_VectorFloat(OwnerCharacter_Base->GetActorForwardVector(), InKnockBackForward),
@@ -189,6 +230,12 @@ void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackFo
 		true,
 		true
 	);
+}
+
+// 히트 애니메이션 재생
+void UCCombatComponent::PlayHitReaction()
+{
+	
 }
 
 // 적의 뱡향으로 돌아서기
@@ -265,6 +312,7 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AContr
 }
 
 
+// 무기를 꺼낼 때
 void UCCombatComponent::EquipCombat(bool bPlayMontage)
 {
 
@@ -276,7 +324,7 @@ void UCCombatComponent::EquipCombat(bool bPlayMontage)
 		OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.EquipWeapon.AnimMontage, Current_CombatData.EquipWeapon.PlayRate);
 	
 	// 점프 높이 설정
-	OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().JumpVelocity;	
+	OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().Stat.JumpVelocity;
 
 
 	
@@ -287,6 +335,7 @@ void UCCombatComponent::EquipCombat(bool bPlayMontage)
 	}
 }
 
+// 무기를 넣을 때
 void UCCombatComponent::UnequipCombat(bool bPlayMontage)
 {
 	OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Unarmed);

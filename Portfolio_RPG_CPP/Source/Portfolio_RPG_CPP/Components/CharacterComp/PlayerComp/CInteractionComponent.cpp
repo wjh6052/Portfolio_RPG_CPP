@@ -3,7 +3,7 @@
 
 #include "../../../CGameInstance.h"
 #include "../../../Character/Player/CCharacter_Player.h"
-#include "../../../Character/NPC/CCharacter_NPC.h"
+#include "../../../Character/AI/NPC/CCharacter_NPC.h"
 #include "../../../Object/Interaction/CInteraction_NPC.h"
 
 #include "../../../Widgets/CWMain.h"

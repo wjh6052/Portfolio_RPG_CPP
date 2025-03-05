@@ -75,6 +75,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
 
+	FORCEINLINE FStat GetCurrentStat() const { return CurrentStat; }
+
 	FORCEINLINE FPlayer_DataTable GetPlayerData() const { return Player_Data; }
 	FORCEINLINE FEnemy_DataTable GetEnemyData() const { return Enemy_Data; }
 	FORCEINLINE FBoss_DataTable GetBossData() const { return Boss_Data; }
@@ -87,7 +89,9 @@ public:
 
 	FORCEINLINE void SetStateType(EStateType input) { StateType = input; }
 	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }	
-	FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }
+	FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }\
+
+	FORCEINLINE void SetCurrentStat(FStat input) { CurrentStat = input; }
 
 	FORCEINLINE void SetPlayerData(FPlayer_DataTable input) { Player_Data = input; }
 	FORCEINLINE void SetEnemyData(FEnemy_DataTable input) { Enemy_Data = input; }
@@ -105,6 +109,10 @@ public:
 
 
 private:
+	// 현제 스텟
+	FStat CurrentStat;
+
+
 	// 
 	FPlayer_DataTable Player_Data;
 	FEnemy_DataTable Enemy_Data;

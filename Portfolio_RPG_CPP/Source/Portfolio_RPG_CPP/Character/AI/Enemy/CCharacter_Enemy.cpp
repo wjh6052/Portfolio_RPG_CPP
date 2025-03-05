@@ -1,6 +1,6 @@
 #include "CCharacter_Enemy.h"
-#include "../../Global.h"
-#include "../../AnimInstance/CAnimInstance_Base.h"
+#include "../../../Global.h"
+#include "../../../AnimInstance/CAnimInstance_Base.h"
 
 
 

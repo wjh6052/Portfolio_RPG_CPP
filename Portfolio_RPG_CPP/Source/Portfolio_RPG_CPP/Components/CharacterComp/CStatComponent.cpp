@@ -3,10 +3,12 @@
 #include "../../CGameInstance.h"
 #include "../../Character/CCharacter_Base.h"
 #include "../../Character/Player/CCharacter_Player.h"
-#include "../../Character/Enemy/CCharacter_Enemy.h"
-#include "../../Character/NPC/CCharacter_NPC.h"
+#include "../../Character/AI/Enemy/CCharacter_Enemy.h"
+#include "../../Character/AI/NPC/CCharacter_NPC.h"
 #include "../../Maps/CLevel_Main.h"
 
+#include "AIController.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -71,6 +73,7 @@ void UCStatComponent::PlayerDataSetting()
 	if (CGameInstance->CombatType == ECombatType::None)
 	{		
 		Player_Data = CGameInstance->Player_Data_Arr[0];
+		SetCurrentStat(CGameInstance->Player_Data_Arr[0].Stat);
 		CGameInstance->CombatType = Player_Data.Player_CombatData.CombatData.CombatType;
 		
 	}
@@ -79,8 +82,11 @@ void UCStatComponent::PlayerDataSetting()
 		for (FPlayer_DataTable palyerData : CGameInstance->Player_Data_Arr)
 		{
 			if (palyerData.Player_CombatData.CombatData.CombatType == CGameInstance->CombatType)
-			{
+			{			
 				Player_Data = palyerData;
+				SetCurrentStat(Player_Data.Stat);
+
+				break;
 			}
 		}
 	}
@@ -113,6 +119,19 @@ void UCStatComponent::EnemyDataSetting()
 {
 	OwnerCharacter_Enemy = Cast<ACCharacter_Enemy>(OwnerCharacter_Base);
 
+	// 데이터테이블의 에너미의 비헤이비어트리를 적용
+	for (FEnemy_DataTable Row : CGameInstance->Enemy_Data_Arr)
+	{
+		if (OwnerCharacter_Enemy->EnemyName == Row.EnemyName)
+		{
+			OwnerCharacter_Enemy->BehaviorTree = Row.BehaviorTree;
+			OwnerCharacter_Enemy->AIControllerClass = Row.AIControllerClass;
+			SetCurrentStat(Row.Stat);
+
+
+			break;
+		}
+	}
 
 }
 

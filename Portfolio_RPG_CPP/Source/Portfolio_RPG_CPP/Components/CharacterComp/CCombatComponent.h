@@ -20,6 +20,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	void PlayerBeginPlay();
+	void EnemyBeginPlay();
 
 
 	UFUNCTION(BlueprintCallable)
@@ -30,6 +31,7 @@ public:
 	void TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
 	void OnHitImpact(bool bThrowable, class UPrimitiveComponent* OverlappedComponent);
 	void AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp);
+	void PlayHitReaction();
 
 
 	void AttractToTarget(AActor* Target);
@@ -78,6 +80,7 @@ public:
 
 	class ACCharacter_Base* OwnerCharacter_Base;
 	class ACCharacter_Player* OwnerCharacter_Player = nullptr;
+	class ACCharacter_Enemy* OwnerCharacter_Enemy = nullptr;
 
 
 

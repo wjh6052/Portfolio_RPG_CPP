@@ -1,7 +1,7 @@
 #include "CInteraction_NPC.h"
 #include "../../Global.h"
 #include "../../Datas/Data_NPC.h"
-#include "../../Character/NPC/CCharacter_NPC.h"
+#include "../../Character/AI/NPC/CCharacter_NPC.h"
 
 #include "Components/SphereComponent.h"
 

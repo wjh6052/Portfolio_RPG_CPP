@@ -17,7 +17,7 @@ UENUM(BlueprintType)
 enum class EEnemyName : uint8
 {
 	None			UMETA(DisplayName = "비어있음"),
-	TrainingDummy	UMETA(DisplayName = "허수아비"),
+	Dummy			UMETA(DisplayName = "허수아비"),
 	Hilichurl		UMETA(DisplayName = "츄츄족")
 };
 
@@ -70,18 +70,36 @@ struct FStat
 	GENERATED_BODY()
 
 public:
+	// 현재 체력
 	UPROPERTY(EditAnywhere)
 		float HP = 100;
+	// 최대 체력
 	UPROPERTY(EditAnywhere)
 		float HP_Max = 100;
+
+	// 기본 데미지
 	UPROPERTY(EditAnywhere)
 		float Damage = 10;
+
+	// 방어력
 	UPROPERTY(EditAnywhere)
 		float Defense = 5;
+
+	// 크리티컬 데미지
 	UPROPERTY(EditAnywhere)
 		float Critical_Damage = 50;
+
+	// 크리티컬 확률
 	UPROPERTY(EditAnywhere)
 		float Critical_Chance = 20;
+
+	// 히트 저항 수치
+	UPROPERTY(EditAnywhere)
+		float Stance = 0;
+
+	// 점프 높이 (기본 : 420)
+	UPROPERTY(EditAnywhere)
+		float JumpVelocity = 420.0f;
 };
 
 
@@ -149,9 +167,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;
 
-	// 점프 높이 (기본 : 420)
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
-		float JumpVelocity = 420.0f;
+	
 
 
 	// 스피드
@@ -187,10 +203,13 @@ public
 		EEnemyName EnemyName;
 
 
-	// 몬스터 사망시 드랍될 아이템 배열
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
-		TArray<FEnemyDropItem> EnemyDropItemArr;
+	// AI컨트롤러
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AI")
+		TSubclassOf<class AAIController> AIControllerClass;
 
+	// AI비헤이비어
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AI")
+		class UBehaviorTree* BehaviorTree;
 
 
 
@@ -201,6 +220,17 @@ public
 	// 몬스터의 스피드
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FSpeed Speed;
+
+	// 몬스터 사망시 드랍될 아이템 배열
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
+		TArray<FEnemyDropItem> EnemyDropItemArr;
+
+
+
+	// 공격 액션 데이터
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat")
+		FCombatData CombatData;
+
 
 };
 
