@@ -191,3 +191,46 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 
 	bCanMove = true;
 }
+
+bool UCStatComponent::AddDamage(float InDamage)
+{
+	if (CurrentStat.HP - InDamage <= 0) // 죽었을 때
+	{
+		CurrentStat.HP = 0;
+
+		return true;
+	}
+	else if (CurrentStat.HP - InDamage >= CurrentStat.HP_Max) // 힐을 받았을때 최대체력을 넘지 않도록 설정
+	{
+		CurrentStat.HP = CurrentStat.HP_Max;		
+	}
+
+	CurrentStat.HP -= InDamage;
+
+	return false;
+}
+
+void UCStatComponent::SetStateType(EStateType input)
+{
+	StateType = input;
+
+	switch (input)
+	{
+	case EStateType::Idling:
+		break;
+	case EStateType::Rolling:
+		break;
+	case EStateType::Attacking:
+		break;
+	case EStateType::Hitted:
+		break;
+	case EStateType::Groggy:
+		break;
+	case EStateType::Dying:
+		OwnerCharacter_Base->GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+		OwnerCharacter_Base->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Ignore);
+		break;
+	default:
+		break;
+	}
+}

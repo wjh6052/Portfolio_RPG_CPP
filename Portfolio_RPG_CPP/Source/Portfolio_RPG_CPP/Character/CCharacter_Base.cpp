@@ -112,6 +112,7 @@ void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 #ifdef INPUT
 
+
 void ACCharacter_Base::OnMoveForward(float InAxis)
 {
 

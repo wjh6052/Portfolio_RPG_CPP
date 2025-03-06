@@ -1,4 +1,4 @@
-#include "CCombatComponent.h"
+ï»¿#include "CCombatComponent.h"
 #include "../../Global.h"
 #include "../../CGameInstance.h"
 #include "../../Character/CCharacter_Base.h"
@@ -55,7 +55,7 @@ void UCCombatComponent::BeginPlay()
 
 void UCCombatComponent::PlayerBeginPlay()
 {
-	// µ¥ÀÌÅÍÅ×ÀÌºíÀÇ ¸ğµç ¹«±â ½ºÆù
+	// ë°ì´í„°í…Œì´ë¸”ì˜ ëª¨ë“  ë¬´ê¸° ìŠ¤í°
 	for (FPlayer_DataTable Row : CGameInstance->Player_Data_Arr)
 	{		
 		FActorSpawnParameters currentOwner;
@@ -85,7 +85,7 @@ void UCCombatComponent::PlayerBeginPlay()
 
 void UCCombatComponent::EnemyBeginPlay()
 {
-	// µ¥ÀÌÅÍÅ×ÀÌºíÀÇ ¿¡³Ê¹ÌÀÇ ÀÌ¸§¿¡ ¸Â´Â ¹«±â ½ºÆù
+	// ë°ì´í„°í…Œì´ë¸”ì˜ ì—ë„ˆë¯¸ì˜ ì´ë¦„ì— ë§ëŠ” ë¬´ê¸° ìŠ¤í°
 	for (FEnemy_DataTable Row : CGameInstance->Enemy_Data_Arr)
 	{
 		if (OwnerCharacter_Enemy->EnemyName == Row.EnemyName)
@@ -99,7 +99,7 @@ void UCCombatComponent::EnemyBeginPlay()
 			CombatWeapon->CombatData = Row.CombatData;
 			Current_Combat = CombatWeapon;
 
-			// Å×½ºÆ®
+			// í…ŒìŠ¤íŠ¸
 			Current_Combat->SetActorHiddenInGame(false);
 			Current_Combat->AttachToComponent(OwnerCharacter_Enemy->GetMainMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), Current_CombatData.EquipBoneName);
 			break;
@@ -108,7 +108,7 @@ void UCCombatComponent::EnemyBeginPlay()
 
 }
 
-// ¹«±â º¯°æ
+// ë¬´ê¸° ë³€ê²½
 void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 {
 	CheckNull(CGameInstance);
@@ -129,7 +129,7 @@ void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 
 	UnequipCombat(false);
 
-	// Ä³¸¯ÅÍ º¯°æ
+	// ìºë¦­í„° ë³€ê²½
 	for (FPlayer_DataTable playerdata : CGameInstance->Player_Data_Arr)
 	{
 		if (playerdata.Player_CombatData.CombatData.CombatType == InCombatType)
@@ -143,7 +143,7 @@ void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 	
 
 
-	// ¹«±â º¯°æ
+	// ë¬´ê¸° ë³€ê²½
 	for (ACCombat_Base* Row : CombatArr)
 	{
 		if (InCombatType == Row->CombatData.CombatType)
@@ -158,7 +158,7 @@ void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 
 }
 
-// µ¥¹ÌÁö Àû¿ë
+// ë°ë¯¸ì§€ ì ìš©
 void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	float InDamage = DamageAmount;
@@ -168,13 +168,19 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	waepon->CombatData;
 
 
+	if (OwnerCharacter_Base->GetStatComponent()->AddDamage(InDamage))
+	{
+		CharacterDeath();
+		return;
+	}
 	
+
+
 
 	if (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) 
 		< InDamage)
 	{
 		PlayHitReaction();
-		CLog::Print(InDamage);
 	}
 	
 	
@@ -183,7 +189,7 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	
 }
 
-// È÷Æ® ÀÓÆÑÆ®
+// íˆíŠ¸ ì„íŒ©íŠ¸
 void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* OverlappedComponent)
 {
 	if (bThrowable)
@@ -208,10 +214,10 @@ void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* Overla
 	}
 }
 
-// ³Ë¹é
+// ë„‰ë°±
 void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp)
 {
-	// º¸½º´Â ³Ë¹éÀ» ¹ŞÁö ¾ÊÀ» ¿¹Á¤
+	// ë³´ìŠ¤ëŠ” ë„‰ë°±ì„ ë°›ì§€ ì•Šì„ ì˜ˆì •
 	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss)
 	{
 		return;
@@ -232,13 +238,22 @@ void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackFo
 	);
 }
 
-// È÷Æ® ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+// íˆíŠ¸ ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
 void UCCombatComponent::PlayHitReaction()
 {
-	
+	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Hit_Montage.AnimMontage, Current_CombatData.Hit_Montage.PlayRate);
 }
 
-// ÀûÀÇ “‡ÇâÀ¸·Î µ¹¾Æ¼­±â
+// ì£½ì—ˆì„ë•Œ
+void UCCombatComponent::CharacterDeath()
+{	
+	OwnerCharacter_Base->GetStatComponent()->SetStateType(EStateType::Dying);
+	
+	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Die_Montage.AnimMontage, Current_CombatData.Die_Montage.PlayRate);
+	OwnerCharacter_Base->GetMainMesh()->SetSimulatePhysics(true);
+}
+
+// ì ì˜ ë±¡í–¥ìœ¼ë¡œ ëŒì•„ì„œê¸°
 void UCCombatComponent::AttractToTarget(AActor* Target)
 {
 	if (bLookOn)
@@ -267,13 +282,13 @@ void UCCombatComponent::AttractToTarget(AActor* Target)
 }
 
 
-// µ¥¹ÌÁö¸¦ ¿ùµå»ó¿¡ ³ªÀÌ¾Æ°¡¶ó ÅØ½ºÆ®·Î º¸¿©ÁÜ
+// ë°ë¯¸ì§€ë¥¼ ì›”ë“œìƒì— ë‚˜ì´ì•„ê°€ë¼ í…ìŠ¤íŠ¸ë¡œ ë³´ì—¬ì¤Œ
 void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AController* TargetController, bool bCritical, bool bHealing)
 {
 	TArray<int32> IntArray;
 	float textLocatonY = 0;
 
-	// ¹®ÀÚ¿­À» ¼øÈ¸ÇÏ¸ç ¼ıÀÚ·Î º¯È¯ ÈÄ ¹è¿­¿¡ Ãß°¡
+	// ë¬¸ìì—´ì„ ìˆœíšŒí•˜ë©° ìˆ«ìë¡œ ë³€í™˜ í›„ ë°°ì—´ì— ì¶”ê°€
 	for (TCHAR Character : FString::FromInt(static_cast<int32>(Damage)))
 	{
 		IntArray.Add(Character - TEXT('0'));
@@ -294,7 +309,7 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AContr
 		);
 
 
-		//Å©¸®Æ¼ÄÃ
+		//í¬ë¦¬í‹°ì»¬
 		if(bCritical)
 			digitSystem->SetColorParameter(CGameInstance->DamageText_DA->ColorParameterName, CGameInstance->DamageText_DA->CriticalColor);
 		else if(bHealing)
@@ -312,7 +327,7 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AContr
 }
 
 
-// ¹«±â¸¦ ²¨³¾ ¶§
+// ë¬´ê¸°ë¥¼ êº¼ë‚¼ ë•Œ
 void UCCombatComponent::EquipCombat(bool bPlayMontage)
 {
 
@@ -323,7 +338,7 @@ void UCCombatComponent::EquipCombat(bool bPlayMontage)
 	if (bPlayMontage)
 		OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.EquipWeapon.AnimMontage, Current_CombatData.EquipWeapon.PlayRate);
 	
-	// Á¡ÇÁ ³ôÀÌ ¼³Á¤
+	// ì í”„ ë†’ì´ ì„¤ì •
 	OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = OwnerCharacter_Base->GetStatComponent()->GetPlayerData().Stat.JumpVelocity;
 
 
@@ -335,7 +350,7 @@ void UCCombatComponent::EquipCombat(bool bPlayMontage)
 	}
 }
 
-// ¹«±â¸¦ ³ÖÀ» ¶§
+// ë¬´ê¸°ë¥¼ ë„£ì„ ë•Œ
 void UCCombatComponent::UnequipCombat(bool bPlayMontage)
 {
 	OwnerCharacter_Base->GetStatComponent()->SetStatusType(EStatusType::Unarmed);
@@ -345,7 +360,7 @@ void UCCombatComponent::UnequipCombat(bool bPlayMontage)
 	if (bPlayMontage)
 		OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.UnequipWeapon.AnimMontage, Current_CombatData.UnequipWeapon.PlayRate);
 
-	// Á¡ÇÁ ³ôÀÌ ¼³Á¤
+	// ì í”„ ë†’ì´ ì„¤ì •
 	OwnerCharacter_Base->GetCharacterMovement()->JumpZVelocity = 420.0f;
 
 	if (OwnerCharacter_Player)
@@ -358,7 +373,7 @@ void UCCombatComponent::UnequipCombat(bool bPlayMontage)
 
 
 
-// ¸¶¿ì½º ÁÂÅ¬¸¯
+// ë§ˆìš°ìŠ¤ ì¢Œí´ë¦­
 void UCCombatComponent::OnAttack()
 {
 	
@@ -367,19 +382,19 @@ void UCCombatComponent::OnAttack()
 
 }
 
-// ½ºÅ³ 1¹ø
+// ìŠ¤í‚¬ 1ë²ˆ
 void UCCombatComponent::Skill_1()
 {
 	Current_Combat->StartSkill(0);
 }
 
-// ½ºÅ³ 2¹ø
+// ìŠ¤í‚¬ 2ë²ˆ
 void UCCombatComponent::Skill_2()
 {
 	Current_Combat->StartSkill(1);
 }
 
-// ½ºÅ³ 3¹ø
+// ìŠ¤í‚¬ 3ë²ˆ
 void UCCombatComponent::Skill_3()
 {
 	Current_Combat->StartSkill(2);

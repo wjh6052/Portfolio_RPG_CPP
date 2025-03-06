@@ -66,6 +66,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SetSpeed(ESpeedType input);
 	
+
+
+	bool AddDamage(float InDamage);
+
 public:
 	//get
 	FORCEINLINE bool GetSprint() const { return bSprint; }
@@ -87,7 +91,7 @@ public:
 	//set
 	FORCEINLINE void SetSprint(bool input) { bSprint = input; }
 
-	FORCEINLINE void SetStateType(EStateType input) { StateType = input; }
+	void SetStateType(EStateType input);
 	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }	
 	FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }\
 

@@ -32,7 +32,7 @@ public:
 	void OnHitImpact(bool bThrowable, class UPrimitiveComponent* OverlappedComponent);
 	void AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp);
 	void PlayHitReaction();
-
+	void CharacterDeath();
 
 	void AttractToTarget(AActor* Target);
 	void ShowDamageText(AActor* DamageOwner, float Damage, class AController* TargetController, bool bCritical = false, bool bHill = false);
