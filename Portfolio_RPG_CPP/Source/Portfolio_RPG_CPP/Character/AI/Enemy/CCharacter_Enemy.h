@@ -27,6 +27,4 @@ public:
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
 		EEnemyName EnemyName;
-
-	class UBehaviorTree* BehaviorTree;
 };

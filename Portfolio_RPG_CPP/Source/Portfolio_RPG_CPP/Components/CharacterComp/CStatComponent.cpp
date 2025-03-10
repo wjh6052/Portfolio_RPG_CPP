@@ -5,6 +5,7 @@
 #include "../../Character/Player/CCharacter_Player.h"
 #include "../../Character/AI/Enemy/CCharacter_Enemy.h"
 #include "../../Character/AI/NPC/CCharacter_NPC.h"
+#include "../../AIController/CAIController.h"
 #include "../../Maps/CLevel_Main.h"
 
 #include "AIController.h"
@@ -124,9 +125,24 @@ void UCStatComponent::EnemyDataSetting()
 	{
 		if (OwnerCharacter_Enemy->EnemyName == Row.EnemyName)
 		{
-			OwnerCharacter_Enemy->BehaviorTree = Row.BehaviorTree;
-			OwnerCharacter_Enemy->AIControllerClass = Row.AIControllerClass;
+			// 스텟설정
 			SetCurrentStat(Row.Stat);
+
+			// 비헤이비어트리 설정
+			OwnerCharacter_Enemy->SetBehaviorTree(Row.BehaviorTree);
+
+
+
+			// 기존의 컨트롤러 제거
+			OwnerCharacter_Enemy->GetController()->Destroy();
+			// 새로 적용될 컨트롤러 월드 상에 스폰 후 저장
+			ACAIController* newController = OwnerCharacter_Enemy->GetWorld()->SpawnActor<ACAIController>(Row.AIControllerClass);
+
+			if (newController)
+				newController->Possess(OwnerCharacter_Enemy);
+
+
+			
 
 
 			break;

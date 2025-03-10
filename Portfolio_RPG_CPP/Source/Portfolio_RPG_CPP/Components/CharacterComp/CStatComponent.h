@@ -17,7 +17,8 @@ enum class EStateType : uint8
 	Attacking		UMETA(DisplayName = "공격 중"),
 	Hitted			UMETA(DisplayName = "피격됨"),
 	Groggy			UMETA(DisplayName = "기절"),
-	Dying			UMETA(DisplayName = "사망")
+	Dying			UMETA(DisplayName = "사망"),
+	OnAlert			UMETA(DisplayName = "경계 중") 
 };
 
 UENUM(BlueprintType)

@@ -13,5 +13,39 @@ class PORTFOLIO_RPG_CPP_API ACAIController : public AAIController
 	GENERATED_BODY()
 
 public:
+	ACAIController();
+
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void OnPossess(APawn* InPawn) override;
+
+private:
+	// 액터가 감지되었을때 호출될 함수
+	UFUNCTION()
+		void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
+
+	// 액터가 벗어나고 수명이 끝났을때 호출
+	UFUNCTION()
+		void OnTargetLost(AActor* Actor);
+
+
+	// 감지 컴포넌트
+	UPROPERTY(VisibleDefaultsOnly)
+		class UAIPerceptionComponent* PerceptionComp;
+
 	
+	bool bFindPlayer = false;
+
+
+private:
+	class ACCharacter_AI* OwnerCharacterAI = nullptr;
+
+
+
+public: // 디버그
+	UPROPERTY(EditAnywhere)
+		bool bDrawDebug = true;
+
+
+
 };
