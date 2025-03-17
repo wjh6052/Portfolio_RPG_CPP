@@ -18,7 +18,7 @@ enum class EStateType : uint8
 	Hitted			UMETA(DisplayName = "피격됨"),
 	Groggy			UMETA(DisplayName = "기절"),
 	Dying			UMETA(DisplayName = "사망"),
-	OnAlert			UMETA(DisplayName = "경계 중") 
+	Alert			UMETA(DisplayName = "경계 중")
 };
 
 UENUM(BlueprintType)
@@ -64,8 +64,7 @@ public:
 
 public:
 	
-	UFUNCTION(BlueprintCallable)
-		void SetSpeed(ESpeedType input);
+	
 	
 
 
@@ -93,8 +92,11 @@ public:
 	FORCEINLINE void SetSprint(bool input) { bSprint = input; }
 
 	void SetStateType(EStateType input);
-	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }	
-	FORCEINLINE void SetSpeedType(ESpeedType input) { SpeedType = input; }\
+	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }
+
+	UFUNCTION(BlueprintCallable)
+		void SetSpeed(ESpeedType input);
+
 
 	FORCEINLINE void SetCurrentStat(FStat input) { CurrentStat = input; }
 

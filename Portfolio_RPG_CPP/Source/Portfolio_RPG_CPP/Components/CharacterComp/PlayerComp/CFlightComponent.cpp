@@ -187,8 +187,8 @@ void UCFlightComponent::SetFlightMovementParam(bool input)
 	}
 	else
 	{
-		OwnerPlayer->GetCharacterMovement()->BrakingDecelerationFlying = OwnerPlayer->GetStatComponent()->GetPlayerData().Speed.BrakingDeceleration;
-		OwnerPlayer->GetCharacterMovement()->RotationRate = OwnerPlayer->GetStatComponent()->GetPlayerData().Speed.RotationRate;
+		OwnerPlayer->GetCharacterMovement()->BrakingDecelerationFlying = OwnerPlayer->GetStatComponent()->GetPlayerData().Stat.Speed.BrakingDeceleration;
+		OwnerPlayer->GetCharacterMovement()->RotationRate = OwnerPlayer->GetStatComponent()->GetPlayerData().Stat.Speed.RotationRate;
 	}
 }
 
@@ -259,9 +259,9 @@ void UCFlightComponent::SetSprint(bool input)
 	CheckFalse(CheckMovementMode(EMovementMode::MOVE_Falling) || CheckMovementMode(EMovementMode::MOVE_Flying));
 
 	if (input)
-		OwnerPlayer->GetStatComponent()->SetSpeedType(ESpeedType::Sprint);
+		OwnerPlayer->GetStatComponent()->SetSpeed(ESpeedType::Sprint);
 	else
-		OwnerPlayer->GetStatComponent()->SetSpeedType(ESpeedType::Joging);
+		OwnerPlayer->GetStatComponent()->SetSpeed(ESpeedType::Joging);
 	
 
 
@@ -285,10 +285,10 @@ void UCFlightComponent::SetSprint(bool input)
 	}
 	else
 	{
-		OwnerPlayer->GetCharacterMovement()->MaxWalkSpeed = OwnerPlayer->GetStatComponent()->GetPlayerData().Speed.FlyWarkSpeed;
-		OwnerPlayer->GetCharacterMovement()->MaxFlySpeed = OwnerPlayer->GetStatComponent()->GetPlayerData().Speed.FlyWarkSpeed;
-		OwnerPlayer->GetCharacterMovement()->MaxAcceleration = OwnerPlayer->GetStatComponent()->GetPlayerData().Speed.MaxAcceleration;
-		OwnerPlayer->GetCharacterMovement()->RotationRate = OwnerPlayer->GetStatComponent()->GetPlayerData().Speed.RotationRate;
+		OwnerPlayer->GetCharacterMovement()->MaxWalkSpeed = OwnerPlayer->GetStatComponent()->GetPlayerData().Stat.Speed.FlyWarkSpeed;
+		OwnerPlayer->GetCharacterMovement()->MaxFlySpeed = OwnerPlayer->GetStatComponent()->GetPlayerData().Stat.Speed.FlyWarkSpeed;
+		OwnerPlayer->GetCharacterMovement()->MaxAcceleration = OwnerPlayer->GetStatComponent()->GetPlayerData().Stat.Speed.MaxAcceleration;
+		OwnerPlayer->GetCharacterMovement()->RotationRate = OwnerPlayer->GetStatComponent()->GetPlayerData().Stat.Speed.RotationRate;
 
 		SetActiveComponent(Flight_Wave_Ref, input, input);
 

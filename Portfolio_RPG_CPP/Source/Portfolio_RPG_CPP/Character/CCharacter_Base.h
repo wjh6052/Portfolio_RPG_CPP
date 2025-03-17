@@ -66,13 +66,7 @@ protected:
 
 
 
-public:
-	//Scene Component
-	UPROPERTY(EditAnywhere, Category = Camera)
-		class USpringArmComponent* SpringArm;
 
-	UPROPERTY(EditAnywhere, Category = Camera)
-		class UCameraComponent* Camera;
 
 protected:	
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)

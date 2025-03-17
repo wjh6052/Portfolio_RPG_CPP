@@ -242,6 +242,7 @@ void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackFo
 void UCCombatComponent::PlayHitReaction()
 {
 	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Hit_Montage.AnimMontage, Current_CombatData.Hit_Montage.PlayRate);
+	Current_Combat->EndAttack();
 }
 
 // 죽었을때

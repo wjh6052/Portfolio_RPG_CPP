@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "../CCharacter_Base.h"
+#include "../../Components/CharacterComp/AIComp/CPatrolComponent.h"
 #include "CCharacter_AI.generated.h"
 
 
@@ -13,16 +14,28 @@ class PORTFOLIO_RPG_CPP_API ACCharacter_AI : public ACCharacter_Base
 	
 
 public:
+	ACCharacter_AI();
+
+public:
 	// Get
+	FORCEINLINE uint8 GetTeamID() { return TeamID; }
 	FORCEINLINE class UBehaviorTree* GetBehaviorTree() { return BehaviorTree; }
+	FORCEINLINE class UCPatrolComponent* GetPatrolComponent() { return PatrolComponent; }
 
 
-	// Set
-	FORCEINLINE void SetBehaviorTree(class UBehaviorTree* InBehaviorTree) { BehaviorTree = InBehaviorTree; }
+
+
+
+private:
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		class UCPatrolComponent* PatrolComponent;
+
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-		uint8 TeamID = 1;
+	UPROPERTY(EditDefaultsOnly, Category="AI")
+		uint8 TeamID = 0;
 
-	class UBehaviorTree* BehaviorTree;
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+		class UBehaviorTree* BehaviorTree;
+
 };

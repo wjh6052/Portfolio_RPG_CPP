@@ -31,7 +31,6 @@ void UCStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	CGameInstance = Cast<UCGameInstance>(UGameplayStatics::GetGameInstance(OwnerCharacter_Base->GetWorld()));
 	
 	
@@ -42,16 +41,10 @@ void UCStatComponent::BeginPlay()
 		break;
 
 	case ECharacterType::Enemy:
+
 		EnemyDataSetting();
 		break;
-
-	case ECharacterType::Boss:
-		//BossDataSetting();
-		break;
-
-	case ECharacterType::NPC:
-		NPCDataSetting();
-		break;
+	
 
 	default:
 		break;
@@ -128,23 +121,6 @@ void UCStatComponent::EnemyDataSetting()
 			// 스텟설정
 			SetCurrentStat(Row.Stat);
 
-			// 비헤이비어트리 설정
-			OwnerCharacter_Enemy->SetBehaviorTree(Row.BehaviorTree);
-
-
-
-			// 기존의 컨트롤러 제거
-			OwnerCharacter_Enemy->GetController()->Destroy();
-			// 새로 적용될 컨트롤러 월드 상에 스폰 후 저장
-			ACAIController* newController = OwnerCharacter_Enemy->GetWorld()->SpawnActor<ACAIController>(Row.AIControllerClass);
-
-			if (newController)
-				newController->Possess(OwnerCharacter_Enemy);
-
-
-			
-
-
 			break;
 		}
 	}
@@ -178,23 +154,23 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 	{
 	case ESpeedType::Stop:
 		SpeedType = input;
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Stop;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetCurrentStat().Speed.Stop;
 		bCanMove = false;
 		return;
 
 	case ESpeedType::Walk:
 		SpeedType = input;
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Walk;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetCurrentStat().Speed.Walk;
 		break;
 
 	case ESpeedType::Joging:
 		SpeedType = input;
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Joging;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetCurrentStat().Speed.Joging;
 		break;
 
 	case ESpeedType::Run:
 		SpeedType = input;
-		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetPlayerData().Speed.Run;
+		OwnerCharacter_Base->GetCharacterMovement()->MaxWalkSpeed = GetCurrentStat().Speed.Run;
 		break;
 
 	case ESpeedType::Sprint:

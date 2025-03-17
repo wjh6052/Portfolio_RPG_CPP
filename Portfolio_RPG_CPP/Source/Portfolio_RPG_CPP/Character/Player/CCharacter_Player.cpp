@@ -4,11 +4,9 @@
 #include "../../Widgets/Interaction/CWInteractionBox.h"
 #include "../../AnimInstance/CAnimInstance_Player.h"
 
-// Test
-#include "../../Object/Combat/CCombat_Base.h"
 
-
-
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 
 
@@ -17,6 +15,24 @@ ACCharacter_Player::ACCharacter_Player()
 {
 	// StatComp를 위한 캐릭터 태그
 	CharacterType = ECharacterType::Player;
+
+
+	// 카메라 암
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->TargetArmLength = 300.0f;
+	SpringArm->bUsePawnControlRotation = true;
+
+	// 포스트프로세스를 통해 캐릭터를 회색으로 표현하기 위해 카메라 암을 물체들에 막히지 않도록 설정
+	SpringArm->bDoCollisionTest = false;
+
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
+	Camera->bUsePawnControlRotation = false;
+
+
+
 
 	//Create Actor Component
 	FlightComponent = CreateDefaultSubobject<UCFlightComponent>(L"FlightComponent");
@@ -326,7 +342,7 @@ void ACCharacter_Player::OnCameraZoom(float InAxis)
 
 	if (GetWidgetComponent()->GetMainWidget()->CanZoomScroll())
 	{
-		Super::OnCameraZoom(InAxis);
+		SpringArm->TargetArmLength = FMath::Clamp((InAxis * 10) + SpringArm->TargetArmLength, 150.f, 1000.f);
 	}
 	else
 	{

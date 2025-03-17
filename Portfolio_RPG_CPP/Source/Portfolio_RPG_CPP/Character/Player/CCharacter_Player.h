@@ -72,6 +72,15 @@ public:
 
 
 
+
+public:
+	//Scene Component
+	UPROPERTY(EditAnywhere, Category = Camera)
+		class USpringArmComponent* SpringArm;
+
+	UPROPERTY(EditAnywhere, Category = Camera)
+		class UCameraComponent* Camera;
+
 public:
 	//Actor Component
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

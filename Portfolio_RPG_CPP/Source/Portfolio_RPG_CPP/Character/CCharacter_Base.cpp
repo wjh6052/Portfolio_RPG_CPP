@@ -4,9 +4,9 @@
 
 
 
-#include "Camera/CameraComponent.h"
+
 #include "GameFramework/Controller.h"
-#include "GameFramework/SpringArmComponent.h"
+
 #include "Engine/Classes/Components/SphereComponent.h"
 
 
@@ -20,17 +20,7 @@ ACCharacter_Base::ACCharacter_Base()
 	PrimaryActorTick.bCanEverTick = true;
 
 
-	// 카메라 암
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->TargetArmLength = 300.0f;
-	SpringArm->bUsePawnControlRotation = true;
 	
-
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(SpringArm);
-	Camera->bUsePawnControlRotation = false;
-
 
 	//Create Actor Component
 	StatComponent = CreateDefaultSubobject<UCStatComponent>(L"StatComponent");
@@ -67,8 +57,7 @@ ACCharacter_Base::ACCharacter_Base()
 
 	// 포스트프로세스 설정
 
-	// 포스트프로세스를 통해 캐릭터를 회색으로 표현하기 위해 카메라 암을 물체들에 막히지 않도록 설정
-	SpringArm->bDoCollisionTest = false;
+
 
 }
 
@@ -155,7 +144,7 @@ void ACCharacter_Base::OnVerticalLook(float InAxis)
 
 void ACCharacter_Base::OnCameraZoom(float InAxis)
 {
-	SpringArm->TargetArmLength = FMath::Clamp((InAxis * 10) + SpringArm->TargetArmLength, 150.f, 1000.f);
+	
 }
 
 

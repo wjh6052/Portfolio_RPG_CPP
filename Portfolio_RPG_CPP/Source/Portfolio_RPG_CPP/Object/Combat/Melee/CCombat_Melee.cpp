@@ -115,13 +115,7 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 		BeginActor.AddUnique(OtherActor);
 
-		switch (OwnerCharacter->GetCharacterType())
-		{
-		case ECharacterType::Player:
-		{
-			
-	
-			
+
 			FAttack attackData = GetCurrentAttackData();
 
 			// 크리티컬 체크 및 데미지 증가
@@ -144,16 +138,7 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 
 			UGameplayStatics::ApplyDamage(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
-		}
-			break;
 
-		case ECharacterType::Enemy:
-			
-			break;
-
-		default:
-			break;
-		}
 
 		
 		

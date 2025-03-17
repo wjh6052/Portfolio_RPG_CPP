@@ -33,19 +33,18 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UAIPerceptionComponent* PerceptionComp;
 
-	
+public:
 	bool bFindPlayer = false;
 
 
 private:
-	class ACCharacter_AI* OwnerCharacterAI = nullptr;
-
-
-
-public: // µð¹ö±×
 	UPROPERTY(EditAnywhere)
 		bool bDrawDebug = true;
 
+	UPROPERTY(EditAnywhere)
+		float BehaviorRange = 150.f;
 
-
+public:
+	class ACCharacter_AI* OwnerCharacterAI = nullptr;
+	class UAISenseConfig_Sight* Sight;
 };

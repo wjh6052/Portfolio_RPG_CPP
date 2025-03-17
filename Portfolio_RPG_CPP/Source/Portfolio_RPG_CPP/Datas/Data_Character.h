@@ -30,8 +30,8 @@ enum class ECharacterType : uint8
 	Enemy	UMETA(DisplayName = "몬스터"),
 	Boss	UMETA(DisplayName = "보스"),
 	NPC		UMETA(DisplayName = "NPC")
-};
 
+};
 
 
 
@@ -61,6 +61,31 @@ public:
 	UPROPERTY(EditAnywhere)
 		float CapsuleRadius = 25.f;
 
+};
+
+USTRUCT(BlueprintType)
+struct FSpeed
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		float Stop = 0;
+	UPROPERTY(EditAnywhere)
+		float Walk = 200;
+	UPROPERTY(EditAnywhere)
+		float Joging = 400;
+	UPROPERTY(EditAnywhere)
+		float Run = 600;
+
+	UPROPERTY(EditAnywhere)
+		float FlyWarkSpeed = 600.f;
+	UPROPERTY(EditAnywhere)
+		float MaxAcceleration = 2048.f;
+	UPROPERTY(EditAnywhere)
+		float BrakingDeceleration = 0;
+	UPROPERTY(EditAnywhere)
+		FRotator RotationRate = FRotator(0.f, 720.f, 0.f);
 };
 
 
@@ -100,33 +125,14 @@ public:
 	// 점프 높이 (기본 : 420)
 	UPROPERTY(EditAnywhere)
 		float JumpVelocity = 420.0f;
+
+	// 스피스 스텟
+	UPROPERTY(EditAnywhere)
+		FSpeed Speed;
 };
 
 
-USTRUCT(BlueprintType)
-struct FSpeed
-{
-	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditAnywhere)
-		float Stop = 0;
-	UPROPERTY(EditAnywhere)
-		float Walk = 200;
-	UPROPERTY(EditAnywhere)
-		float Joging = 400;
-	UPROPERTY(EditAnywhere)
-		float Run = 600;
-
-	UPROPERTY(EditAnywhere)
-		float FlyWarkSpeed = 600.f;
-	UPROPERTY(EditAnywhere)
-		float MaxAcceleration = 2048.f;
-	UPROPERTY(EditAnywhere)
-		float BrakingDeceleration = 0;
-	UPROPERTY(EditAnywhere)
-		FRotator RotationRate = FRotator(0.f, 720.f, 0.f);	
-};
 
 
 USTRUCT(BlueprintType)
@@ -167,12 +173,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;
 
-	
 
-
-	// 스피드
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Speed")
-		FSpeed Speed;
 
 	// 비행 스피드
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Speed")
@@ -203,23 +204,11 @@ public
 		EEnemyName EnemyName;
 
 
-	// AI컨트롤러
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AI")
-		TSubclassOf<class AAIController> AIControllerClass;
-
-	// AI비헤이비어
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AI")
-		class UBehaviorTree* BehaviorTree;
-
-
 
 	// 몬스터의 스텟
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;
 
-	// 몬스터의 스피드
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
-		FSpeed Speed;
 
 	// 몬스터 사망시 드랍될 아이템 배열
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
