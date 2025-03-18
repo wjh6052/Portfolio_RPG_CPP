@@ -40,7 +40,7 @@ void ACCombat_Base::BeginPlay()
 
 	DissolveMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(OwnerCharacter->GetWorld(), CombatData.WeaponMaterial);
 
-
+	bJumpAttack = false;
 
 
 	SkillCoolDowns[0] = CombatData.Skill_1_Cooldown;
@@ -208,9 +208,9 @@ void ACCombat_Base::ComboAttack()
 	CheckTrue(bSkill);
 
 
-	if (OwnerCharacter->IsMovementMode(EMovementMode::MOVE_Falling) && !bJumpAttack)
+	if (OwnerCharacter->IsMovementMode(EMovementMode::MOVE_Falling) && bJumpAttack)
 	{
-		bJumpAttack = true;
+		bJumpAttack = false;
 		OwnerCharacter->PlayAnimMontage(CombatData.JumpToAttack.AnimMontage.AnimMontage, CombatData.JumpToAttack.AnimMontage.PlayRate);
 		return;
 	}
@@ -369,7 +369,7 @@ void ACCombat_Base::DamagesTarget(AActor* InTarget)
 	FAttack attackData = OwnerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
 
 	// 데미지를 월드상 숫자로 나이아가라 효과스폰
-	OwnerCharacter->GetCombatComponent()->ShowDamageText(InTarget, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
+	OwnerCharacter->GetCombatComponent()->ShowDamageText(InTarget, attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
 
 	// 데미지를 받은 위치에 나이아가라 효과 스폰
 	OwnerCharacter->GetCombatComponent()->OnHitImpact(false, target->GetMesh());

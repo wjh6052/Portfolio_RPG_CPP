@@ -180,7 +180,10 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	if (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) 
 		< InDamage)
 	{
+		DamageCharacter = waepon->OwnerCharacter;
 		PlayHitReaction();
+
+
 	}
 	
 	
@@ -241,8 +244,13 @@ void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackFo
 // 히트 애니메이션 재생
 void UCCombatComponent::PlayHitReaction()
 {
-	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Hit_Montage.AnimMontage, Current_CombatData.Hit_Montage.PlayRate);
+	CheckNull(Current_Combat);
+
 	Current_Combat->EndAttack();
+	OwnerCharacter_Base->StopAnimMontage();
+
+	OwnerCharacter_Base->GetStatComponent()->SetStateType(EStateType::Hitted);
+	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Hit_Montage.AnimMontage, Current_CombatData.Hit_Montage.PlayRate);
 }
 
 // 죽었을때
@@ -284,7 +292,7 @@ void UCCombatComponent::AttractToTarget(AActor* Target)
 
 
 // 데미지를 월드상에 나이아가라 텍스트로 보여줌
-void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AController* TargetController, bool bCritical, bool bHealing)
+void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, bool bCritical, bool bHealing)
 {
 	TArray<int32> IntArray;
 	float textLocatonY = 0;
@@ -301,7 +309,7 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, AContr
 			DamageOwner->GetWorld(),
 			CGameInstance->DamageText_DA->NiagaraSystem,
 			DamageOwner->GetActorLocation(),
-			FRotator(180.0, TargetController->GetControlRotation().Yaw, 0.0),
+			FRotator(180.0, CGameInstance->GetPlayerCharacter()->GetControlRotation().Yaw, 0.0),
 			FVector(0.5, 0.5, 0.5),
 			true,
 			true,

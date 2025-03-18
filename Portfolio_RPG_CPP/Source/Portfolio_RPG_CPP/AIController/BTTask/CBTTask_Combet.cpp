@@ -44,23 +44,22 @@ void UCBTTask_Combet::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	AIController->MoveToLocation(TargetLocation,1.0f,false);
 
+	if (AICharacter->GetStatComponent()->GetStateType() != EStateType::Idling)
+		return;
+
 	if (TargetDistance <= AttackRange && TargetDistance >= 1) // 공격 사거리에 들어왔을 경우
 	{
 		AICharacter->GetStatComponent()->SetSpeed(ESpeedType::Stop);
-		AICharacter->GetStatComponent()->SetStatusType(EStatusType::Combat);
-
 
 		AICharacter->GetCombatComponent()->OnAttack();
 	}
 	else if (TargetDistance <= CombatEntryRange) // 이동속도를 줄이며 접근
 	{
 		AICharacter->GetStatComponent()->SetSpeed(ESpeedType::Walk);
-		AICharacter->GetStatComponent()->SetStatusType(EStatusType::Unarmed);
 	}
 	else // 뛰어가 접근
 	{
 		AICharacter->GetStatComponent()->SetSpeed(ESpeedType::Joging);
-		AICharacter->GetStatComponent()->SetStatusType(EStatusType::Unarmed);
 	}
 
 

@@ -166,5 +166,7 @@ private:
 
 
 
+public: // Get
+	class ACCharacter_Base* GetPlayerCharacter();
 
 };

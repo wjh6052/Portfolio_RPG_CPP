@@ -24,10 +24,26 @@ void UCBTService_Root::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		BlackboardComp = OwnerComp.GetBlackboardComponent();
 	}
 	
-	
+	SetStateBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStateType());
+	SetStatusBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStatusType());
+
+	UEnum* Enum = StaticEnum<EStateType>();
+	FString a = Enum->GetNameStringByValue((int64)OwnerAICharacter->GetStatComponent()->GetStateType());
 
 
-	
+	switch (OwnerAICharacter->GetStatComponent()->GetStateType())
+	{
+		case EStateType::Dying:
+			return;
+
+		case EStateType::Groggy:
+			return;
+
+		case EStateType::Hitted:
+			return;
+	}
+
+
 	// 플레이어를 찾았을 때
 	if (AIController->bFindPlayer)
 	{
@@ -40,15 +56,16 @@ void UCBTService_Root::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		}
 		else // 플레이어가 살아 있을 때
 		{
-			SetPlayerLocationKey(Player);			
+			SetPlayerLocationKey(Player);
 		}
 
 	}
 	else // 플레이어를 찾지 못하였을 때
 	{
-		
+
 
 	}
+	
 
 	SetStateBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStateType());
 	SetStatusBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStatusType());

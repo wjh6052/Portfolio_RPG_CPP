@@ -25,7 +25,5 @@ public:
 	UPROPERTY(EditAnywhere)
 		EStateType StateType;
 
-public:
-	EStateType OldStateType;
 
 };

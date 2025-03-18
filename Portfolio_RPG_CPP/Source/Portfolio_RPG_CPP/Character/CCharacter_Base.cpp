@@ -1,5 +1,6 @@
 #include "CCharacter_Base.h"
 #include "../Global.h"
+#include "../Object/Combat/CCombat_Base.h"
 
 
 
@@ -8,7 +9,7 @@
 #include "GameFramework/Controller.h"
 
 #include "Engine/Classes/Components/SphereComponent.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 
 #define INPUT
 
@@ -151,6 +152,11 @@ void ACCharacter_Base::OnCameraZoom(float InAxis)
 void ACCharacter_Base::OnJump()
 {
 	CheckFalse(GetStatComponent()->IsCanMove());
+
+	if (IsMovementMode(EMovementMode::MOVE_Walking))
+	{
+		GetCombatComponent()->Current_Combat->bJumpAttack = true;
+	}	
 	ACharacter::Jump();
 }
 

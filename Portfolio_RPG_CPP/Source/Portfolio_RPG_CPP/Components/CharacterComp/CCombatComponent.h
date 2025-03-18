@@ -35,7 +35,7 @@ public:
 	void CharacterDeath();
 
 	void AttractToTarget(AActor* Target);
-	void ShowDamageText(AActor* DamageOwner, float Damage, class AController* TargetController, bool bCritical = false, bool bHill = false);
+	void ShowDamageText(AActor* DamageOwner, float Damage, bool bCritical = false, bool bHill = false);
 
 
 	// 무기를 꺼낼때와 넣을때 호출
@@ -83,7 +83,7 @@ public:
 	class ACCharacter_Enemy* OwnerCharacter_Enemy = nullptr;
 
 
-
+	class ACCharacter_Base* DamageCharacter = nullptr;
 
 public:// 노티파이
 

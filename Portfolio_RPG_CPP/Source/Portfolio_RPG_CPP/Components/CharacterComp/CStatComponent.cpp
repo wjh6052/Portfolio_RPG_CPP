@@ -8,7 +8,10 @@
 #include "../../AIController/CAIController.h"
 #include "../../Maps/CLevel_Main.h"
 
+#include "TimerManager.h"
 #include "AIController.h"
+#include "Animation/AnimInstance.h"
+#include "Animation/AnimMontage.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -200,6 +203,17 @@ bool UCStatComponent::AddDamage(float InDamage)
 	CurrentStat.HP -= InDamage;
 
 	return false;
+}
+
+void UCStatComponent::SetGroggy(float GroggyTime)
+{
+	SetStateType(EStateType::Groggy);
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Groggy, [this]() 
+		{
+			SetStateType(EStateType::Idling); 
+		},
+		GroggyTime, false);
 }
 
 void UCStatComponent::SetStateType(EStateType input)

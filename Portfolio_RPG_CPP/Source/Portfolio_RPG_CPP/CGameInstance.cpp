@@ -2,8 +2,11 @@
 #include "Global.h"
 #include "Sava/CItmeData_SaveGame.h"
 #include "Datas/DA/DA_DamageText.h"
+#include "Character/CCharacter_Base.h"
+
 
 #include "Kismet/GameplayStatics.h"
+
 
 
 UCGameInstance::UCGameInstance()
@@ -36,6 +39,8 @@ UCGameInstance::UCGameInstance()
 void UCGameInstance::Init()
 {
 	Super::Init();
+
+	
 
 	PlayerDataTableToArr();
 	EnemyDataTableToArr();
@@ -330,6 +335,13 @@ void UCGameInstance::AddMoney(int AddMoney)
 		TriggerUpdataMoney(AddMoney);
 		CLog::Print(FString::Printf(TEXT("%d머니 소모"), AddMoney));
 	}
+}
+
+ACCharacter_Base* UCGameInstance::GetPlayerCharacter()
+{
+	ACCharacter_Base* playerCharacter = Cast<ACCharacter_Base>(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	return playerCharacter;
 }
 
 

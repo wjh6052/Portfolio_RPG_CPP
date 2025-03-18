@@ -63,12 +63,13 @@ public:
 
 
 public:
-	
-	
-	
-
 
 	bool AddDamage(float InDamage);
+
+
+	void SetGroggy(float GroggyTime);
+	FTimerHandle TimerHandle_Groggy;
+
 
 public:
 	//get

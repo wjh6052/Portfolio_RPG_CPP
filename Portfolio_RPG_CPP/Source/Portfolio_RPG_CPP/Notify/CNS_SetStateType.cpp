@@ -18,7 +18,6 @@ void UCNS_SetStateType::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSeque
 	CheckFalse(Cast<ACCharacter_Base>(MeshComp->GetOwner()));
 	ACCharacter_Base* ownerCharacter = Cast<ACCharacter_Base>(MeshComp->GetOwner());
 
-	OldStateType = ownerCharacter->GetStatComponent()->GetStateType();
 	ownerCharacter->GetStatComponent()->SetStateType(StateType);
 	
 
@@ -35,6 +34,6 @@ void UCNS_SetStateType::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenc
 	CheckFalse(Cast<ACCharacter_Base>(MeshComp->GetOwner()));
 	ACCharacter_Base* ownerCharacter = Cast<ACCharacter_Base>(MeshComp->GetOwner());
 
-	ownerCharacter->GetStatComponent()->SetStateType(OldStateType);
+	ownerCharacter->GetStatComponent()->SetStateType(EStateType::Idling);
 }
 

@@ -128,7 +128,7 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 			OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherActor);
 			
 			// 데미지를 월드상 숫자로 나이아가라 효과스폰
-			OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), attackData.AttackDamage.bOnCritical);
+			OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
 			
 			// 데미지를 받은 위치에 나이아가라 효과 스폰
 			OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);
