@@ -39,7 +39,10 @@ private:
 	FRotator LeftRotation;
 	FRotator RightRotation;
 
-	FRotator CurrentTargetRotation;
+	bool bLeft = false;
+	bool bRight = false;
+
+	FRotator TargetRotation;
 	float ElapsedTime = 0.0f;
 
 	class ACAIController* AIController;

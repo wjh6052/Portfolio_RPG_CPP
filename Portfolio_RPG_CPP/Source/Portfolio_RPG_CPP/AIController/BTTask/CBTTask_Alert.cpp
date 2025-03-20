@@ -36,7 +36,7 @@ EBTNodeResult::Type UCBTTask_Alert::ExecuteTask(UBehaviorTreeComponent& OwnerCom
     RightRotation = StartRotation;
     RightRotation.Yaw += LookAngle;
 
-    CurrentTargetRotation = LeftRotation;
+    TargetRotation = StartRotation;
     ElapsedTime = 0.0f;  // 시간 초기화
 
 	return EBTNodeResult::InProgress;
@@ -53,12 +53,12 @@ void UCBTTask_Alert::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
 
 
     // 부드럽게 회전
-    FRotator NewRotation = FMath::RInterpTo(AICharacter->GetActorRotation(), CurrentTargetRotation, DeltaSeconds, RotationSpeed);
-    AICharacter->SetActorRotation(NewRotation);
+    FRotator CurrentRotation = FMath::RInterpTo(AICharacter->GetActorRotation(), TargetRotation, DeltaSeconds, RotationSpeed);
+    AICharacter->SetActorRotation(CurrentRotation);
 
  
     // 목표 회전에 도달했는지 확인
-    if (FMath::Abs(NewRotation.Yaw - CurrentTargetRotation.Yaw) < 0.1f)
+    if (FMath::Abs(CurrentRotation.Yaw - TargetRotation.Yaw) < 0.1f)
     {
         ElapsedTime += DeltaSeconds;  // 대기 시간 증가
 
@@ -67,22 +67,40 @@ void UCBTTask_Alert::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
         {
             ElapsedTime = 0.0f;  // 시간 초기화
 
-            // 현재 회전 방향에 따라 다음 회전 방향으로 변경
-            if (CurrentTargetRotation.Equals(LeftRotation))
-            {
-                CurrentTargetRotation = RightRotation;
-            }
-            else if (CurrentTargetRotation.Equals(RightRotation))
-            {
-                CurrentTargetRotation = StartRotation;
+            // 중앙에 도착
+            if (TargetRotation == StartRotation)
+            {   
+                // 왼쪽 회전
+                if (!bLeft)
+                {
+                    TargetRotation = LeftRotation;
+                    bLeft = true;
+                    return;
+                }
+
+                // 오른쪽 회전
+                if (!bRight)
+                {
+                    TargetRotation = RightRotation;
+                    bRight = true;
+                    return;
+                }
+
+                // 끝
+                if (bLeft && bRight)
+                {
+                    AICharacter->GetStatComponent()->SetStateType(EStateType::Idling);
+                    FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+                    return;
+                }
             }
             else
             {
-                // 원래 방향 복귀 후 종료
-                AICharacter->GetStatComponent()->SetStateType(EStateType::Idling);
-                FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-                return;
+                TargetRotation = StartRotation;
             }
+
+            
+
         }
     }
 
