@@ -116,6 +116,11 @@ public:
 
 
 
+public:
+	void Desh_Ragdoll();
+
+	FTimerHandle RagdollTimerHandle;
+
 private:
 	// 현제 스텟
 	FStat CurrentStat;

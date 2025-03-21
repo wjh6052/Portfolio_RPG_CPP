@@ -34,12 +34,15 @@ void UCBTService_Root::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 	switch (OwnerAICharacter->GetStatComponent()->GetStateType())
 	{
 		case EStateType::Dying:
+			AIController->StopMovement();
 			return;
 
 		case EStateType::Groggy:
+			AIController->StopMovement();
 			return;
 
 		case EStateType::Hitted:
+			AIController->StopMovement();
 			return;
 	}
 

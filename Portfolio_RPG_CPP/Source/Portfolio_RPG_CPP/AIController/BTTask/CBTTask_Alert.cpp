@@ -39,6 +39,9 @@ EBTNodeResult::Type UCBTTask_Alert::ExecuteTask(UBehaviorTreeComponent& OwnerCom
     TargetRotation = StartRotation;
     ElapsedTime = 0.0f;  // 시간 초기화
 
+    bLeft = false;
+    bRight = false;
+
 	return EBTNodeResult::InProgress;
 }
 
@@ -51,6 +54,7 @@ void UCBTTask_Alert::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
     CheckNull(AIController);
     CheckNull(AICharacter);
 
+    AIController->StopMovement();
 
     // 부드럽게 회전
     FRotator CurrentRotation = FMath::RInterpTo(AICharacter->GetActorRotation(), TargetRotation, DeltaSeconds, RotationSpeed);

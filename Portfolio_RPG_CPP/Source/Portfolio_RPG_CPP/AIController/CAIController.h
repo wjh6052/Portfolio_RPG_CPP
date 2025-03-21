@@ -38,10 +38,10 @@ public:
 
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Debug")
 		bool bDrawDebug = true;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Debug")
 		float BehaviorRange = 150.f;
 
 public:

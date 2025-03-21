@@ -187,6 +187,28 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 	bCanMove = true;
 }
 
+void UCStatComponent::Desh_Ragdoll()
+{
+	// 애니메이션 속도를 0으로 설정
+	OwnerCharacter_Base->GetMesh()->GlobalAnimRateScale = 0.0f;
+
+	OwnerCharacter_Base->GetMesh()->SetSimulatePhysics(true);
+	OwnerCharacter_Base->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	OwnerCharacter_Base->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	
+	if (OwnerCharacter_Enemy)
+	{
+		GetWorld()->GetTimerManager().SetTimer(RagdollTimerHandle, [this]()
+			{
+				OwnerCharacter_Enemy->DyingTimeLineStart();
+			},
+			2.0f, false);
+		
+	}
+
+}
+
 bool UCStatComponent::AddDamage(float InDamage)
 {
 	if (CurrentStat.HP - InDamage <= 0) // 죽었을 때
@@ -224,18 +246,24 @@ void UCStatComponent::SetStateType(EStateType input)
 	{
 	case EStateType::Idling:
 		break;
+
 	case EStateType::Rolling:
 		break;
+
 	case EStateType::Attacking:
 		break;
+
 	case EStateType::Hitted:
 		break;
+
 	case EStateType::Groggy:
 		break;
+
 	case EStateType::Dying:
 		OwnerCharacter_Base->GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 		OwnerCharacter_Base->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Ignore);
 		break;
+
 	default:
 		break;
 	}

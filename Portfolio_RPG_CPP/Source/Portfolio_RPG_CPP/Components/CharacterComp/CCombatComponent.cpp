@@ -5,7 +5,6 @@
 #include "../../Character/Player/CCharacter_Player.h"
 #include "../../Character/AI/Enemy/CCharacter_Enemy.h"
 #include "../../Datas/DA/DA_DamageText.h"
-#include "../../Object/Combat/CCombat_Base.h"
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/GameplayUI/CWGameplayUI.h"
 
