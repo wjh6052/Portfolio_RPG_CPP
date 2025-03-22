@@ -5,6 +5,7 @@
 #include "../../Character/Player/CCharacter_Player.h"
 #include "../../Character/AI/Enemy/CCharacter_Enemy.h"
 #include "../../Datas/DA/DA_DamageText.h"
+#include "../../Object/Combat/CCombat_Base.h"
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/GameplayUI/CWGameplayUI.h"
 
@@ -163,9 +164,6 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	float InDamage = DamageAmount;
 	
 
-	ACCombat_Base* waepon = Cast<ACCombat_Base>(DamageCauser);
-	waepon->CombatData;
-
 
 	if (OwnerCharacter_Base->GetStatComponent()->AddDamage(InDamage))
 	{
@@ -176,13 +174,9 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 
 
 
-	if (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) 
-		< InDamage)
+	if (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) < InDamage)
 	{
-		DamageCharacter = waepon->OwnerCharacter;
 		PlayHitReaction();
-
-
 	}
 	
 	

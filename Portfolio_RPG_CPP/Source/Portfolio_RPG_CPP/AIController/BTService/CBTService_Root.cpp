@@ -24,53 +24,55 @@ void UCBTService_Root::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		BlackboardComp = OwnerComp.GetBlackboardComponent();
 	}
 	
-	SetStateBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStateType());
-	SetStatusBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStatusType());
-
-	UEnum* Enum = StaticEnum<EStateType>();
-	FString a = Enum->GetNameStringByValue((int64)OwnerAICharacter->GetStatComponent()->GetStateType());
 
 
 	switch (OwnerAICharacter->GetStatComponent()->GetStateType())
 	{
 		case EStateType::Dying:
 			AIController->StopMovement();
-			return;
+			SetStateBehaviorKey(EStateType::Dying);
+			break;
 
 		case EStateType::Groggy:
 			AIController->StopMovement();
-			return;
+			SetStateBehaviorKey(EStateType::Groggy);
+			break;
 
 		case EStateType::Hitted:
 			AIController->StopMovement();
-			return;
+			SetStateBehaviorKey(EStateType::Hitted);
+			break;
+
+		case EStateType::Idling:
+			// 플레이어를 찾았을 때
+			if (AIController->bFindPlayer)
+			{
+				Player = Cast<ACCharacter_Base>(BlackboardComp->GetValueAsObject("PlayerKey"));
+
+				// 플레이어가 죽었을 때
+				if (Player->GetStatComponent()->IsState(EStateType::Dying))
+				{
+					//OwnerAICharacter->GetStatComponent()->SetStateType(EStateType::Idling);
+				}
+				else // 플레이어가 살아 있을 때
+				{
+					SetStateBehaviorKey(EStateType::Idling);
+					SetPlayerLocationKey(Player);
+				}
+
+			}
+			else // 플레이어를 찾지 못하였을 때
+			{
+				SetStateBehaviorKey(EStateType::Idling);
+
+			}
+			break;
 	}
 
 
-	// 플레이어를 찾았을 때
-	if (AIController->bFindPlayer)
-	{
-		Player = Cast<ACCharacter_Base>(BlackboardComp->GetValueAsObject("PlayerKey"));
-
-		// 플레이어가 죽었을 때
-		if (Player->GetStatComponent()->IsState(EStateType::Dying))
-		{
-			OwnerAICharacter->GetStatComponent()->SetStateType(EStateType::Idling);
-		}
-		else // 플레이어가 살아 있을 때
-		{
-			SetPlayerLocationKey(Player);
-		}
-
-	}
-	else // 플레이어를 찾지 못하였을 때
-	{
-
-
-	}
+	
 	
 
-	SetStateBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStateType());
 	SetStatusBehaviorKey(OwnerAICharacter->GetStatComponent()->GetStatusType());
 }
 

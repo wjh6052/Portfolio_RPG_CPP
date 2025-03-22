@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 
 
@@ -21,8 +22,9 @@ EBTNodeResult::Type UCBTTask_LookAtAttacker::ExecuteTask(UBehaviorTreeComponent&
 
 	AIController = Cast<ACAIController>(OwnerComp.GetAIOwner());
 	AICharacter = AIController->OwnerCharacterAI;
-	TargetLocation = AICharacter->GetCombatComponent()->DamageCharacter->GetActorLocation();
-
+	BlackboardComp = OwnerComp.GetBlackboardComponent();
+	StartRotation = AICharacter->GetActorRotation();
+	StartRotation.Yaw += RotationTolerance;
 
 
 	return EBTNodeResult::InProgress;
@@ -33,24 +35,16 @@ void UCBTTask_LookAtAttacker::TickTask(UBehaviorTreeComponent& OwnerComp, uint8*
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
 
-	// 현재 회전값
-	FRotator currentRotation = AICharacter->GetActorRotation();
-
-
-	// 목표 회전값
-	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(AICharacter->GetActorLocation(), TargetLocation);
-
-	float deltaYaw = FMath::Abs(FMath::FindDeltaAngleDegrees(currentRotation.Yaw, targetRotation.Yaw));
-	float speed = deltaYaw * (RotationSpeed * 0.01f);
-
 	// 부드럽게 회전
-	FRotator newRotation = FMath::RInterpTo(currentRotation, targetRotation, DeltaSeconds, speed);
-	newRotation.Pitch = currentRotation.Pitch;
-	newRotation.Roll = currentRotation.Roll;
+	FRotator newRotation = AICharacter->GetActorRotation();
+	newRotation.Pitch = StartRotation.Pitch;
+	newRotation.Roll = StartRotation.Roll;
+	newRotation.Yaw -= RotationSpeed;
 	AICharacter->SetActorRotation(newRotation);
 
 
-	if (FMath::Abs(AICharacter->GetActorRotation().Yaw - targetRotation.Yaw) < 50.0f)
+	if (FMath::Abs(AICharacter->GetActorRotation().Yaw - StartRotation.Yaw) < RotationTolerance ||
+		BlackboardComp->GetValueAsObject("PlayerKey"))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		AICharacter->GetStatComponent()->SetStateType(EStateType::Idling);

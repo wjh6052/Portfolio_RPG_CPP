@@ -41,6 +41,7 @@ private:
 
 	bool bLeft = false;
 	bool bRight = false;
+	bool bCenter = false;
 
 	FRotator TargetRotation;
 	float ElapsedTime = 0.0f;

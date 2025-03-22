@@ -229,10 +229,12 @@ bool UCStatComponent::AddDamage(float InDamage)
 
 void UCStatComponent::SetGroggy(float GroggyTime)
 {
+	SetStateLocked(true);
 	SetStateType(EStateType::Groggy);
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Groggy, [this]() 
 		{
+			SetStateLocked(false);
 			SetStateType(EStateType::Idling); 
 		},
 		GroggyTime, false);
@@ -240,6 +242,9 @@ void UCStatComponent::SetGroggy(float GroggyTime)
 
 void UCStatComponent::SetStateType(EStateType input)
 {
+	if (bIsStateLocked)
+		return;
+
 	StateType = input;
 
 	switch (input)

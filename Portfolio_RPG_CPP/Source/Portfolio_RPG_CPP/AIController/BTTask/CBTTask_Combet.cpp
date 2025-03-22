@@ -44,8 +44,10 @@ void UCBTTask_Combet::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	AIController->MoveToLocation(TargetLocation,1.0f,false);
 
-	if (AICharacter->GetStatComponent()->GetStateType() != EStateType::Idling)
+
+	if (!AICharacter->GetStatComponent()->IsState(EStateType::Idling))
 		return;
+
 
 	if (TargetDistance <= AttackRange && TargetDistance >= 1) // 공격 사거리에 들어왔을 경우
 	{

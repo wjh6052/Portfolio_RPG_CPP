@@ -30,17 +30,22 @@ EBTNodeResult::Type UCBTTask_Alert::ExecuteTask(UBehaviorTreeComponent& OwnerCom
     // 왼쪽 45도 회전
     LeftRotation = StartRotation;
     LeftRotation.Yaw -= LookAngle;
-
+    LeftRotation.Yaw = FMath::UnwindDegrees(LeftRotation.Yaw);
 
     // 오른쪽 45도 회전
     RightRotation = StartRotation;
     RightRotation.Yaw += LookAngle;
-
-    TargetRotation = StartRotation;
-    ElapsedTime = 0.0f;  // 시간 초기화
+    RightRotation.Yaw = FMath::UnwindDegrees(RightRotation.Yaw);
 
     bLeft = false;
     bRight = false;
+
+
+    TargetRotation = StartRotation;
+    ElapsedTime = 0.0f;  // 시간 초기화  
+    bCenter = true;
+
+    AIController->StopMovement();
 
 	return EBTNodeResult::InProgress;
 }
@@ -54,15 +59,15 @@ void UCBTTask_Alert::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
     CheckNull(AIController);
     CheckNull(AICharacter);
 
-    AIController->StopMovement();
+    
 
     // 부드럽게 회전
     FRotator CurrentRotation = FMath::RInterpTo(AICharacter->GetActorRotation(), TargetRotation, DeltaSeconds, RotationSpeed);
     AICharacter->SetActorRotation(CurrentRotation);
 
- 
+
     // 목표 회전에 도달했는지 확인
-    if (FMath::Abs(CurrentRotation.Yaw - TargetRotation.Yaw) < 0.1f)
+    if (FMath::Abs(CurrentRotation.Yaw - TargetRotation.Yaw) < 0.5f)
     {
         ElapsedTime += DeltaSeconds;  // 대기 시간 증가
 
@@ -72,13 +77,14 @@ void UCBTTask_Alert::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
             ElapsedTime = 0.0f;  // 시간 초기화
 
             // 중앙에 도착
-            if (TargetRotation == StartRotation)
+            if (bCenter == true)
             {   
                 // 왼쪽 회전
                 if (!bLeft)
                 {
                     TargetRotation = LeftRotation;
                     bLeft = true;
+                    bCenter = false;
                     return;
                 }
 
@@ -87,6 +93,7 @@ void UCBTTask_Alert::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
                 {
                     TargetRotation = RightRotation;
                     bRight = true;
+                    bCenter = false;
                     return;
                 }
 
@@ -101,10 +108,8 @@ void UCBTTask_Alert::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
             else
             {
                 TargetRotation = StartRotation;
+                bCenter = true;
             }
-
-            
-
         }
     }
 

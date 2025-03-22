@@ -93,6 +93,7 @@ public:
 	FORCEINLINE void SetSprint(bool input) { bSprint = input; }
 
 	void SetStateType(EStateType input);
+	FORCEINLINE void SetStateLocked(bool input) { bIsStateLocked = input; }
 	FORCEINLINE void SetStatusType(EStatusType input) { StatusType = input; }
 
 	UFUNCTION(BlueprintCallable)
@@ -134,6 +135,7 @@ private:
 
 	//
 	EStateType StateType;
+	bool bIsStateLocked = false;
 	EStatusType StatusType;
 	ESpeedType SpeedType;
 

@@ -110,6 +110,7 @@ void ACAIController::OnTargetLost(AActor* Actor)
 	{
 		OwnerCharacterAI->GetStatComponent()->SetStateType(EStateType::Alert);
 		GetBlackboardComponent()->SetValueAsObject("PlayerKey", nullptr);
+		StopMovement();
 
 		bFindPlayer = false;
 		CLog::Print(L"플레이어가 잊혀짐");

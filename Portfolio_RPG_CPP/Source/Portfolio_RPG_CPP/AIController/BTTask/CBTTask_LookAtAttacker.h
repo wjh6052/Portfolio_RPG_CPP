@@ -30,6 +30,7 @@ public:
 
 	class ACAIController* AIController;
 	class ACCharacter_Base* AICharacter;
+	class UBlackboardComponent* BlackboardComp;
 
-	FVector TargetLocation;
+	FRotator StartRotation;
 };
