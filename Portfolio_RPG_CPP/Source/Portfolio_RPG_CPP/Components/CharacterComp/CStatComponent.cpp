@@ -123,6 +123,7 @@ void UCStatComponent::EnemyDataSetting()
 		{
 			// 스텟설정
 			SetCurrentStat(Row.Stat);
+			OwnerCharacter_Enemy->Enemy_DataTable = Row;
 
 			break;
 		}

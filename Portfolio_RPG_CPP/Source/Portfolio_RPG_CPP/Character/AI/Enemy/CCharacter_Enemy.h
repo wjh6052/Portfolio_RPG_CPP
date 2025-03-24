@@ -26,6 +26,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
 		EEnemyName EnemyName;
 
+
+	FEnemy_DataTable Enemy_DataTable;
+
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		class UWidgetComponent* HPBarWidget;

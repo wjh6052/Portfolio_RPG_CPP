@@ -34,7 +34,7 @@ enum class EItemCategory : uint8 // 아이템 카테고리 종류
 
 
 UENUM(BlueprintType)
-enum class EItemUseType : uint8 // 아이템의 사용처
+enum class EItemUseType : uint8 // 재료 아이템의 사용처
 {
 	None				UMETA(DisplayName = "비어있음"),
 	PotionCraft			UMETA(DisplayName = "포션제작 재료"),		
@@ -131,15 +131,19 @@ struct FEnemyDropItem
 public:
 	// 아이템 카테고리 종류
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-	EItemCategory ItemCategory;
+		EItemCategory ItemCategory;
 
-	// 아이템의 사용처
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	// 재료 아이템의 사용처
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "ItemCategory == EItemCategory::Material"))
 		EItemUseType ItemUseType;
 
 	//등급 설정
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		EStarRating StarRating;
+
+	//갯수
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		int ItemCount = 1;
 
 };
 

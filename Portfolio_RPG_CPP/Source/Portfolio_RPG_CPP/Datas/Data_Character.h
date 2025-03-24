@@ -214,6 +214,8 @@ public
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
 		TArray<FEnemyDropItem> EnemyDropItemArr;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
+		int LootMoneyCount = 1;
 
 
 	// 공격 액션 데이터

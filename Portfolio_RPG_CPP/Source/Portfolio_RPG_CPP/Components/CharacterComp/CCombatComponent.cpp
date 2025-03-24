@@ -6,6 +6,8 @@
 #include "../../Character/AI/Enemy/CCharacter_Enemy.h"
 #include "../../Datas/DA/DA_DamageText.h"
 #include "../../Object/Combat/CCombat_Base.h"
+#include "../../Object/Interaction/CItemInteraction_Material.h"
+#include "../../Object/Interaction/CItemInteraction_Money.h"
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/GameplayUI/CWGameplayUI.h"
 
@@ -253,6 +255,58 @@ void UCCombatComponent::CharacterDeath()
 	
 	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Die_Montage.AnimMontage, Current_CombatData.Die_Montage.PlayRate);
 	OwnerCharacter_Base->GetMainMesh()->SetSimulatePhysics(true);
+
+
+	DropLootOnDeath();
+}
+
+void UCCombatComponent::DropLootOnDeath()
+{
+	float Power = 700;
+
+	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Enemy)
+	{
+		for (FEnemyDropItem row : OwnerCharacter_Enemy->Enemy_DataTable.EnemyDropItemArr)
+		{
+			switch (row.ItemCategory)
+			{
+			case EItemCategory::Material:
+				{
+					ACItemInteraction_Material* item = GetWorld()->SpawnActor<ACItemInteraction_Material>   (ACItemInteraction_Material::StaticClass(), OwnerCharacter_Enemy->GetActorLocation(), FRotator::ZeroRotator);
+
+					item->FInteractionItemMaterial.StarRating = row.StarRating;
+					item->FInteractionItemMaterial.ItemUseType = row.ItemUseType;
+					item->FInteractionItemMaterial.MaterialNum = row.ItemCount;
+					item->ItemName = L"이름";
+
+					item->SetMaterialItemIcon();
+
+					
+					FVector Impulse = FVector(FMath::RandRange(-Power, Power), FMath::RandRange(-Power, Power), 500);
+					item->GetMesh()->AddImpulse(Impulse);
+
+					break;
+				}
+			case EItemCategory::Equipment:
+				break;
+			}
+		}
+
+		if (OwnerCharacter_Enemy->Enemy_DataTable.LootMoneyCount > 0)
+		{
+			ACItemInteraction_Money* money = GetWorld()->SpawnActor<ACItemInteraction_Money>(ACItemInteraction_Money::StaticClass(), OwnerCharacter_Enemy->GetActorLocation(), FRotator::ZeroRotator);
+			money->Money = OwnerCharacter_Enemy->Enemy_DataTable.LootMoneyCount;
+
+			FVector Impulse = FVector(FMath::RandRange(-Power, Power), FMath::RandRange(-Power, Power), 500);
+			money->GetMesh()->AddImpulse(Impulse);
+		}
+
+	}
+	else if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss)
+	{
+
+	}
+
 }
 
 // 적의 뱡향으로 돌아서기

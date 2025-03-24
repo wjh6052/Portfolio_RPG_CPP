@@ -34,6 +34,8 @@ public:
 	void PlayHitReaction();
 	void CharacterDeath();
 
+	void DropLootOnDeath();
+
 	void AttractToTarget(AActor* Target);
 	void ShowDamageText(AActor* DamageOwner, float Damage, bool bCritical = false, bool bHill = false);
 

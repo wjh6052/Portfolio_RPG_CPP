@@ -15,8 +15,9 @@ class PORTFOLIO_RPG_CPP_API ACItemInteraction_Material : public ACInteraction
 	GENERATED_BODY()
 
 public:
-		ACItemInteraction_Material();
+	ACItemInteraction_Material();
 
+	void SetMaterialItemIcon();
 
 protected:
 	virtual void BeginPlay() override;

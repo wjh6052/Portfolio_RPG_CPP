@@ -34,6 +34,8 @@ public:
 		FORCEINLINE FString GetItemName() { return ItemName; }
 	FORCEINLINE class USphereComponent* GetSphereCollision() { return SphereCollision; }
 
+	FORCEINLINE class UStaticMeshComponent* GetMesh() { return StaticMesh; }
+
 
 
 protected:
