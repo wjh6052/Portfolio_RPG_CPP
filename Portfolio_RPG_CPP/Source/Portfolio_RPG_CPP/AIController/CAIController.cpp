@@ -88,7 +88,6 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 			GetBlackboardComponent()->SetValueAsObject("PlayerKey", player);
 			bLookPlayer = true;
 			bFindPlayer = true;
-			CLog::Print(L"플레이어를 찾음");
 			return;
 		}
 	}
@@ -97,7 +96,6 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 	if(bLookPlayer == false && bFindPlayer == true)
 	{
 		bLookPlayer = false;
-		CLog::Print(L"플레이어가 시야에서 벗어남");
 	}
 	
 }
@@ -113,8 +111,6 @@ void ACAIController::OnTargetLost(AActor* Actor)
 		StopMovement();
 
 		bFindPlayer = false;
-		CLog::Print(L"플레이어가 잊혀짐");
-
 	}
 
 	

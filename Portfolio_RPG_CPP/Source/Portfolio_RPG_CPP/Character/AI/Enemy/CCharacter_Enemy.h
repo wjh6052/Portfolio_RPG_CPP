@@ -17,14 +17,20 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-
 public:
-
-
+	virtual void Tick(float DeltaTime) override;
 
 
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
 		EEnemyName EnemyName;
+
+protected:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		class UWidgetComponent* HPBarWidget;
+
+
+	class UCW_EnemyHpBar* CW_EnemyHpBar;
+
 };

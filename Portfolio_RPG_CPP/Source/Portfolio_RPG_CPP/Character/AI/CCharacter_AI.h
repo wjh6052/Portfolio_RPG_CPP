@@ -46,17 +46,17 @@ protected:
 
 
 public:
-	void DyingTimeLineStart(); // 타임라인을 세팅 및 시작할 함수
+	virtual void DyingTimeLineStart(); // 타임라인을 세팅 및 시작할 함수
 	
 protected:
 	// 타임라인
 	FTimeline DyingTimeLine;		// 타임라인	
 	
 	UFUNCTION()
-		void TimelineUpdate(float Value); // 값이 변경될때 호출
+		virtual void TimelineUpdate(float Value); // 값이 변경될때 호출
 	
 	UFUNCTION()
-		void TimelineFinished(); // 타임라인 종료 시 호출
+		virtual void TimelineFinished(); // 타임라인 종료 시 호출
 	
 	
 	UPROPERTY(EditAnywhere, Category = "DyingTimeLine")

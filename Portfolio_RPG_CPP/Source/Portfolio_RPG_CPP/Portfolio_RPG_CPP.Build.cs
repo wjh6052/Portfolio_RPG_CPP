@@ -18,7 +18,6 @@ public class Portfolio_RPG_CPP : ModuleRules
 			"GameplayTasks",
 			"NavigationSystem",
 			"AnimGraphRuntime"
-			
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
