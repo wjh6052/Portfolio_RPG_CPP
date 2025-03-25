@@ -266,7 +266,7 @@ void UCCombatComponent::DropLootOnDeath()
 
 	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Enemy)
 	{
-		for (FEnemyDropItem row : OwnerCharacter_Enemy->Enemy_DataTable.EnemyDropItemArr)
+		for (FItemType row : OwnerCharacter_Enemy->Enemy_DataTable.EnemyDropItemArr)
 		{
 			switch (row.ItemCategory)
 			{

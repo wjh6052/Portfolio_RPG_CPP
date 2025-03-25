@@ -21,7 +21,7 @@ UCGameInstance::UCGameInstance()
 	
 
 	//NPC 데이터 테이블
-	CHelpers::GetAsset<UDataTable>(&NPC_DataTable, "DataTable'/Game/Data/DT_NPC.DT_NPC'");
+	CHelpers::GetAsset<UDataTable>(&NPC_DataTable, "DataTable'/Game/Data/NPC/DT_NPC.DT_NPC'");
 	
 
 	// 아이템 데이터 테이블

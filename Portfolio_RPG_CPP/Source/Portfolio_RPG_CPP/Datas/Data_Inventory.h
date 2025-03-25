@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Engine/DataTable.h"
+#include "Data_Combat.h"
 #include "Data_Inventory.generated.h"
 
 
@@ -21,6 +22,15 @@ enum class EStarRating : uint8 // 등급 설정
 	Fivestar	UMETA(DisplayName = "5성"),
 };
 
+UENUM(BlueprintType)
+enum class EInteractionCategory : uint8 // 아이템의 사용처
+{
+	None		UMETA(DisplayName = "비어있음"),
+	Material	UMETA(DisplayName = "강화 재료"),
+	Money		UMETA(DisplayName = "돈"),
+	System		UMETA(DisplayName = "시스템"),
+	NPC			UMETA(DisplayName = "NPC")
+};
 
 UENUM(BlueprintType)
 enum class EItemCategory : uint8 // 아이템 카테고리 종류
@@ -45,15 +55,6 @@ enum class EItemUseType : uint8 // 재료 아이템의 사용처
 };
 
 
-UENUM(BlueprintType)
-enum class EInteractionCategory : uint8 // 아이템의 사용처
-{
-	None		UMETA(DisplayName = "비어있음"),
-	Material	UMETA(DisplayName = "강화 재료"),
-	Money		UMETA(DisplayName = "돈"),
-	System		UMETA(DisplayName = "시스템"),
-	NPC			UMETA(DisplayName = "NPC")
-};
 
 //---------------------------struct---------------------------------------------
 
@@ -124,7 +125,7 @@ public:
 
 
 USTRUCT(BlueprintType)
-struct FEnemyDropItem
+struct FItemType
 {
 	GENERATED_BODY()
 		
@@ -137,6 +138,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "ItemCategory == EItemCategory::Material"))
 		EItemUseType ItemUseType;
 
+	// 무기 또는 장비 종류
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "ItemCategory == EItemCategory::Equipment || ItemCategory == EItemCategory::Weapon"))
+		ECombatType CombatType;
+	
 	//등급 설정
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		EStarRating StarRating;

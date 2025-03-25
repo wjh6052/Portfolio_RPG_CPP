@@ -21,6 +21,12 @@ enum class EEnemyName : uint8
 	Hilichurl		UMETA(DisplayName = "츄츄족")
 };
 
+UENUM(BlueprintType)
+enum class EBossName : uint8
+{
+	None			UMETA(DisplayName = "비어있음")
+};
+
 
 UENUM(BlueprintType)
 enum class ECharacterType : uint8
@@ -212,7 +218,7 @@ public
 
 	// 몬스터 사망시 드랍될 아이템 배열
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
-		TArray<FEnemyDropItem> EnemyDropItemArr;
+		TArray<FItemType> EnemyDropItemArr;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
 		int LootMoneyCount = 1;
