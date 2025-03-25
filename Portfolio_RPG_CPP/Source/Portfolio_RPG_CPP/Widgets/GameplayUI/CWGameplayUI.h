@@ -48,4 +48,13 @@ public: // ------------------------------------------------무기 선택 창---------
 	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon Choice")
 		void OnWeaponWheel(bool IbOn);
 
+
+public: // ------------------------------------------------무기 선택 창------------------------------------------------
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon Choice")
+		void BeginHPBar(float InHP, float InMaxHp);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon Choice")
+		void SetHPBar(float InHP);
+
 };

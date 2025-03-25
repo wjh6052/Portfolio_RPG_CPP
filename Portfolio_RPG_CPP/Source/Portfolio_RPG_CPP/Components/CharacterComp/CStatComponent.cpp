@@ -7,6 +7,8 @@
 #include "../../Character/AI/NPC/CCharacter_NPC.h"
 #include "../../AIController/CAIController.h"
 #include "../../Maps/CLevel_Main.h"
+#include "../../Widgets/CWMain.h"
+#include "../../Widgets/GameplayUI/CWGameplayUI.h"
 
 #include "TimerManager.h"
 #include "AIController.h"
@@ -212,18 +214,23 @@ void UCStatComponent::Desh_Ragdoll()
 
 bool UCStatComponent::AddDamage(float InDamage)
 {
-	if (CurrentStat.HP - InDamage <= 0) // 죽었을 때
+	CurrentStat.HP -= InDamage;
+
+	if (CurrentStat.HP <= 0) // 죽었을 때
 	{
 		CurrentStat.HP = 0;
 
 		return true;
 	}
-	else if (CurrentStat.HP - InDamage >= CurrentStat.HP_Max) // 힐을 받았을때 최대체력을 넘지 않도록 설정
+	else if (CurrentStat.HP >= CurrentStat.HP_Max) // 힐을 받았을때 최대체력을 넘지 않도록 설정
 	{
 		CurrentStat.HP = CurrentStat.HP_Max;		
 	}
 
-	CurrentStat.HP -= InDamage;
+	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Player)
+	{
+		OwnerACCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetHPBar(CurrentStat.HP);
+	}
 
 	return false;
 }

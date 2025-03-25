@@ -33,6 +33,10 @@ void UCWidgetComponent::BeginPlay()
 
 	// 메인 위젯 켜기
 	GetMainWidget()->AddToViewport();
+
+
+	// 위젯 HPBar설정
+	GetMainWidget()->GetGameplayUI()->BeginHPBar(OwnerPlayer->GetStatComponent()->GetCurrentStat().HP, OwnerPlayer->GetStatComponent()->GetCurrentStat().HP_Max);
 	
 }
 
