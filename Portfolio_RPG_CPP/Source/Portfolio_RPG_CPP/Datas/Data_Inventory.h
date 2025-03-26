@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
 #include "Data_Combat.h"
 #include "Data_Inventory.generated.h"
@@ -238,8 +238,9 @@ public:
 
 
 UCLASS()
-class PORTFOLIO_RPG_CPP_API UData_Inventory : public UObject
+class PORTFOLIO_RPG_CPP_API AData_Inventory : public AActor
 {
 	GENERATED_BODY()
-	
+
+
 };

@@ -56,21 +56,6 @@ public:
 		int32 KillCount;
 };
 
-USTRUCT(BlueprintType)
-struct FQuestDetails_Item	// 퀘스트 요구 아이템
-{
-	GENERATED_BODY()
-
-public:
-	// 아이템의 종류
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		FItemType ItemType;
-
-	// 아이템의 갯수
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		int32 ItemCount;
-};
-
 
 
 USTRUCT(BlueprintType)
@@ -105,7 +90,7 @@ public:
 
 	// 퀘스트 요구 아이템
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "bRequireItemCollection"))
-		TArray<FQuestDetails_Item> RequiredItems;
+		TArray<FItemType> RequiredItems;
 
 
 
@@ -127,7 +112,7 @@ struct FQuestReward		// 퀘스트 보상
 public:
 	// 보상으로 지급할 아이템 종류
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		TArray<FQuestDetails_Item> RewardItems;
+		TArray<FItemType> RewardItems;
 
 	// 보상으로 지급할 돈
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (ClampMin = "0"))
@@ -168,7 +153,12 @@ public:
 
 
 	// 현제 퀘스트의 상황
-	EQuestState QuestState;
+	UPROPERTY(BlueprintReadOnly)
+		EQuestState QuestState;
+
+	// 퀘스트를 준 NPC이름
+	UPROPERTY(BlueprintReadOnly)
+		FString NPCName;
 };
 
 

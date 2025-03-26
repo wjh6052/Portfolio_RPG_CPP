@@ -54,7 +54,7 @@ void UCInteractionComponent::StartNPCTalk(AActor* InNpc)
 	
 
 	// 대화 ui에 택스트 변경
-	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->GetNPCTalkUI()->SetNPCTalkUI(interaction_NPC->NPC_DataTable);
+	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->GetNPCTalkUI()->SetNPCTalkUI(interaction_NPC);
 
 	OwnerPlayer->GetWidgetComponent()->CurrentUi = ECurrentUi::NPCDialogue;
 	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->SetWidgetSwitcher(OwnerPlayer->GetWidgetComponent()->CurrentUi);

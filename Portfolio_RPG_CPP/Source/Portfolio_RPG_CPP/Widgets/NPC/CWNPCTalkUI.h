@@ -24,7 +24,7 @@ class PORTFOLIO_RPG_CPP_API UCWNPCTalkUI : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-		void SetNPCTalkUI(FNPC_DataTable InNPCData);
+		void SetNPCTalkUI(class ACInteraction_NPC* InNPCData);
 
 
 	UPROPERTY(BlueprintReadWrite)
