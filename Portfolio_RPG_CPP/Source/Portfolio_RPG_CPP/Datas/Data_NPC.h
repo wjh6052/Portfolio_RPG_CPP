@@ -87,6 +87,16 @@ public:
 		FText NPCTitle;
 
 
+	// 퀘스트 목록
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestList")
+		TArray<int32> QuestList;
+
+
+	// 판매 아이템 리스트
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "SaleItemList", meta = (EditCondition = "ItemCategory == EItemCategory::Material"))
+		TArray<FItemType> SaleItemList;
+
+
 	// 말을 걸었을때 처음 나올 대화
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Conversation")
 		FText FirstConversationText;

@@ -27,8 +27,8 @@ void ACCharacter_NPC::BeginPlay()
 
 	Interaction_NPC = GetWorld()->SpawnActor<ACInteraction_NPC>(ACInteraction_NPC::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
 	Interaction_NPC->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), TEXT("pelvis"));
-	Interaction_NPC->OwnerNPC = this;
 	Interaction_NPC->ItemName = CHelpers::GetEnumDisplayName<ENPCName>(NPCName);
+	Interaction_NPC->SettingInteraction_NPC(this);
 	//Interaction_NPC->InteractionImage = 
 
 }

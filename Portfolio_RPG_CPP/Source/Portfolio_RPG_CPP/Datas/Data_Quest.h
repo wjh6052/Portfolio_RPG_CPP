@@ -62,11 +62,11 @@ struct FQuestDetails_Item	// 퀘스트 요구 아이템
 	GENERATED_BODY()
 
 public:
-	// 요구하는 아이템의 종류
+	// 아이템의 종류
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		FItemType ItemType;
 
-	// 잡아야 하는 몬스터의 수
+	// 아이템의 갯수
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		int32 ItemCount;
 };
@@ -119,6 +119,23 @@ public:
 };
 
 
+USTRUCT(BlueprintType)
+struct FQuestReward		// 퀘스트 보상
+{
+	GENERATED_BODY()
+
+public:
+	// 보상으로 지급할 아이템 종류
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		TArray<FQuestDetails_Item> RewardItems;
+
+	// 보상으로 지급할 돈
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (ClampMin = "0"))
+		int32 RewardGold = 0;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (ClampMin = "0"))
+		int32 RewardExe = 0;
+};
 
 //---------------------------DataTable---------------------------------------------
 
@@ -144,6 +161,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestDetails")
 		FQuestDetails QuestDetails; 
 
+
+	// 퀘스트 보상
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestReward")
+		FQuestReward QuestReward;
 
 
 	// 현제 퀘스트의 상황

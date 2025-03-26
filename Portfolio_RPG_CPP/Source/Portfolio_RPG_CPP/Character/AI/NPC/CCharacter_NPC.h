@@ -27,13 +27,10 @@ protected:
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
-		ENPCType NPCType;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
 		ENPCName NPCName;
 
 
-private:
+public:
 
 
 	class ACInteraction_NPC* Interaction_NPC;

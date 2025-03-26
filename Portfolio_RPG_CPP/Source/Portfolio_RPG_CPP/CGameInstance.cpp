@@ -24,6 +24,10 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&NPC_DataTable, "DataTable'/Game/Data/NPC/DT_NPC.DT_NPC'");
 	
 
+	// 퀘스트 데이터 테이블
+	CHelpers::GetAsset<UDataTable>(&Quest_DataTable, "DataTable'/Game/Data/NPC/DT_Quest.DT_Quest'");
+
+
 	// 아이템 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&MaterialItem_DataTable, "DataTable'/Game/Data/DT_MaterialItem.DT_MaterialItem'");
 	
@@ -45,6 +49,7 @@ void UCGameInstance::Init()
 	PlayerDataTableToArr();
 	EnemyDataTableToArr();
 	NPCDataTableToArr();
+	QuestDataTableToArr();
 	IconDataTableToArr();
 
 	SaveData();
@@ -113,6 +118,26 @@ void UCGameInstance::NPCDataTableToArr()
 		{
 			if (Row)
 				NPCData_Arr.Add(*Row);
+		}
+	}
+}
+
+void UCGameInstance::QuestDataTableToArr()
+{
+	if (!Quest_DataTable)
+	{
+		CLog::Print(L"NPC 데이터테이블을 읽어오지 못하였습니다");
+	}
+	else
+	{
+		TArray<FQuest_DataTable*> AllRows;
+		Quest_DataTable->GetAllRows<FQuest_DataTable>(L"", AllRows);
+
+
+		for (FQuest_DataTable* Row : AllRows)
+		{
+			if (Row)
+				QuestData_Arr.Add(*Row);
 		}
 	}
 }

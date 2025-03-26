@@ -7,6 +7,7 @@
 #include "Datas/Data_Inventory.h"
 #include "Datas/Data_NPC.h"
 #include "Datas/Data_Widget.h"
+#include "Datas/Data_Quest.h"
 #include "CGameInstance.generated.h"
 
 
@@ -89,6 +90,13 @@ public: // NPC 데이터
 	UDataTable* NPC_DataTable;
 
 
+public:	// 퀘스트 데이터
+	void QuestDataTableToArr();
+
+	// 퀘스트 데이터테이블
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FQuest_DataTable> QuestData_Arr;
+	UDataTable* Quest_DataTable;
 
 
 
