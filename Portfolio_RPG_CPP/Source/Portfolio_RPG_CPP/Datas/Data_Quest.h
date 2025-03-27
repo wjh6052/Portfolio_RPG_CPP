@@ -39,7 +39,7 @@ public:
 		int32 KillCount;
 
 	// 현재 잡은 보스의 수
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 		int32 CurrentKillCount;
 };
 
@@ -60,7 +60,7 @@ public:
 		int32 KillCount;
 
 	// 현재 잡은 보스의 수
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 		int32 CurrentKillCount;
 };
 
