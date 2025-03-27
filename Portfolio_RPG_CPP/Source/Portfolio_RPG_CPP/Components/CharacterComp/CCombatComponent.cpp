@@ -4,6 +4,7 @@
 #include "../../Character/CCharacter_Base.h"
 #include "../../Character/Player/CCharacter_Player.h"
 #include "../../Character/AI/Enemy/CCharacter_Enemy.h"
+#include "../../Character/AI/Boss/CCharacter_Boss.h"
 #include "../../Datas/DA/DA_DamageText.h"
 #include "../../Object/Combat/CCombat_Base.h"
 #include "../../Object/Interaction/CItemInteraction_Material.h"
@@ -46,6 +47,7 @@ void UCCombatComponent::BeginPlay()
 		break;
 
 	case ECharacterType::Boss:
+		OwnerCharacter_Boss = Cast<ACCharacter_Boss>(OwnerCharacter_Base);
 		//BossBeginPlay();
 		break;
 
@@ -169,7 +171,7 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 
 	if (OwnerCharacter_Base->GetStatComponent()->AddDamage(InDamage))
 	{
-		CharacterDeath();
+		CharacterDeath(DamageCauser);
 		return;
 	}
 	
@@ -249,8 +251,70 @@ void UCCombatComponent::PlayHitReaction()
 }
 
 // 죽었을때
-void UCCombatComponent::CharacterDeath()
+void UCCombatComponent::CharacterDeath(AActor* DamageCauser)
 {	
+	ACCombat_Base* CombatActor = Cast<ACCombat_Base>(DamageCauser);
+	if (CombatActor != nullptr)
+		if (CombatActor->OwnerCharacter != nullptr && CombatActor->OwnerCharacter->GetCharacterType() == ECharacterType::Player)
+		{			
+			switch (OwnerCharacter_Base->GetCharacterType())
+			{
+			case ECharacterType::Enemy:
+				for (FQuest_DataTable arr : CGameInstance->QuestData_Arr)
+				{
+					// 퀘스트의 상태가 진행 중 인지 && 몬스터의 킬이 있는지
+					if (arr.QuestState == EQuestState::InProgress && arr.QuestDetails.bRequireMonsterKill == true)
+					{
+						for (int i = 0; i < arr.QuestDetails.MonsterTargets.Num(); i++)
+						{
+							// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
+							if (arr.QuestDetails.MonsterTargets[i].EnemyName == OwnerCharacter_Enemy->EnemyName)
+							{
+								arr.QuestDetails.MonsterTargets[i].CurrentKillCount++;
+								CGameInstance->UpdateQuestDate(arr);
+								break;
+							}
+							
+						}
+					}
+
+				}				
+				break;
+				
+
+			case ECharacterType::Boss:
+				for (FQuest_DataTable arr : CGameInstance->QuestData_Arr)
+				{
+					// 퀘스트의 상태가 진행 중 인지 && 몬스터의 킬이 있는지
+					if (arr.QuestState == EQuestState::InProgress && arr.QuestDetails.bRequireBossKill == true)
+					{
+						for (int i = 0; i < arr.QuestDetails.BossTargets.Num(); i++)
+						{
+							// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
+							if (arr.QuestDetails.BossTargets[i].BossName == OwnerCharacter_Boss->BossName)
+							{
+								arr.QuestDetails.BossTargets[i].CurrentKillCount++;
+								CGameInstance->UpdateQuestDate(arr);
+								break;
+							}
+
+						}
+					}
+
+				}
+				break;
+
+			}
+			
+
+
+			
+				
+		}
+
+
+
+
 	OwnerCharacter_Base->GetStatComponent()->SetStateType(EStateType::Dying);
 	
 	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Die_Montage.AnimMontage, Current_CombatData.Die_Montage.PlayRate);

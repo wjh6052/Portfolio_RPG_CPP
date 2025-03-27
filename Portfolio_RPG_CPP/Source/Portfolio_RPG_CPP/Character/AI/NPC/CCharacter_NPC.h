@@ -31,7 +31,9 @@ public:
 
 
 public:
+	UFUNCTION()
+		void UpdateInteractionQuestData(const TArray<FQuest_DataTable>& NewQuest_DataTable);
 
-
+	class UCGameInstance* CGameInstance;
 	class ACInteraction_NPC* Interaction_NPC;
 };

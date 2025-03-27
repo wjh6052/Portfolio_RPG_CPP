@@ -10,9 +10,17 @@
 #include "Datas/Data_Quest.h"
 #include "CGameInstance.generated.h"
 
-
+// 아이템 정보 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FUpdataMaterialItem, EItemUseType, ItemUseType, EStarRating, ItemRating, int, AddCount);
+
+// 돈 정보 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdata_Money, int, AddMoney);
+
+
+// 퀘스트 정보 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdate_Quest, const TArray<FQuest_DataTable>&, NewQuest_DataTable);
+
+
 
 UCLASS()
 class PORTFOLIO_RPG_CPP_API UCGameInstance : public UGameInstance
@@ -31,36 +39,9 @@ public:
 
 
 
-	
 
-
-
-
-
-
-	
-// ------------------------------------------------Delegate-------------------------------------------------------
+// ------------------------------------------------캐릭터 데이터-------------------------------------------------------
 public:
-	// 델리게이트 호출 함수
-	FORCEINLINE void TriggerUpdataMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount) { Updata_MaterialItem.Broadcast(ItemUseType, ItemRating, AddCount); }
-	FORCEINLINE void TriggerUpdataMoney(int AddMoney) { Updata_Money.Broadcast(AddMoney); }
-
-
-
-	// 델리게이트 변수
-	UPROPERTY(BlueprintAssignable)
-		FUpdataMaterialItem Updata_MaterialItem;
-
-	UPROPERTY(BlueprintAssignable)
-		FUpdata_Money Updata_Money;
-	
-
-
-
-
-
-// ------------------------------------------------DataTable-------------------------------------------------------
-public: // 캐릭터 데이터
 	void PlayerDataTableToArr();
 	void EnemyDataTableToArr();
 
@@ -81,7 +62,8 @@ public: // 캐릭터 데이터
 
 
 
-public: // NPC 데이터
+// ------------------------------------------------NPC 데이터-------------------------------------------------------
+public:
 	void NPCDataTableToArr();
 
 	// NPC 데이터
@@ -90,7 +72,10 @@ public: // NPC 데이터
 	UDataTable* NPC_DataTable;
 
 
-public:	// 퀘스트 데이터
+
+
+// ------------------------------------------------퀘스트 데이터-------------------------------------------------------
+public:
 	void QuestDataTableToArr();
 
 	// 퀘스트 데이터테이블
@@ -98,9 +83,24 @@ public:	// 퀘스트 데이터
 		TArray<FQuest_DataTable> QuestData_Arr;
 	UDataTable* Quest_DataTable;
 
+	
 
 
-public: // 아이템 데이터
+	UPROPERTY(BlueprintAssignable)
+		FUpdate_Quest Update_Quest;
+
+	// 퀘스트 정보를 업데이트할 함수
+	UFUNCTION(BlueprintCallable)
+		void UpdateQuestDate(FQuest_DataTable Input);
+
+
+	// 퀘스트 정보 델리게이트
+	FORCEINLINE void TriggerUpdateQuest() { Update_Quest.Broadcast(QuestData_Arr); }
+
+
+
+// ------------------------------------------------아이템 데이터-------------------------------------------------------
+public:
 	void ItemDataTableToArr(); 
 
 	// 유저가 가지고 있는 아이템
@@ -109,7 +109,37 @@ public: // 아이템 데이터
 	UDataTable* MaterialItem_DataTable;
 
 
+	// 아이템 정보 델리게이트 호출 함수
+	FORCEINLINE void TriggerUpdataMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount) { Updata_MaterialItem.Broadcast(ItemUseType, ItemRating, AddCount); }
+
+	UPROPERTY(BlueprintAssignable)
+		FUpdataMaterialItem Updata_MaterialItem;
+
+
+	// 배열에 아이템의 갯수를 추가하는 함수
+	UFUNCTION(BlueprintCallable)
+		void AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount);
 	
+
+
+// ------------------------------------------------돈 데이터-------------------------------------------------------
+public:
+
+	// 유저가 가지고 있는 소지금 
+	UPROPERTY(BlueprintReadWrite)
+		int Money = 0;
+
+	// 돈 정보 델리게이트 호출 함수
+	FORCEINLINE void TriggerUpdataMoney(int AddMoney) { Updata_Money.Broadcast(AddMoney); }
+
+	UPROPERTY(BlueprintAssignable)
+		FUpdata_Money Updata_Money;
+
+
+	// 보유 돈을 추가하는 함수
+	UFUNCTION(BlueprintCallable)
+		void AddMoney(int AddMoney);
+
 
 
 
@@ -136,6 +166,7 @@ public:
 	class UDA_DamageText* DamageText_DA;
 
 
+
 // ----------------------------------------------------SaveGame-------------------------------------------------------
 public: 
 	// SaveGame
@@ -150,20 +181,12 @@ public:
 public: // Get
 		FORCEINLINE int GetMoney() { return Money; }
 
-
-public:
-	// 배열에 아이템의 갯수를 추가함
-	UFUNCTION(BlueprintCallable)
-		void AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount);
-	UFUNCTION(BlueprintCallable)
-		void AddMoney(int AddMoney);
+	
 
 
 public:
 
-	// 유저가 가지고 있는 소지금 
-	UPROPERTY(BlueprintReadWrite)
-		int Money = 0;
+	
 
 	// 유저의 현재 캐릭터
 	ECombatType CombatType;

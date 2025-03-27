@@ -37,6 +37,10 @@ public:
 	// 잡아야 하는 몬스터의 수
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		int32 KillCount;
+
+	// 현재 잡은 보스의 수
+	UPROPERTY(BlueprintReadOnly)
+		int32 CurrentKillCount;
 };
 
 
@@ -54,6 +58,10 @@ public:
 	// 잡아야 하는 보스의 수
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		int32 KillCount;
+
+	// 현재 잡은 보스의 수
+	UPROPERTY(BlueprintReadOnly)
+		int32 CurrentKillCount;
 };
 
 
@@ -153,11 +161,11 @@ public:
 
 
 	// 현제 퀘스트의 상황
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 		EQuestState QuestState;
 
 	// 퀘스트를 준 NPC이름
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 		FString NPCName;
 };
 

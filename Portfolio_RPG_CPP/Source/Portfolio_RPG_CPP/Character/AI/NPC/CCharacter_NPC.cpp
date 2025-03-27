@@ -1,5 +1,6 @@
 #include "CCharacter_NPC.h"
 #include "../../../Global.h"
+#include "../../../CGameInstance.h"
 #include "../../../Object/Interaction/CInteraction_NPC.h"
 #include "../../../AnimInstance/CAnimInstance_Base.h"
 
@@ -31,6 +32,14 @@ void ACCharacter_NPC::BeginPlay()
 	Interaction_NPC->SettingInteraction_NPC(this);
 	//Interaction_NPC->InteractionImage = 
 
+
+
+	CGameInstance = Cast<UCGameInstance>(GetWorld()->GetGameInstance());
+
+	CGameInstance->Update_Quest.AddDynamic(this, &ACCharacter_NPC::UpdateInteractionQuestData);
 }
 
-
+void ACCharacter_NPC::UpdateInteractionQuestData(const TArray<FQuest_DataTable>& NewQuest_DataTable)
+{
+	Interaction_NPC->SettingInteraction_NPC(this);
+}

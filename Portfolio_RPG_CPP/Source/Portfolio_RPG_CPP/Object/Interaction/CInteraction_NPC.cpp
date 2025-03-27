@@ -25,8 +25,6 @@ void ACInteraction_NPC::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-
 
 	//Quest_DataTable
 	
@@ -48,6 +46,8 @@ void ACInteraction_NPC::SettingInteraction_NPC(class ACCharacter_NPC* InOwnerNPC
 
 	}
 
+
+	Quest_DataTable_Arr.Empty();
 	for (FQuest_DataTable quest_Arr : gameInstance->QuestData_Arr)
 	{
 		for (int32 quest_List : NPC_DataTable.QuestList)

@@ -77,8 +77,12 @@ void ACCharacter_AI::DyingTimeLineStart()
 	for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)
 	{
 		TArray<UTexture*> Textures;
-		MeshMateriaeDynamic[i]->GetUsedTextures(Textures, EMaterialQualityLevel::High, true, ERHIFeatureLevel::SM5, true);
-		DissolveMaterialeDynamic[i]->SetTextureParameterValue("BaseTexture", Textures[0]);
+		if(MeshMateriaeDynamic.Num() > 0)
+			if(MeshMateriaeDynamic[i] != nullptr)
+				MeshMateriaeDynamic[i]->GetUsedTextures(Textures, EMaterialQualityLevel::High, true, ERHIFeatureLevel::SM5, true);
+
+		if(Textures.Num() > 0)
+			DissolveMaterialeDynamic[i]->SetTextureParameterValue("BaseTexture", Textures[0]);
 
 
 		GetMainMesh()->SetMaterial(i, DissolveMaterialeDynamic[i]);

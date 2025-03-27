@@ -142,6 +142,20 @@ void UCGameInstance::QuestDataTableToArr()
 	}
 }
 
+void UCGameInstance::UpdateQuestDate(FQuest_DataTable Input)
+{
+	for (int i = 0; i < QuestData_Arr.Num(); i++)
+	{
+		if(Input.QuestID == QuestData_Arr[i].QuestID)
+		{
+			QuestData_Arr[i] = Input;
+			TriggerUpdateQuest();
+			return;
+		}
+	}
+}
+
+
 void UCGameInstance::ItemDataTableToArr()
 {
 	if (!MaterialItem_DataTable)
@@ -271,6 +285,12 @@ bool UCGameInstance::LoadData(FString SlotName, int Index)
 		// 아이템데이터 저장
 		MaterialItemItmeData_Arr = ItmeData_SaveGame->Save_MaterialItemItmeData_Arr;
 		Money = ItmeData_SaveGame->Save_Money;
+
+
+		// 전체 퀘스트 진행도 추가 예정
+		QuestData_Arr.Empty();
+
+		// 현제 플레이어의 퀘스트 정보
 
 
 		CLog::Print(L"로드를 성공했습니다");	

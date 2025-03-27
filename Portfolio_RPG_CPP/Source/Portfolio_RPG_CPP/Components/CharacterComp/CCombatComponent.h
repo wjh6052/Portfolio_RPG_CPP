@@ -32,7 +32,7 @@ public:
 	void OnHitImpact(bool bThrowable, class UPrimitiveComponent* OverlappedComponent);
 	void AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp);
 	void PlayHitReaction();
-	void CharacterDeath();
+	void CharacterDeath(AActor* DamageCauser);
 
 	void DropLootOnDeath();
 
@@ -83,6 +83,7 @@ public:
 	class ACCharacter_Base* OwnerCharacter_Base;
 	class ACCharacter_Player* OwnerCharacter_Player = nullptr;
 	class ACCharacter_Enemy* OwnerCharacter_Enemy = nullptr;
+	class ACCharacter_Boss* OwnerCharacter_Boss = nullptr;
 
 
 	class ACCharacter_Base* DamageCharacter = nullptr;
