@@ -270,9 +270,14 @@ void UCCombatComponent::CharacterDeath(AActor* DamageCauser)
 							// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
 							if (arr.QuestDetails.MonsterTargets[i].EnemyName == OwnerCharacter_Enemy->EnemyName)
 							{
-								arr.QuestDetails.MonsterTargets[i].CurrentKillCount++;
-								CGameInstance->UpdateQuestDate(arr);
+								if (arr.QuestDetails.MonsterTargets[i].CurrentKillCount + 1 <= arr.QuestDetails.MonsterTargets[i].KillCount)
+								{
+									arr.QuestDetails.MonsterTargets[i].CurrentKillCount++;
+									CGameInstance->UpdateQuestDate(arr, EQuestDetailsUpdateType::Monster, UEnum::GetDisplayValueAsText(arr.QuestDetails.MonsterTargets[i].EnemyName).ToString());
+								}
+								
 								break;
+								
 							}
 							
 						}
@@ -293,8 +298,12 @@ void UCCombatComponent::CharacterDeath(AActor* DamageCauser)
 							// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
 							if (arr.QuestDetails.BossTargets[i].BossName == OwnerCharacter_Boss->BossName)
 							{
-								arr.QuestDetails.BossTargets[i].CurrentKillCount++;
-								CGameInstance->UpdateQuestDate(arr);
+								if (arr.QuestDetails.BossTargets[i].CurrentKillCount + 1 <= arr.QuestDetails.BossTargets[i].KillCount)
+								{
+									arr.QuestDetails.BossTargets[i].CurrentKillCount++;
+									CGameInstance->UpdateQuestDate(arr, EQuestDetailsUpdateType::Boss, UEnum::GetDisplayValueAsText(arr.QuestDetails.BossTargets[i].BossName).ToString());
+								}
+
 								break;
 							}
 

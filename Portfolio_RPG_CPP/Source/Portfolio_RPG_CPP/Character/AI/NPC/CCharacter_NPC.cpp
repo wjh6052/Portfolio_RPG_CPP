@@ -39,7 +39,7 @@ void ACCharacter_NPC::BeginPlay()
 	CGameInstance->Update_Quest.AddDynamic(this, &ACCharacter_NPC::UpdateInteractionQuestData);
 }
 
-void ACCharacter_NPC::UpdateInteractionQuestData(const TArray<FQuest_DataTable>& NewQuest_DataTable)
+void ACCharacter_NPC::UpdateInteractionQuestData(FQuest_DataTable NewQuest_Data, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName)
 {
 	Interaction_NPC->SettingInteraction_NPC(this);
 }

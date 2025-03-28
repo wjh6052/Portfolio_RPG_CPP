@@ -142,14 +142,14 @@ void UCGameInstance::QuestDataTableToArr()
 	}
 }
 
-void UCGameInstance::UpdateQuestDate(FQuest_DataTable Input)
+void UCGameInstance::UpdateQuestDate(FQuest_DataTable Input, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName)
 {
 	for (int i = 0; i < QuestData_Arr.Num(); i++)
 	{
 		if(Input.QuestID == QuestData_Arr[i].QuestID)
 		{
 			QuestData_Arr[i] = Input;
-			TriggerUpdateQuest();
+			TriggerUpdateQuest(Input, QuestDetailsUpdateType, InName);
 			return;
 		}
 	}
@@ -343,7 +343,7 @@ void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemR
 				FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
 
 
-				CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 획득"), *eUseType, *eStarRating, AddCount));
+				//CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 획득"), *eUseType, *eStarRating, AddCount));
 			}
 			else if (AddCount < 0)
 			{
@@ -356,8 +356,28 @@ void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemR
 				FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
 
 
-				CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 소모"), *eUseType, *eStarRating, AddCount));
+				//CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 소모"), *eUseType, *eStarRating, AddCount));
 			}			
+
+
+			// 변경된 아이템이 퀘스트 관련 아이템인지 확인
+			for (int q = 0; q < QuestData_Arr.Num(); q++)
+			{
+				if (QuestData_Arr[q].QuestDetails.bRequireItemCollection == true)
+				{
+					for (int j = 0; j < QuestData_Arr[q].QuestDetails.RequiredItems.Num(); j++)
+					{
+						if (QuestData_Arr[q].QuestDetails.RequiredItems[j].ItemUseType == ItemUseType && QuestData_Arr[q].QuestDetails.RequiredItems[j].StarRating == ItemRating && QuestData_Arr[q].QuestState == EQuestState::InProgress)
+						{
+							UpdateQuestDate(QuestData_Arr[q], EQuestDetailsUpdateType::Itme, MaterialItemItmeData_Arr[i].ItemName);
+						}
+					}
+					
+				}
+			}
+			
+			//
+			//UpdateQuestDate
 			return;
 		}
 	}
@@ -372,13 +392,13 @@ void UCGameInstance::AddMoney(int AddMoney)
 
 
 
-		CLog::Print(FString::Printf(TEXT("%d머니 획득!"), AddMoney));
+		//CLog::Print(FString::Printf(TEXT("%d머니 획득!"), AddMoney));
 	}
 	else if (AddMoney < 0)
 	{
 		Money += AddMoney;
 		TriggerUpdataMoney(AddMoney);
-		CLog::Print(FString::Printf(TEXT("%d머니 소모"), AddMoney));
+		//CLog::Print(FString::Printf(TEXT("%d머니 소모"), AddMoney));
 	}
 }
 

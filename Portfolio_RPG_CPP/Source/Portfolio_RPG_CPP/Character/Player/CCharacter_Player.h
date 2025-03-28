@@ -29,7 +29,8 @@ public:
 public:
 	//Get
 	FORCEINLINE class UCFlightComponent* GetFlightComponent() const { return FlightComponent; }
-	FORCEINLINE class UCWidgetComponent* GetWidgetComponent() const { return WidgetComponent; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FORCEINLINE class UCWidgetComponent* GetWidgetComponent() const { return WidgetComponent; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		FORCEINLINE class UCInteractionComponent* GetInteractionComponent() const { return InteractionComponent; }

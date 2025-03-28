@@ -38,7 +38,8 @@ public:
 
 
 public:
-	FORCEINLINE class UCWMain* GetMainWidget() { return MainWidget; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FORCEINLINE class UCWMain* GetMainWidget() { return MainWidget; }
 	FORCEINLINE ECurrentUi GetCurrentUi() { return CurrentUi; }
 
 	UFUNCTION(BlueprintCallable)

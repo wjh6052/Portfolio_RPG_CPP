@@ -20,6 +20,17 @@ enum class EQuestState : uint8  // 퀘스트의 상태
 };
 
 
+UENUM(BlueprintType)
+enum class EQuestDetailsUpdateType : uint8  // 변경된 퀘스트 알림
+{
+	None			UMETA(DisplayName = "비어있음"),
+	Monster			UMETA(DisplayName = "몬스터"),
+	Boss			UMETA(DisplayName = "보스"),
+	Itme			UMETA(DisplayName = "아이템")
+
+};
+
+
 
 
 //---------------------------struct---------------------------------------------

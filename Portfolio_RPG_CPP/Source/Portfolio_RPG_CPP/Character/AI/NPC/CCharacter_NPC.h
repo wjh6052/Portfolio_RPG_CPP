@@ -32,7 +32,7 @@ public:
 
 public:
 	UFUNCTION()
-		void UpdateInteractionQuestData(const TArray<FQuest_DataTable>& NewQuest_DataTable);
+		void UpdateInteractionQuestData(FQuest_DataTable NewQuest_Data, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName);
 
 	class UCGameInstance* CGameInstance;
 	class ACInteraction_NPC* Interaction_NPC;

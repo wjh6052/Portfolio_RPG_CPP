@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdata_Money, int, AddMoney);
 
 
 // 퀘스트 정보 델리게이트
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdate_Quest, const TArray<FQuest_DataTable>&, NewQuest_DataTable);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FUpdate_Quest, FQuest_DataTable, NewQuest_DataTable, EQuestDetailsUpdateType, QuestDetailsUpdateType, FString, InName);
 
 
 
@@ -86,16 +86,17 @@ public:
 	
 
 
+	// 퀘스트 정보를 델리게이트 한 변수
 	UPROPERTY(BlueprintAssignable)
 		FUpdate_Quest Update_Quest;
 
 	// 퀘스트 정보를 업데이트할 함수
 	UFUNCTION(BlueprintCallable)
-		void UpdateQuestDate(FQuest_DataTable Input);
+		void UpdateQuestDate(FQuest_DataTable Input, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName);
 
 
 	// 퀘스트 정보 델리게이트
-	FORCEINLINE void TriggerUpdateQuest() { Update_Quest.Broadcast(QuestData_Arr); }
+	FORCEINLINE void TriggerUpdateQuest(FQuest_DataTable NewQuestData, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName) { Update_Quest.Broadcast(NewQuestData, QuestDetailsUpdateType, InName); }
 
 
 
