@@ -4,17 +4,32 @@
 
 
 
+#include "Components/WidgetComponent.h"
+
+
 ACCharacter_AI::ACCharacter_AI()
 {
 	bUseControllerRotationYaw = true;
 
 	CHelpers::CreateActorComponent(this, &PatrolComponent, "PatrolComponent");
+
+
+	CHelpers::CreateSceneComponent<UWidgetComponent>(this, &AINameWidget, "AINameWidget", RootComponent);
+
+
+	TSubclassOf<class UCW_AI_Name> aINameClass;
+	CHelpers::GetClass<UCW_AI_Name>(&aINameClass, "WidgetBlueprint'/Game/Widgets/AIName/CWB_AIName'");
+	
+	AINameWidget->SetWidgetClass(aINameClass);
+	
+	AINameWidget->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
 }
 
 void ACCharacter_AI::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CW_AIName = Cast<UCW_AI_Name>(AINameWidget->GetWidget());
 
 
 	if (DissolveCurve)
@@ -70,6 +85,9 @@ void ACCharacter_AI::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	DyingTimeLine.TickTimeline(DeltaTime);
+
+
+	AINameWidget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(AINameWidget->GetComponentLocation(), GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraLocation()));
 }
 
 void ACCharacter_AI::DyingTimeLineStart()

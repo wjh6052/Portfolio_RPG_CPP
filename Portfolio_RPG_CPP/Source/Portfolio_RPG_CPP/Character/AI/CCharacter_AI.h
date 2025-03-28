@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "../CCharacter_Base.h"
 #include "../../Components/CharacterComp/AIComp/CPatrolComponent.h"
+#include "../../Widgets/AIName/CW_AI_Name.h"
 #include "Components/TimelineComponent.h"
 #include "CCharacter_AI.generated.h"
 
@@ -43,6 +44,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 		class UBehaviorTree* BehaviorTree;
 
+
+
+protected:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		class UWidgetComponent* AINameWidget;
+
+
+	class UCW_AI_Name* CW_AIName;
 
 
 public:

@@ -220,8 +220,14 @@ public
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
 		TArray<FItemType> EnemyDropItemArr;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
+
+	// 돈 드랍 액수
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
 		int LootMoneyCount = 1;
+
+	// 드랍 확률 (0.0 ~ 1.0의 값 설정)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
+		float MoneyDropRate = 1;
 
 
 	// 공격 액션 데이터

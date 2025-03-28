@@ -37,6 +37,17 @@ void ACCharacter_NPC::BeginPlay()
 	CGameInstance = Cast<UCGameInstance>(GetWorld()->GetGameInstance());
 
 	CGameInstance->Update_Quest.AddDynamic(this, &ACCharacter_NPC::UpdateInteractionQuestData);
+
+
+
+	// AI이름 설정
+	UEnum* npcEnum = Cast<UEnum>(StaticEnum<ENPCName>());
+
+	// UEnum을 통해 GetDisplayNameTextByValue 호출
+	if (npcEnum)
+	{
+		CW_AIName->SetAIName(npcEnum->GetDisplayNameTextByValue(static_cast<int32>(NPCName)).ToString());
+	}
 }
 
 void ACCharacter_NPC::UpdateInteractionQuestData(FQuest_DataTable NewQuest_Data, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName)

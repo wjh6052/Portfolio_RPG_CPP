@@ -33,6 +33,14 @@ void ACCharacter_Enemy::BeginPlay()
 
 	CW_EnemyHpBar = Cast<UCW_EnemyHpBar>(HPBarWidget->GetWidget());
 
+	// AI이름 설정
+	UEnum* enemyEnum = Cast<UEnum>(StaticEnum<EEnemyName>());
+
+	// UEnum을 통해 GetDisplayNameTextByValue 호출
+	if (enemyEnum)
+	{
+		CW_AIName->SetAIName(enemyEnum->GetDisplayNameTextByValue(static_cast<int32>(EnemyName)).ToString());
+	}
 }
 
 void ACCharacter_Enemy::Tick(float DeltaTime)

@@ -150,6 +150,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		int ItemCount = 1;
 
+
+	// 드랍 확률 (0.0 ~ 1.0의 값 설정)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		float DropRate = 1;
+
 };
 
 

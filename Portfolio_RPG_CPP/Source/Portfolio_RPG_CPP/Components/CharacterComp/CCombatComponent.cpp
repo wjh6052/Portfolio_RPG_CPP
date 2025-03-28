@@ -345,18 +345,22 @@ void UCCombatComponent::DropLootOnDeath()
 			{
 			case EItemCategory::Material:
 				{
-					ACItemInteraction_Material* item = GetWorld()->SpawnActor<ACItemInteraction_Material>   (ACItemInteraction_Material::StaticClass(), OwnerCharacter_Enemy->GetActorLocation(), FRotator::ZeroRotator);
+					if (row.DropRate >= FMath::FRand())
+					{
+						ACItemInteraction_Material* item = GetWorld()->SpawnActor<ACItemInteraction_Material>   (ACItemInteraction_Material::StaticClass(), OwnerCharacter_Enemy->GetActorLocation(), FRotator::ZeroRotator);
 
-					item->FInteractionItemMaterial.StarRating = row.StarRating;
-					item->FInteractionItemMaterial.ItemUseType = row.ItemUseType;
-					item->FInteractionItemMaterial.MaterialNum = row.ItemCount;
-					item->ItemName = L"이름";
+						item->FInteractionItemMaterial.StarRating = row.StarRating;
+						item->FInteractionItemMaterial.ItemUseType = row.ItemUseType;
+						item->FInteractionItemMaterial.MaterialNum = row.ItemCount;
+						item->ItemName = L"이름";
 
-					item->SetMaterialItemIcon();
+						item->SetMaterialItemIcon();
 
+
+						FVector Impulse = FVector(FMath::RandRange(-Power, Power), FMath::RandRange(-Power, Power), 500);
+						item->GetMesh()->AddImpulse(Impulse);
+					}
 					
-					FVector Impulse = FVector(FMath::RandRange(-Power, Power), FMath::RandRange(-Power, Power), 500);
-					item->GetMesh()->AddImpulse(Impulse);
 
 					break;
 				}
@@ -365,7 +369,7 @@ void UCCombatComponent::DropLootOnDeath()
 			}
 		}
 
-		if (OwnerCharacter_Enemy->Enemy_DataTable.LootMoneyCount > 0)
+		if (OwnerCharacter_Enemy->Enemy_DataTable.LootMoneyCount > 0 && OwnerCharacter_Enemy->Enemy_DataTable.MoneyDropRate >= FMath::FRand())
 		{
 			ACItemInteraction_Money* money = GetWorld()->SpawnActor<ACItemInteraction_Money>(ACItemInteraction_Money::StaticClass(), OwnerCharacter_Enemy->GetActorLocation(), FRotator::ZeroRotator);
 			money->Money = OwnerCharacter_Enemy->Enemy_DataTable.LootMoneyCount;
