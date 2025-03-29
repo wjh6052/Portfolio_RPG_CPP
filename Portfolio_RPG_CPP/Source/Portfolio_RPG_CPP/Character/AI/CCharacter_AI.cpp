@@ -34,33 +34,15 @@ void ACCharacter_AI::BeginPlay()
 
 	if (DissolveCurve)
 	{
+		MeshMateriaeDynamic.Empty();
 		// 머티리얼 다이나믹화
 		for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)
 		{
-			UMaterialInterface* Material = GetMainMesh()->GetMaterial(i);
-			if (Material)
-			{
-				// 메인메시
-				MeshMateriaeDynamic.Add(UMaterialInstanceDynamic::Create(Material, this));
-				GetMainMesh()->SetMaterial(i, UMaterialInstanceDynamic::Create(Material, this));
-
-				// 아웃라인
-				UMaterialInterface* outLineMaterial = GetOutLineMesh()->GetMaterial(i);
-				OutLineMeshMateriaeDynamic = UMaterialInstanceDynamic::Create(outLineMaterial, this);
-
-				if (DissolveMaterial)
-				{
-					DissolveMaterialeDynamic.Add(UMaterialInstanceDynamic::Create(DissolveMaterial, this));
-				}
-				
-			}
+			// 메인메시
+			MeshMateriaeDynamic.Add(UMaterialInstanceDynamic::Create(GetMainMesh()->GetMaterial(i), this));
+			GetMainMesh()->SetMaterial(i, UMaterialInstanceDynamic::Create(GetMainMesh()->GetMaterial(i), this));
 		}
 	
-		if (DissolveMaterial)
-		{
-			OutLineDissolveMaterialeDynamic = (UMaterialInstanceDynamic::Create(DissolveMaterial, this));
-		}
-		
 		
 	
 		// 업데이트마다 호출될 함수 바인딩
@@ -94,17 +76,8 @@ void ACCharacter_AI::DyingTimeLineStart()
 {
 	for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)
 	{
-		TArray<UTexture*> Textures;
-		if(MeshMateriaeDynamic.Num() > 0)
-			if(MeshMateriaeDynamic[i] != nullptr)
-				MeshMateriaeDynamic[i]->GetUsedTextures(Textures, EMaterialQualityLevel::High, true, ERHIFeatureLevel::SM5, true);
-
-		if(Textures.Num() > 0)
-			DissolveMaterialeDynamic[i]->SetTextureParameterValue("BaseTexture", Textures[0]);
-
-
-		GetMainMesh()->SetMaterial(i, DissolveMaterialeDynamic[i]);
-		GetOutLineMesh()->SetMaterial(i, OutLineDissolveMaterialeDynamic);
+		GetMainMesh()->SetMaterial(i, MeshMateriaeDynamic[i]);
+		GetOutLineMesh()->SetVisibility(false);
 	}
 	
 	
@@ -114,10 +87,10 @@ void ACCharacter_AI::DyingTimeLineStart()
 
 void ACCharacter_AI::TimelineUpdate(float Value)
 {
-	for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)
+	for (int32 i = 0; i < MeshMateriaeDynamic.Num(); i++)
 	{
-		DissolveMaterialeDynamic[i]->SetScalarParameterValue("Amount", Value);
-		OutLineDissolveMaterialeDynamic->SetScalarParameterValue("Amount", Value);
+		if(MeshMateriaeDynamic[i])
+			MeshMateriaeDynamic[i]->SetScalarParameterValue("Amount", Value);
 	}
 	
 

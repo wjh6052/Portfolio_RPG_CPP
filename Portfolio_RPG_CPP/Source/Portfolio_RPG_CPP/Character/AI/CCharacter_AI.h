@@ -74,12 +74,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "DyingTimeLine")
 		class UCurveFloat* DissolveCurve;
 	
-	UPROPERTY(EditAnywhere, Category = "DyingTimeLine")
-			class UMaterialInterface* DissolveMaterial;
 	
 private:
 	TArray<class UMaterialInstanceDynamic*> MeshMateriaeDynamic;
-	class UMaterialInstanceDynamic* OutLineMeshMateriaeDynamic;
-	TArray<class UMaterialInstanceDynamic*> DissolveMaterialeDynamic;
-	class UMaterialInstanceDynamic* OutLineDissolveMaterialeDynamic;
 };
