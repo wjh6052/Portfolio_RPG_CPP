@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
-#include "../Datas/Data_Inventory.h"
+#include "../Datas/Data_DataTable.h"
 #include "CItmeData_SaveGame.generated.h"
 
 

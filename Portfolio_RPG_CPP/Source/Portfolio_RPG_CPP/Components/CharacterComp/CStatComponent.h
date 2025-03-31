@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "../../Datas/Data_Character.h"
+#include "../../Datas/Data_DataTable.h"
 #include "CStatComponent.generated.h"
 
 

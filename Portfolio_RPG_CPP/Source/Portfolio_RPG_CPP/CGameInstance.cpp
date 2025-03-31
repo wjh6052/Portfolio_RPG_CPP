@@ -32,8 +32,15 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&MaterialItem_DataTable, "DataTable'/Game/Data/DT_MaterialItem.DT_MaterialItem'");
 	
 
+
+
 	// 위젯 대화 아이콘 배열
 	CHelpers::GetAsset<UDataTable>(&ConversationIcon_DataTable, "DataTable'/Game/Data/Widget/DT_ConversationIcon.DT_ConversationIcon'");
+
+
+	// 강화 조건 데이터 배열
+	CHelpers::GetAsset<UDataTable>(&GearEnhancementData_DataTable, "DataTable'/Game/Data/DT_FGearEnhancementData.DT_FGearEnhancementData'");
+
 
 
 	// 데미지 텍스트
@@ -199,6 +206,26 @@ void UCGameInstance::IconDataTableToArr()
 }
 
 
+
+void UCGameInstance::GearEnhancementDataTableToArr()
+{
+	if (!GearEnhancementData_DataTable)
+	{
+		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
+	}
+	else
+	{
+		TArray<FGearEnhancementData_DataTable*> AllRows;
+		GearEnhancementData_DataTable->GetAllRows<FGearEnhancementData_DataTable>(L"", AllRows);
+
+
+		for (FGearEnhancementData_DataTable* Row : AllRows)
+		{
+			if (Row)
+				GearEnhancementData_Arr.Add(*Row);
+		}
+	}
+}
 
 FColor UCGameInstance::GetRatingColor(EStarRating InRating)
 {

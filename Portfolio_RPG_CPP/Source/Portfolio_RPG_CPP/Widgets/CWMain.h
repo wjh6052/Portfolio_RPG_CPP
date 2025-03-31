@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "../Datas/Data_Widget.h"
+#include "../Datas/Data_DataTable.h"
 #include "CWMain.generated.h"
 
 

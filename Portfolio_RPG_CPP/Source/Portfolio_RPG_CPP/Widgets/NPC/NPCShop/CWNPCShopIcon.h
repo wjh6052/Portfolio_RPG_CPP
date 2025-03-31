@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "../../../Datas/Data_Inventory.h"
+#include "../../../Datas/Data_DataTable.h"
 #include "CWNPCShopIcon.generated.h"
 
 

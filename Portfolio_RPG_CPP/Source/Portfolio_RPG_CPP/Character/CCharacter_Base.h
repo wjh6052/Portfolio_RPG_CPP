@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "../Datas/Data_Character.h"
+#include "../Datas/Data_DataTable.h"
 #include "../Components/CharacterComp/CStatComponent.h"
 #include "../Components/CharacterComp/CCombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"

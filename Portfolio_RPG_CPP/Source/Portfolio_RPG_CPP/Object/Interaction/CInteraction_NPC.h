@@ -2,8 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CInteraction.h"
-#include "../../Datas/Data_Quest.h"
-#include "../../Datas/Data_NPC.h"
+#include "../../Datas/Data_DataTable.h"
 #include "CInteraction_NPC.generated.h"
 
 

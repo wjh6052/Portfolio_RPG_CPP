@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "../../../Datas/Data_Combat.h"
+#include "../../../Datas/Data_DataTable.h"
 #include "CThrowableWeapon.generated.h"
 
 UCLASS()

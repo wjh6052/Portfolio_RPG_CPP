@@ -1,5 +1,5 @@
 #include "CWNPCShopIcon.h"
-#include "../../../Datas/Data_Inventory.h"
+#include "../../../Datas/Data_DataTable.h"
 
 
 

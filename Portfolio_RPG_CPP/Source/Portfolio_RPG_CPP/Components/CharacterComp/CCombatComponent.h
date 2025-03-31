@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "../../Datas/Data_Combat.h"
+#include "../../Datas/Data_DataTable.h"
 #include "CCombatComponent.generated.h"
 
 

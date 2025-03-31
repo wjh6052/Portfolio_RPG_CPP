@@ -3,11 +3,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "Engine/DataTable.h"
-#include "Datas/Data_Character.h"
-#include "Datas/Data_Inventory.h"
-#include "Datas/Data_NPC.h"
-#include "Datas/Data_Widget.h"
-#include "Datas/Data_Quest.h"
+#include "Datas/Data_DataTable.h"
 #include "CGameInstance.generated.h"
 
 // 아이템 정보 델리게이트
@@ -143,8 +139,9 @@ public:
 
 
 
-
-public: // 기타 데이터
+// ------------------------------------------------기타 데이터-------------------------------------------------------
+public:
+// --------------------아이콘 데이터 --------------------
 	void IconDataTableToArr();
 
 	// 위젯 대화 아이콘
@@ -155,6 +152,16 @@ public: // 기타 데이터
 
 
 
+// --------------------강화 데이터 --------------------
+	void GearEnhancementDataTableToArr();
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FGearEnhancementData_DataTable> GearEnhancementData_Arr;
+	UDataTable* GearEnhancementData_DataTable;
+
+
+
+public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		FColor GetRatingColor(EStarRating InRating);
 
@@ -162,7 +169,7 @@ public: // 기타 데이터
 		FItemRarityColor RatingColor;
 
 
-// ------------------------------------------------DataTable-------------------------------------------------------
+// ------------------------------------------------DA-------------------------------------------------------
 public:
 	class UDA_DamageText* DamageText_DA;
 

@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
-#include "../../../Datas/Data_Flight.h"
+#include "../../../Datas/Data_DataTable.h"
 #include "CFlightComponent.generated.h"
 
 

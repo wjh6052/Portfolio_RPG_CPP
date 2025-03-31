@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../CCharacter_AI.h"
-#include "../../../Datas/Data_NPC.h"
+#include "../../../Datas/Data_DataTable.h"
 #include "CCharacter_NPC.generated.h"
 
 

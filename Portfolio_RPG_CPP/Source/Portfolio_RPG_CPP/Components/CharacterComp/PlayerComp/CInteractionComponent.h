@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "../../../Datas/Data_NPC.h"
+#include "../../../Datas/Data_DataTable.h"
 #include "CInteractionComponent.generated.h"
 
 

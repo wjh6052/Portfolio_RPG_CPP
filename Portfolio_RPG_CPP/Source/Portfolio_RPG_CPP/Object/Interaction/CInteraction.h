@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "../../Datas/Data_Inventory.h"
+#include "../../Datas/Data_DataTable.h"
 #include "CInteraction.generated.h"
 
 
