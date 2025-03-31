@@ -4,7 +4,7 @@
 #include "UObject/NoExportTypes.h"
 #include "Data_Enum.generated.h"
 
-
+// 무기 종류 열거형
 UENUM(BlueprintType)
 enum class ECombatType : uint8
 {
@@ -16,6 +16,19 @@ enum class ECombatType : uint8
 	Warrior		UMETA(DisplayName = "방패병"),
 	Archer		UMETA(DisplayName = "궁수"),
 	Wizard		UMETA(DisplayName = "마법사")
+};
+
+
+// 장비 종류 열거형
+UENUM(BlueprintType)
+enum class EGearType : uint8
+{
+	None		UMETA(DisplayName = "비어있음"),
+	Weapon		UMETA(DisplayName = "무기"),
+	Helmet		UMETA(DisplayName = "투구"),
+	Armor		UMETA(DisplayName = "갑옷"),
+	Gloves		UMETA(DisplayName = "장갑"),
+	Boots		UMETA(DisplayName = "신발")
 };
 
 

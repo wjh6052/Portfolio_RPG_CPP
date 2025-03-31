@@ -51,13 +51,20 @@ void UCGameInstance::Init()
 {
 	Super::Init();
 
-	
+	// 아이콘 데이터 업로드
+	IconDataTableToArr();
+
+	// 강화 데이터 업로드
+	GearEnhancementDataTableToArr();
+
+	// 퀘스트
+	QuestDataTableToArr();
 
 	PlayerDataTableToArr();
 	EnemyDataTableToArr();
 	NPCDataTableToArr();
-	QuestDataTableToArr();
-	IconDataTableToArr();
+	
+	
 
 	SaveData();
 	//if (!LoadData())
@@ -84,9 +91,43 @@ void UCGameInstance::PlayerDataTableToArr()
 		for (FPlayer_DataTable* Row : AllRows)
 		{
 			if (Row)
+			{
 				Player_Data_Arr.Add(*Row);
+			}
+		}
+
+		for (int32 i = 0; i < Player_Data_Arr.Num(); i++)
+		{
+			for (int32 j = 0; j < GearEnhancementData_Arr.Num(); j++)
+			{
+				if (Player_Data_Arr[i].Player_CombatData.CombatData.CombatType == GearEnhancementData_Arr[j].WeaponType)
+				{
+					int32 index = Player_Data_Arr[i].Player_CombatData.WeaponEnhancementLevel;
+					
+					if (index < GearEnhancementData_Arr[j].GearEnhancementDataArr.Num())
+					{
+						Player_Data_Arr[i].Player_CombatData.CurrentGearEnhancementData = GearEnhancementData_Arr[j].GearEnhancementDataArr[index];
+					}
+					
+					break;
+				}
+			}			
 		}
 	}
+}
+
+void UCGameInstance::UpdatePlayerData(ECombatType InCombatType, FPlayer_DataTable InPlayerData)
+{
+	for (int32 i = 0; i < Player_Data_Arr.Num(); i++)
+	{
+		if (Player_Data_Arr[i].Player_CombatData.CombatData.CombatType == InCombatType)
+		{
+			Player_Data_Arr[i] = InPlayerData;
+			TriggerUpdatePlayerData(InCombatType);
+			break;
+		}
+	}
+
 }
 
 void UCGameInstance::EnemyDataTableToArr()

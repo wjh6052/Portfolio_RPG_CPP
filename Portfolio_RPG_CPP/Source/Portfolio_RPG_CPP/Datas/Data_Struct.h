@@ -143,30 +143,30 @@ struct FGearStets
 
 public:
 	// 현재 체력
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float HP = 0;
 	// 최대 체력
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float HP_Max = 0;
 
 	// 기본 데미지
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Damage = 0;
 
 	// 방어력
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Defense = 0;
 
 	// 크리티컬 데미지
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Critical_Damage = 0;
 
 	// 크리티컬 확률
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Critical_Chance = 0;
 
 	// 히트 저항 수치
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Stance = 0;
 };
 
@@ -180,27 +180,27 @@ struct FGearEnhancementData
 public:
 
 	// 강화 확률
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float EnhancementChance;
 
-	// 강화 천장 시 올라갈 확률
-	UPROPERTY(EditAnywhere)
-		float PityIncreaseChance;
-
 	// 강화 실패 시 천장이 올라갈 백분율
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "100.0"))
 		float PityIncreaseRate;
 
+	// 현제 천장의 백분율
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "100.0"))
+		float PityIncrease;
+
 	// 강화 성공 시 추가 스탯
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		FGearStets AddGearStats;
 
 	// 강화에 사용될 아이템 정보 및 개수
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FInteractionItemMaterial> RequiredItems;
 
 	// 강화에 사용될 돈의 개수
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		int RequiredMoney;
 
 };
@@ -449,9 +449,12 @@ public:
 		int WeaponEnhancementLevel = 0;
 
 	// 현재 무기의 강화 상태
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat Weapon Data")
 		FGearEnhancementData CurrentGearEnhancementData;
 
+	// 무기 스텟
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat Weapon Data")
+		FGearStets GearStets;
 
 
 	// UI에 표시될 텍스쳐

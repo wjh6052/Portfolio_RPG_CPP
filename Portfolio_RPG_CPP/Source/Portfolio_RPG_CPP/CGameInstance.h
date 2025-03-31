@@ -6,6 +6,10 @@
 #include "Datas/Data_DataTable.h"
 #include "CGameInstance.generated.h"
 
+
+// 플레이어 데이터 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdata_PlayerData, ECombatType, CombatType);
+
 // 아이템 정보 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FUpdataMaterialItem, EItemUseType, ItemUseType, EStarRating, ItemRating, int, AddCount);
 
@@ -38,18 +42,37 @@ public:
 
 // ------------------------------------------------캐릭터 데이터-------------------------------------------------------
 public:
+	// --------------------플레이어 데이터--------------------
 	void PlayerDataTableToArr();
-	void EnemyDataTableToArr();
-
-	// 플레이어 데이터
+		
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FPlayer_DataTable> Player_Data_Arr;
 	UDataTable* Player_DataTable;
+	
 
-	// 몬스터 데이터
+	// 퀘스트 정보를 델리게이트 한 변수
+	UPROPERTY(BlueprintAssignable)
+		FUpdata_PlayerData Update_PlayerData;
+	
+	// 퀘스트 정보를 업데이트할 함수
+	UFUNCTION(BlueprintCallable)
+		void UpdatePlayerData(ECombatType InCombatType, FPlayer_DataTable InPlayerData);
+
+
+	// 퀘스트 정보 델리게이트
+	FORCEINLINE void TriggerUpdatePlayerData(ECombatType InCombatType) { Update_PlayerData.Broadcast(InCombatType); }
+
+
+
+
+	// --------------------에너미 데이터--------------------
+	void EnemyDataTableToArr();
+	
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FEnemy_DataTable> Enemy_Data_Arr;
 	UDataTable* Enemy_DataTable;
+
+
 
 	// 보스 몬스터 데이터
 	//UPROPERTY(BlueprintReadWrite)
@@ -126,6 +149,11 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		int Money = 0;
 
+	// 보유 돈을 추가하는 함수
+	UFUNCTION(BlueprintCallable)
+		void AddMoney(int AddMoney);
+
+
 	// 돈 정보 델리게이트 호출 함수
 	FORCEINLINE void TriggerUpdataMoney(int AddMoney) { Updata_Money.Broadcast(AddMoney); }
 
@@ -133,9 +161,7 @@ public:
 		FUpdata_Money Updata_Money;
 
 
-	// 보유 돈을 추가하는 함수
-	UFUNCTION(BlueprintCallable)
-		void AddMoney(int AddMoney);
+	
 
 
 
@@ -206,6 +232,7 @@ private:
 
 
 public: // Get
-	class ACCharacter_Base* GetPlayerCharacter();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		class ACCharacter_Base* GetPlayerCharacter();
 
 };

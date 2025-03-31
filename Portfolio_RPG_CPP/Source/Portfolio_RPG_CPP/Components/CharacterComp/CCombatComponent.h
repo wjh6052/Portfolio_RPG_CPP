@@ -62,8 +62,8 @@ public:
 
 
 
-
-	FCombatData Current_CombatData;
+	UPROPERTY(BlueprintReadOnly)
+		FCombatData Current_CombatData;
 	class ACCombat_Base* Current_Combat;
 
 

@@ -39,7 +39,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE class UCStatComponent* GetStatComponent() const { return StatComponent; }
-	FORCEINLINE class UCCombatComponent* GetCombatComponent() const { return CombatComponent; }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE class UCCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
 	//Set
 

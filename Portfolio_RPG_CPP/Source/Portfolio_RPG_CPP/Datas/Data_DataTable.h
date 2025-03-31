@@ -38,11 +38,6 @@ public:
 
 
 
-	// 무기 + 장비에 의한 스텟
-	UPROPERTY(BlueprintReadWrite, Category = "Gear Data")
-		FGearStets GearStets;
-
-
 	// 플레이어의 무기
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat")
 		FPlayer_CombatData Player_CombatData;
@@ -409,13 +404,16 @@ struct FGearEnhancementData_DataTable : public FTableRowBase
 	GENERATED_BODY()
 
 public:
+	// 장비 종류
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		EGearType GearType;
 
 	// 무기 종류
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "GearType == EGearType::Weapon"))
 		ECombatType WeaponType;
 
 	// 강화 데이터
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TArray<FGearEnhancementData> GearEnhancementDataArr;
 
 };
