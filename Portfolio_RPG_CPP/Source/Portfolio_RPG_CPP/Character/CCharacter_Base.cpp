@@ -41,7 +41,8 @@ ACCharacter_Base::ACCharacter_Base()
 
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 	
-
+	GetMainMesh()->SetRenderCustomDepth(true);
+	GetMainMesh()->CustomDepthStencilValue = 254;
 
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 	GetMesh()->SetVisibility(false);
