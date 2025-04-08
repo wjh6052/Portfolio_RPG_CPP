@@ -58,6 +58,19 @@ void ACAISpawner::AISpawn(int32 index)
 
 }
 
+void ACAISpawner::ReSpawn(int32 index)
+{
+    GetWorld()->GetTimerManager().SetTimer(
+        FAISpawnerInfo[index].TimerHandle,
+        FTimerDelegate::CreateLambda([=]()
+            {
+                AISpawn(index);
+            }),
+        FAISpawnerInfo[index].RESpawnTime,
+        false   
+    );
+}
+
 
 
 

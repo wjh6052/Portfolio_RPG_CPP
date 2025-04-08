@@ -19,7 +19,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float RESpawnTime = 5.0f;
-	FTimerHandle RespawnTimerHandle;
+
+
+	FTimerHandle TimerHandle;
 };
 
 
@@ -37,6 +39,8 @@ protected:
 
 	void AISpawn(int32 index);
 
+public:
+	void ReSpawn(int32 index);
 
 
 protected:

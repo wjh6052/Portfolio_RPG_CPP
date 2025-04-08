@@ -1,6 +1,7 @@
 #include "CCharacter_AI.h"
 #include "../../Global.h"
 #include "../../Object/Combat/CCombat_Base.h"
+#include "../../Object/AISpawner/CAISpawner.h"
 
 
 
@@ -98,6 +99,9 @@ void ACCharacter_AI::TimelineUpdate(float Value)
 
 void ACCharacter_AI::TimelineFinished()
 {
+	if (AISpawner)
+		AISpawner->ReSpawn(Spawnindex);
+
 	GetCombatComponent()->Current_Combat->Destroy();
 	this->Destroy();
 
