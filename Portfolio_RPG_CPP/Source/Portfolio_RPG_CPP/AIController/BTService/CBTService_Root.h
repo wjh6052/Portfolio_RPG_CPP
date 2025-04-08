@@ -20,7 +20,6 @@ protected:
 
 	void SetStateBehaviorKey(EStateType InStateType);
 	void SetStatusBehaviorKey(EStatusType InStatusType);
-	void SetPlayerLocationKey(AActor* InPlayer);
 
 
 

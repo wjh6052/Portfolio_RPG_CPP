@@ -31,10 +31,10 @@ void UCBTTask_Spline::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 
 	UCPatrolComponent* PatrolComp = AICharacter->GetPatrolComponent();
 
-	
 	FVector location;
 	float acceptanceRadius;
 	CheckFalse(PatrolComp->GetMoveTo(location, acceptanceRadius));
+	
 
 	AICharacter->GetStatComponent()->SetSpeed(ESpeedType::Walk);
 
@@ -49,6 +49,7 @@ void UCBTTask_Spline::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMem
 	if (result == EPathFollowingRequestResult::AlreadyAtGoal)
 	{
 		PatrolComp->SplineUpdateNextIndex();
+		//CLog::Log(PatrolComp->SplineIndex);
 		return;
 	}
 }

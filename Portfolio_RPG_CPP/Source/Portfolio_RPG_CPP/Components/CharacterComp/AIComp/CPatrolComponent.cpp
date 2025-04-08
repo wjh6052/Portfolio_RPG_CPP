@@ -18,7 +18,7 @@ void UCPatrolComponent::BeginPlay()
 
 
 	CheckNull(Path)
-	SplineCount = Path->GetSplineComp()->GetNumberOfSplinePoints();
+	
 }
 
 
@@ -45,6 +45,8 @@ bool UCPatrolComponent::GetMoveTo(FVector& OutLocation, float& OutAcceptanceRadi
 void UCPatrolComponent::SplineUpdateNextIndex()
 {
 	CheckNull(Path);
+	SplineCount = Path->GetSplineComp()->GetNumberOfSplinePoints();
+
 
 	// Reverse
 	if (bReverse)
@@ -71,6 +73,7 @@ void UCPatrolComponent::SplineUpdateNextIndex()
 	if (SplineIndex < SplineCount - 1)
 	{
 		SplineIndex++;
+		
 		return;
 	}
 

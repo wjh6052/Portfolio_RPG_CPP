@@ -56,8 +56,7 @@ void UCBTService_Root::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 				}
 				else // 플레이어가 살아 있을 때
 				{
-					SetStateBehaviorKey(EStateType::Idling);
-					SetPlayerLocationKey(Player);
+					SetStateBehaviorKey(EStateType::Idling);					
 				}
 
 			}
@@ -87,11 +86,3 @@ void UCBTService_Root::SetStatusBehaviorKey(EStatusType InStatusType)
 	BlackboardComp->SetValueAsEnum("StatusTypeKey", static_cast<uint8>(InStatusType));
 }
 
-void UCBTService_Root::SetPlayerLocationKey(AActor* InPlayer)
-{
-	// 플레이어와 오너의 거리 계산
-	float TargetDistance = OwnerAICharacter->GetDistanceTo(InPlayer);
-	BlackboardComp->SetValueAsFloat("TargetDistanceKey", TargetDistance);
-
-	BlackboardComp->SetValueAsVector("LocationKey", InPlayer->GetActorLocation());
-}

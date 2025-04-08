@@ -62,6 +62,7 @@ void ACAIController::OnPossess(APawn* InPawn)
 	SetGenericTeamId(OwnerCharacterAI->GetTeamID());
 	RunBehaviorTree(OwnerCharacterAI->GetBehaviorTree());
 
+
 	PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &ACAIController::OnPerceptionUpdated);
 	PerceptionComp->OnTargetPerceptionForgotten.AddDynamic(this, &ACAIController::OnTargetLost);
 
@@ -111,6 +112,7 @@ void ACAIController::OnTargetLost(AActor* Actor)
 		StopMovement();
 
 		bFindPlayer = false;
+		CLog::Print(L"잊혀짐");
 	}
 
 	

@@ -24,6 +24,8 @@ public:
 
 
 public:
+	FORCEINLINE void SetPath(class ACPatrolPath* InPath) { Path = InPath; }
+
 	FORCEINLINE class ACPatrolPath* GetPath() { return Path; }
 	FORCEINLINE int32 GetSplineIndex() { return SplineIndex; }
 
@@ -35,6 +37,7 @@ protected:
 	UPROPERTY(EditInstanceOnly, Category = "PatrolPath")
 		class ACPatrolPath* Path;
 
+public:
 	int32 SplineIndex = 0;
 	int32 SplineCount = 0;
 

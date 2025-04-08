@@ -32,7 +32,7 @@ public:
 
 
 
-private:
+public:
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class UCPatrolComponent* PatrolComponent;
 
@@ -77,4 +77,12 @@ protected:
 	
 private:
 	TArray<class UMaterialInstanceDynamic*> MeshMateriaeDynamic;
+
+
+
+public:
+	// 스포너 본체
+	class ACAISpawner* AISpawner;
+	// 스포너에서 사용될 인덱스
+	int32 Spawnindex = -1;
 };
