@@ -6,6 +6,9 @@
 
 
 #include "Components/SphereComponent.h"
+#include "PaperSpriteComponent.h"
+#include "PaperSprite.h"
+
 
 
 ACCharacter_NPC::ACCharacter_NPC()
@@ -16,6 +19,18 @@ ACCharacter_NPC::ACCharacter_NPC()
 	TSubclassOf<UCAnimInstance_Base> animInstanceClass;
 	CHelpers::GetClass<UCAnimInstance_Base>(&animInstanceClass, "AnimBlueprint'/Game/AnimInstance/NPC/ABP_NPC_Mannequins'");
 	GetMesh()->SetAnimInstanceClass(animInstanceClass);
+
+
+	// 미니맵에 보일 아이콘
+	UPaperSprite* mapIcon;
+	ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteFinder(
+		TEXT("PaperSprite'/Game/Asset/Widget_Asset/Texture/MapIcon/T_Map_NPC_Sprite.T_Map_NPC_Sprite'")
+	);
+	if (SpriteFinder.Succeeded())
+	{
+		mapIcon = SpriteFinder.Object;
+		MapIconComponent->SetSprite(mapIcon);
+	}
 }
 
 
