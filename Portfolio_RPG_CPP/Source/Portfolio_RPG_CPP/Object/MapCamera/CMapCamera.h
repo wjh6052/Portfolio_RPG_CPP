@@ -19,18 +19,12 @@ protected:
 
 
 
-public:
-	void AddRenderingMapIcon(class ACCharacter_Base* SpawnCharacter);
-
 
 public:	
-	
-	UPROPERTY(EditAnywhere, Category = MiniMap)
-		class USpringArmComponent* MiniMap_SpringArm;
-	
-	UPROPERTY(EditAnywhere, Category = MiniMap)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "MiniMap")
 		class USceneCaptureComponent2D* MiniMap_SceneCaptureComponent2D;
 
+	TObjectPtr<UStaticMeshComponent> VisualMesh;
 
 
 };

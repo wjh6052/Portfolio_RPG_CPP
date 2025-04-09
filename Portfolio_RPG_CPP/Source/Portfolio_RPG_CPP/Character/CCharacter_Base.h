@@ -79,13 +79,14 @@ protected:
 
 public:
 	// 맵에 표시될 아이콘
-	UPROPERTY(EditAnywhere, Category = MapIcon)
+	UPROPERTY(BlueprintReadOnly, Category = MapIcon)
 		class UPaperSpriteComponent* MapIconComponent;
 
 
 
 
-protected:
+public:
+	UPROPERTY(BlueprintReadOnly)
 		ECharacterType CharacterType;
 
 private:
