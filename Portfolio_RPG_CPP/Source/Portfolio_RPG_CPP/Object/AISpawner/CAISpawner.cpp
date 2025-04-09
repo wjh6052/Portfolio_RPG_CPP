@@ -1,8 +1,13 @@
 #include "CAISpawner.h"
+#include "../../Global.h"
+#include "../../CGameInstance.h"
 #include "../../Character/AI/CCharacter_AI.h"
+
 
 #include "Components/SplineComponent.h"
 #include "Components/StaticMeshComponent.h"
+
+
 
 
 ACAISpawner::ACAISpawner()
@@ -29,10 +34,13 @@ void ACAISpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
+    CGameInstance = Cast<UCGameInstance>(GetWorld()->GetGameInstance());
 
     for (int i = 0; i < FAISpawnerInfo.Num(); i++)
         AISpawn(i);
     
+
+   
 	
 }
 
@@ -55,6 +63,7 @@ void ACAISpawner::AISpawn(int32 index)
     spawnAi->PatrolComponent->SetPath(FAISpawnerInfo[index].AIPatrol);
     spawnAi->AISpawner = this;
     spawnAi->Spawnindex = index;
+
 
 }
 

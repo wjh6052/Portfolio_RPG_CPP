@@ -82,6 +82,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = Camera)
 		class UCameraComponent* Camera;
 
+
+
+
+
+
 public:
 	//Actor Component
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

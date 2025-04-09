@@ -3,11 +3,17 @@
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/Interaction/CWInteractionBox.h"
 #include "../../AnimInstance/CAnimInstance_Player.h"
+#include "../../Object/MapCamera/CMapCamera.h"
+
+
 
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/SceneCaptureComponent2D.h"
+#include "PaperSpriteComponent.h"
+#include "PaperSprite.h"
 
 
 
@@ -32,6 +38,23 @@ ACCharacter_Player::ACCharacter_Player()
 	Camera->bUsePawnControlRotation = false;
 
 
+	
+	// 미니맵에 보일 아이콘
+	UPaperSprite* mapIcon;
+
+	ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteFinder(
+		TEXT("PaperSprite'/Game/Asset/Widget_Asset/Texture/MapIcon/T_Map_PlayerIcon_Sprite.T_Map_PlayerIcon_Sprite'")
+	);
+	if (SpriteFinder.Succeeded())
+	{
+		mapIcon = SpriteFinder.Object;
+		MapIconComponent->SetSprite(mapIcon);
+	}
+
+
+	
+
+
 
 
 	//Create Actor Component
@@ -46,7 +69,6 @@ ACCharacter_Player::ACCharacter_Player()
 
 
 	// 포스트프로세스 설정
-	GetMainMesh()->SetRenderCustomDepth(true);
 	GetMainMesh()->CustomDepthStencilValue = 255;
 
 }
@@ -56,10 +78,18 @@ void ACCharacter_Player::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-	// 테스트
-	//GetCombatComponent()->
-
+	// 미니맵 스폰
+	{
+		FActorSpawnParameters Params;
+		ACMapCamera* minimap = GetWorld()->SpawnActor<ACMapCamera>(
+			ACMapCamera::StaticClass(),
+			GetActorLocation() + FVector(0, 0, 250),
+			GetActorRotation(),
+			Params
+			);
+		minimap->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+	}
+	
 }
 
 

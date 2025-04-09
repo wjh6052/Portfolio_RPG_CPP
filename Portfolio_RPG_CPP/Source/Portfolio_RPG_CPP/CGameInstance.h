@@ -22,6 +22,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FUpdate_Quest, FQuest_DataTable, 
 
 
 
+
+
 UCLASS()
 class PORTFOLIO_RPG_CPP_API UCGameInstance : public UGameInstance
 {
@@ -193,6 +195,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		FItemRarityColor RatingColor;
+
+
+
+
 
 
 // ------------------------------------------------DA-------------------------------------------------------

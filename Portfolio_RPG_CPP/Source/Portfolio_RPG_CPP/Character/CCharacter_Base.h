@@ -41,6 +41,7 @@ public:
 		FORCEINLINE class UCStatComponent* GetStatComponent() const { return StatComponent; }
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE class UCCombatComponent* GetCombatComponent() const { return CombatComponent; }
+	FORCEINLINE class UPaperSpriteComponent* GetMapIconComponent() const { return MapIconComponent; }
 
 	//Set
 
@@ -74,6 +75,15 @@ protected:
 		class USkeletalMeshComponent* Main_SkeletalMesh;
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 		class USkeletalMeshComponent* OutLine_SkeletalMesh;
+
+
+public:
+	// 맵에 표시될 아이콘
+	UPROPERTY(EditAnywhere, Category = MapIcon)
+		class UPaperSpriteComponent* MapIconComponent;
+
+
+
 
 protected:
 		ECharacterType CharacterType;

@@ -51,4 +51,9 @@ protected:
 public:	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FAISpawnerInfo> FAISpawnerInfo;
+
+
+
+
+	class UCGameInstance* CGameInstance;
 };

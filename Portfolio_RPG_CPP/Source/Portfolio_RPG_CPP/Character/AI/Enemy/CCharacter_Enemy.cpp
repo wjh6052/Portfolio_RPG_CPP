@@ -5,6 +5,9 @@
 
 #include "Components/WidgetComponent.h"
 #include "Camera/PlayerCameraManager.h"
+#include "PaperSpriteComponent.h"
+#include "PaperSprite.h"
+
 
 
 ACCharacter_Enemy::ACCharacter_Enemy()
@@ -25,6 +28,20 @@ ACCharacter_Enemy::ACCharacter_Enemy()
 	HPBarWidget->SetWidgetClass(enemyHpBar_Class);
 
 	HPBarWidget->SetRelativeLocation(FVector(0.f, 0.f, 150.f));
+
+
+
+	// 미니맵에 보일 아이콘
+	UPaperSprite* mapIcon;
+
+	ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteFinder(
+		TEXT("PaperSprite'/Game/Asset/Widget_Asset/Texture/MapIcon/T_Map_Enemy_Sprite.T_Map_Enemy_Sprite'")
+	);
+	if (SpriteFinder.Succeeded())
+	{
+		mapIcon = SpriteFinder.Object;
+		MapIconComponent->SetSprite(mapIcon);
+	}
 }
 
 void ACCharacter_Enemy::BeginPlay()

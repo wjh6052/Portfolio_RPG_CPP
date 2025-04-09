@@ -10,6 +10,8 @@
 
 #include "Engine/Classes/Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "PaperSpriteComponent.h"
+
 
 #define INPUT
 
@@ -56,8 +58,22 @@ ACCharacter_Base::ACCharacter_Base()
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 
 
+	// 맵에 표시될 아이콘
+	MapIconComponent = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("MapIconComponent"));
+	MapIconComponent->SetupAttachment(GetMesh());
+	MapIconComponent->SetRelativeRotation(FRotator(0,-180.0f,-90.0f));
+	MapIconComponent->SetRelativeLocation(FVector(0,0,250));
+	MapIconComponent->SetRelativeScale3D(FVector(0.4f));
+	
+	// 맵에 보일 아이콘이 카메라에 안보이도록 설정
+	MapIconComponent->bVisibleInSceneCaptureOnly = true;
+
+
 
 	// 포스트프로세스 설정
+	// 캐릭터 카툰 랜더링 설정
+	GetMainMesh()->SetRenderCustomDepth(true);
+	GetMainMesh()->CustomDepthStencilValue = 250;
 
 
 

@@ -17,8 +17,9 @@ public class Portfolio_RPG_CPP : ModuleRules
 			"Niagara",
 			"GameplayTasks",
 			"NavigationSystem",
-			"AnimGraphRuntime"
-		});
+			"AnimGraphRuntime",
+			"Paper2D"
+	});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

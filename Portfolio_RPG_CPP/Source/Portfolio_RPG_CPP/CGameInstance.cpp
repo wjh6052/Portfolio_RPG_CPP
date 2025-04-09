@@ -8,7 +8,6 @@
 #include "Kismet/GameplayStatics.h"
 
 
-
 UCGameInstance::UCGameInstance()
 {
 	// 플레이어 데이터 테이블
@@ -292,6 +291,7 @@ FColor UCGameInstance::GetRatingColor(EStarRating InRating)
 		//RatingColor
 	return FColor();
 }
+
 
 
 
