@@ -90,8 +90,13 @@ void ACCharacter_AI::TimelineUpdate(float Value)
 {
 	for (int32 i = 0; i < MeshMateriaeDynamic.Num(); i++)
 	{
-		if(MeshMateriaeDynamic[i])
-			MeshMateriaeDynamic[i]->SetScalarParameterValue("Amount", Value);
+		if (MeshMateriaeDynamic[i])
+		{
+			float dummyValue = 0;
+			if (MeshMateriaeDynamic[i]->GetScalarParameterValue(FMaterialParameterInfo("Amount"), dummyValue))
+				MeshMateriaeDynamic[i]->SetScalarParameterValue("Amount", Value);
+		}
+			
 	}
 	
 
