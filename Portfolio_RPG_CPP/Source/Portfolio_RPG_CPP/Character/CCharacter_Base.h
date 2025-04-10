@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "../Datas/Data_DataTable.h"
+#include "../CGameInstance.h"
 #include "../Components/CharacterComp/CStatComponent.h"
 #include "../Components/CharacterComp/CCombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -79,7 +80,7 @@ protected:
 
 public:
 	// 맵에 표시될 아이콘
-	UPROPERTY(BlueprintReadOnly, Category = MapIcon)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MapIcon")
 		class UPaperSpriteComponent* MapIconComponent;
 
 
@@ -96,4 +97,9 @@ private:
 
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCCombatComponent> CombatComponent;
+
+
+protected:
+	class UCGameInstance* CGameInstance;
+
 };

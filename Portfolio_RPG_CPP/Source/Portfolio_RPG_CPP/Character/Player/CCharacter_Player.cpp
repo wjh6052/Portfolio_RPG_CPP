@@ -4,7 +4,7 @@
 #include "../../Widgets/Interaction/CWInteractionBox.h"
 #include "../../AnimInstance/CAnimInstance_Player.h"
 #include "../../Object/MapCamera/CMapCamera.h"
-
+#include "../../Datas/DA/DA_MapIcon.h"
 
 
 
@@ -36,23 +36,6 @@ ACCharacter_Player::ACCharacter_Player()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 	Camera->bUsePawnControlRotation = false;
-
-
-	
-	// 미니맵에 보일 아이콘
-	UPaperSprite* mapIcon;
-
-	ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteFinder(
-		TEXT("PaperSprite'/Game/Asset/Widget_Asset/Texture/MapIcon/T_Map_PlayerIcon_Sprite.T_Map_PlayerIcon_Sprite'")
-	);
-	if (SpriteFinder.Succeeded())
-	{
-		mapIcon = SpriteFinder.Object;
-		MapIconComponent->SetSprite(mapIcon);
-	}
-
-
-	
 
 
 
@@ -88,6 +71,11 @@ void ACCharacter_Player::BeginPlay()
 			Params
 			);
 		minimap->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+	}
+
+	if (CGameInstance->MapIcon_DA != nullptr)
+	{
+		MapIconComponent->SetSprite(CGameInstance->MapIcon_DA->Player_Sprite);
 	}
 	
 }

@@ -206,6 +206,10 @@ public:
 	class UDA_DamageText* DamageText_DA;
 
 
+	// 맵에 표시될 아이콘 데이터 에셋
+	class UDA_MapIcon* MapIcon_DA;
+
+
 
 // ----------------------------------------------------SaveGame-------------------------------------------------------
 public: 

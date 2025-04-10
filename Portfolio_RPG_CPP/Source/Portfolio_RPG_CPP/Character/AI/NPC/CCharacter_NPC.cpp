@@ -3,7 +3,7 @@
 #include "../../../CGameInstance.h"
 #include "../../../Object/Interaction/CInteraction_NPC.h"
 #include "../../../AnimInstance/CAnimInstance_Base.h"
-
+#include "../../../Datas/DA/DA_MapIcon.h"
 
 #include "Components/SphereComponent.h"
 #include "PaperSpriteComponent.h"
@@ -20,17 +20,6 @@ ACCharacter_NPC::ACCharacter_NPC()
 	CHelpers::GetClass<UCAnimInstance_Base>(&animInstanceClass, "AnimBlueprint'/Game/AnimInstance/NPC/ABP_NPC_Mannequins'");
 	GetMesh()->SetAnimInstanceClass(animInstanceClass);
 
-
-	// 미니맵에 보일 아이콘
-	UPaperSprite* mapIcon;
-	ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteFinder(
-		TEXT("PaperSprite'/Game/Asset/Widget_Asset/Texture/MapIcon/T_Map_NPC_Sprite.T_Map_NPC_Sprite'")
-	);
-	if (SpriteFinder.Succeeded())
-	{
-		mapIcon = SpriteFinder.Object;
-		MapIconComponent->SetSprite(mapIcon);
-	}
 }
 
 
@@ -62,6 +51,28 @@ void ACCharacter_NPC::BeginPlay()
 	if (npcEnum)
 	{
 		CW_AIName->SetAIName(npcEnum->GetDisplayNameTextByValue(static_cast<int32>(NPCName)).ToString());
+	}
+
+
+	// 맵에 표시될 아이콘 설정
+	if (CGameInstance->MapIcon_DA != nullptr)
+	{
+		switch (Interaction_NPC->NPC_DataTable.NPCType)
+		{
+		case ENPCType::Merchant:
+			MapIconComponent->SetSprite(CGameInstance->MapIcon_DA->NPC_Shop_Sprite);
+			break;
+
+
+		case ENPCType::Blacksmith:
+			MapIconComponent->SetSprite(CGameInstance->MapIcon_DA->NPC_Blacksmith_Sprite);
+			break;
+
+		default:
+			MapIconComponent->SetSprite(CGameInstance->MapIcon_DA->NPC_Normal_Sprite);
+			break;
+		}
+		
 	}
 }
 

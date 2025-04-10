@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Sava/CItmeData_SaveGame.h"
 #include "Datas/DA/DA_DamageText.h"
+#include "Datas/DA/DA_MapIcon.h"
 #include "Character/CCharacter_Base.h"
 
 
@@ -44,6 +45,9 @@ UCGameInstance::UCGameInstance()
 
 	// 데미지 텍스트
 	CHelpers::GetAsset<UDA_DamageText>(&DamageText_DA, "DA_DamageText'/Game/Data/DA/DA_DamageText.DA_DamageText'");
+
+	// 맵 아이콘 데이터 에셋
+	CHelpers::GetAsset<UDA_MapIcon>(&MapIcon_DA, "DA_MapIcon'/Game/Data/DA/DA_MapIcon.DA_MapIcon'");
 }
 
 void UCGameInstance::Init()

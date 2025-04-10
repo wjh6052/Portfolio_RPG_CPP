@@ -1,5 +1,6 @@
 #include "CCharacter_Base.h"
 #include "../Global.h"
+
 #include "../Object/Combat/CCombat_Base.h"
 
 
@@ -83,6 +84,8 @@ void ACCharacter_Base::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
+	CGameInstance = Cast<UCGameInstance>(GetWorld()->GetGameInstance());
 }
 
 void ACCharacter_Base::Tick(float DeltaTime)

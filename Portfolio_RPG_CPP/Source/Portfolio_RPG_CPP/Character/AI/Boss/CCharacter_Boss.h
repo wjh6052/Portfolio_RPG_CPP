@@ -14,6 +14,9 @@ class PORTFOLIO_RPG_CPP_API ACCharacter_Boss : public ACCharacter_AI
 	
 
 
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
 		EBossName BossName;

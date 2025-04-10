@@ -2,6 +2,8 @@
 #include "../../../Global.h"
 #include "../../../AnimInstance/CAnimInstance_Base.h"
 #include "../../../Widgets/EnemyUI/CW_EnemyHpBar.h"
+#include "../../../Datas/DA/DA_MapIcon.h"
+
 
 #include "Components/WidgetComponent.h"
 #include "Camera/PlayerCameraManager.h"
@@ -29,19 +31,6 @@ ACCharacter_Enemy::ACCharacter_Enemy()
 
 	HPBarWidget->SetRelativeLocation(FVector(0.f, 0.f, 150.f));
 
-
-
-	// 미니맵에 보일 아이콘
-	UPaperSprite* mapIcon;
-
-	ConstructorHelpers::FObjectFinder<UPaperSprite> SpriteFinder(
-		TEXT("PaperSprite'/Game/Asset/Widget_Asset/Texture/MapIcon/T_Map_Enemy_Sprite.T_Map_Enemy_Sprite'")
-	);
-	if (SpriteFinder.Succeeded())
-	{
-		mapIcon = SpriteFinder.Object;
-		MapIconComponent->SetSprite(mapIcon);
-	}
 }
 
 void ACCharacter_Enemy::BeginPlay()
@@ -57,6 +46,13 @@ void ACCharacter_Enemy::BeginPlay()
 	if (enemyEnum)
 	{
 		CW_AIName->SetAIName(enemyEnum->GetDisplayNameTextByValue(static_cast<int32>(EnemyName)).ToString());
+	}
+
+
+	// 맵에 표시될 아이콘 설정
+	if (CGameInstance->MapIcon_DA != nullptr)
+	{
+		MapIconComponent->SetSprite(CGameInstance->MapIcon_DA->Enemy_Sprite);
 	}
 }
 
