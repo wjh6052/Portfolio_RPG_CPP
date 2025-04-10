@@ -33,9 +33,8 @@ EBTNodeResult::Type UCBTTask_Combet::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	TargetDistance = AICharacter->GetDistanceTo(player);
 	BlackboardComp->SetValueAsFloat("TargetDistanceKey", TargetDistance);
 
-
 	AIController->MoveToLocation(TargetLocation, 1.0f, false);
-
+	
 
 	if (AICharacter->GetStatComponent()->IsState(EStateType::Idling))
 	{
@@ -43,7 +42,7 @@ EBTNodeResult::Type UCBTTask_Combet::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 		{
 			AICharacter->GetStatComponent()->SetSpeed(ESpeedType::Stop);
 
-			//AICharacter->GetCombatComponent()->OnAttack();
+			AICharacter->GetCombatComponent()->OnAttack();
 		}
 		else if (TargetDistance <= CombatEntryRange) // 이동속도를 줄이며 접근
 		{
