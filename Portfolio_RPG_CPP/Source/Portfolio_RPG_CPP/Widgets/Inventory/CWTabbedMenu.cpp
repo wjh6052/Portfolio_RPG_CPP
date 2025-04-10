@@ -3,7 +3,7 @@
 
 
 
-void UCWTabbedMenu::SwitchTabs_Implementation(int Input)
+void UCWTabbedMenu::SwitchTabs_Implementation(int Input, bool bOn)
 {
 }
 

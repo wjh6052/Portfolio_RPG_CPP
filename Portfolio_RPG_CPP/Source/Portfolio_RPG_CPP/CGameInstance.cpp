@@ -3,7 +3,7 @@
 #include "Sava/CItmeData_SaveGame.h"
 #include "Datas/DA/DA_DamageText.h"
 #include "Datas/DA/DA_MapIcon.h"
-#include "Character/CCharacter_Base.h"
+#include "Character/Player/CCharacter_Player.h"
 
 
 #include "Kismet/GameplayStatics.h"
@@ -474,9 +474,9 @@ void UCGameInstance::AddMoney(int AddMoney)
 	}
 }
 
-ACCharacter_Base* UCGameInstance::GetPlayerCharacter()
+ACCharacter_Player* UCGameInstance::GetPlayerCharacter()
 {
-	ACCharacter_Base* playerCharacter = Cast<ACCharacter_Base>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	ACCharacter_Player* playerCharacter = Cast<ACCharacter_Player>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
 	return playerCharacter;
 }

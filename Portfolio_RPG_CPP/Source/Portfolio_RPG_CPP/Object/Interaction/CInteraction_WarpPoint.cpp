@@ -2,6 +2,9 @@
 #include "../../Global.h"
 #include "../../CGameInstance.h"
 #include "../../Datas/DA/DA_MapIcon.h"
+#include "../../Character/Player/CCharacter_Player.h"
+#include "../../Widgets/CWMain.h"
+#include "../../Widgets/Inventory/CWInventory.h"
 
 
 #include "PaperSpriteComponent.h"
@@ -29,6 +32,8 @@ ACInteraction_WarpPoint::ACInteraction_WarpPoint()
         VisualMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
         VisualMesh->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
         VisualMesh->SetHiddenInGame(true); // 게임에서는 숨기고 에디터에서만 보이게
+
+        VisualMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     }
 
 
@@ -69,6 +74,11 @@ void ACInteraction_WarpPoint::UseInteractionSystem()
 {
     Super::UseInteractionSystem();
 
+    if (CGameInstance->GetPlayerCharacter())
+    {
+        CGameInstance->GetPlayerCharacter()->GetWidgetComponent()->GetMainWidget()->GetInventory()->SwitchTabs(3, true);
+        CGameInstance->GetPlayerCharacter()->GetWidgetComponent()->SetViewInventory();
+    }
     
 }
 

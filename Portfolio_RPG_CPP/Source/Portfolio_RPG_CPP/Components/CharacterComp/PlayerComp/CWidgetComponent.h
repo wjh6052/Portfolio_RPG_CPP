@@ -28,7 +28,8 @@ protected:
 
 public:	
 	// 인벤토리를 출력 및 지울때
-	void SetViewInventory();
+	UFUNCTION(BlueprintCallable)
+		void SetViewInventory();
 
 
 	// 무기 선택 위젯 켜기

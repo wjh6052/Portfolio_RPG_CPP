@@ -48,8 +48,12 @@ public: // ------------------------------------------------NPC대화------------
 		class UCWNPCTalkUI* GetNPCTalkUI();
 
 
+public: // ------------------------------------------------인벤토리------------------------------------------------
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintPure, Category = "Inventory")
+		class UCWInventory* GetInventory();
 
+	
 
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Data")

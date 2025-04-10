@@ -3,6 +3,6 @@
 
 
 
-void UCWInventory::SwitchTabs_Implementation(int Input)
+void UCWInventory::SwitchTabs_Implementation(int Input, bool bOn)
 {
 }

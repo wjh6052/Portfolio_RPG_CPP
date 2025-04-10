@@ -243,6 +243,6 @@ private:
 
 public: // Get
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		class ACCharacter_Base* GetPlayerCharacter();
+		class ACCharacter_Player* GetPlayerCharacter();
 
 };

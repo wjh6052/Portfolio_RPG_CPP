@@ -13,8 +13,8 @@ class PORTFOLIO_RPG_CPP_API UCWTabbedMenu : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void SwitchTabs(int Input);
-	virtual void SwitchTabs_Implementation(int Input);
+		void SwitchTabs(int Input, bool bOn = false);
+	virtual void SwitchTabs_Implementation(int Input, bool bOn = false);
 
 
 
