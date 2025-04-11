@@ -25,8 +25,8 @@ enum class EGearType : uint8
 {
 	None		UMETA(DisplayName = "비어있음"),
 	Weapon		UMETA(DisplayName = "무기"),
-	Helmet		UMETA(DisplayName = "투구"),
-	Armor		UMETA(DisplayName = "갑옷"),
+	Helmet		UMETA(DisplayName = "모자"),
+	Armor		UMETA(DisplayName = "상의"),
 	Gloves		UMETA(DisplayName = "장갑"),
 	Boots		UMETA(DisplayName = "신발")
 };

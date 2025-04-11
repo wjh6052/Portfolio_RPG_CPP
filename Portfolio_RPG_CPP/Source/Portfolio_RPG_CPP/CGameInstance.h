@@ -183,6 +183,10 @@ public:
 // --------------------강화 데이터 --------------------
 	void GearEnhancementDataTableToArr();
 
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FGearEnhancementData_DataTable GetGearEnhancementData(EGearType InGearType, ECombatType InCombatType);
+
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FGearEnhancementData_DataTable> GearEnhancementData_Arr;
 	UDataTable* GearEnhancementData_DataTable;

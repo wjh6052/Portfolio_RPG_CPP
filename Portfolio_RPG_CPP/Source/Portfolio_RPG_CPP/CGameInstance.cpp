@@ -42,7 +42,6 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&GearEnhancementData_DataTable, "DataTable'/Game/Data/DT_FGearEnhancementData.DT_FGearEnhancementData'");
 
 
-
 	// 데미지 텍스트
 	CHelpers::GetAsset<UDA_DamageText>(&DamageText_DA, "DA_DamageText'/Game/Data/DA/DA_DamageText.DA_DamageText'");
 
@@ -97,24 +96,6 @@ void UCGameInstance::PlayerDataTableToArr()
 			{
 				Player_Data_Arr.Add(*Row);
 			}
-		}
-
-		for (int32 i = 0; i < Player_Data_Arr.Num(); i++)
-		{
-			for (int32 j = 0; j < GearEnhancementData_Arr.Num(); j++)
-			{
-				if (Player_Data_Arr[i].Player_CombatData.CombatData.CombatType == GearEnhancementData_Arr[j].WeaponType)
-				{
-					int32 index = Player_Data_Arr[i].Player_CombatData.WeaponEnhancementLevel;
-					
-					if (index < GearEnhancementData_Arr[j].GearEnhancementDataArr.Num())
-					{
-						Player_Data_Arr[i].Player_CombatData.CurrentGearEnhancementData = GearEnhancementData_Arr[j].GearEnhancementDataArr[index];
-					}
-					
-					break;
-				}
-			}			
 		}
 	}
 }
@@ -177,7 +158,7 @@ void UCGameInstance::QuestDataTableToArr()
 {
 	if (!Quest_DataTable)
 	{
-		CLog::Print(L"NPC 데이터테이블을 읽어오지 못하였습니다");
+		CLog::Print(L"퀘스트 데이터테이블을 읽어오지 못하였습니다");
 	}
 	else
 	{
@@ -233,7 +214,7 @@ void UCGameInstance::IconDataTableToArr()
 {
 	if (!ConversationIcon_DataTable)
 	{
-		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
+		CLog::Print(L"아이콘 데이터테이블을 읽어오지 못하였습니다");
 	}
 	else
 	{
@@ -255,7 +236,7 @@ void UCGameInstance::GearEnhancementDataTableToArr()
 {
 	if (!GearEnhancementData_DataTable)
 	{
-		CLog::Print(L"아이템 데이터테이블을 읽어오지 못하였습니다");
+		CLog::Print(L"장비 강화 데이터테이블을 읽어오지 못하였습니다");
 	}
 	else
 	{
@@ -269,6 +250,23 @@ void UCGameInstance::GearEnhancementDataTableToArr()
 				GearEnhancementData_Arr.Add(*Row);
 		}
 	}
+}
+
+FGearEnhancementData_DataTable UCGameInstance::GetGearEnhancementData(EGearType InGearType, ECombatType InCombatType)
+{
+	FGearEnhancementData_DataTable reData;
+
+	for (FGearEnhancementData_DataTable data : GearEnhancementData_Arr)
+	{
+		if (data.GearType == InGearType && data.WeaponType == InCombatType)
+		{
+			reData = data;
+			break;
+		}
+	}
+
+
+	return reData;
 }
 
 FColor UCGameInstance::GetRatingColor(EStarRating InRating)

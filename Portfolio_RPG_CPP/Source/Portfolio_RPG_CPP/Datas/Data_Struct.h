@@ -142,9 +142,6 @@ struct FGearStets
 	GENERATED_BODY()
 
 public:
-	// 현재 체력
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		float HP = 0;
 	// 최대 체력
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float HP_Max = 0;
@@ -482,6 +479,37 @@ public:
 
 };
 
+USTRUCT(BlueprintType)
+struct FPlayer_Gear
+{
+	GENERATED_BODY()
+
+
+public:
+	// UI에 비춰질 장비 이미지
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Gear Image")
+		UTexture2D* Gear_Image;
+
+
+
+	// UI에 표시될 무기의 이름
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "WeaponName")
+		FString GearName;
+
+	// 무기의 강화 등급
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat Weapon Data")
+		int GearEnhancementLevel = 0;
+
+	// 현재 무기의 강화 상태
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat Weapon Data")
+		FGearEnhancementData CurrentGearEnhancementData;
+
+	// 무기 스텟
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat Weapon Data")
+		FGearStets GearStets;
+
+
+};
 
 
 

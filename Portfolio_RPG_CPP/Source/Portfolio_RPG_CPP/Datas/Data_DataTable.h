@@ -43,7 +43,24 @@ public:
 		FPlayer_CombatData Player_CombatData;
 
 
-	// 장착중인 장비 추가 예정
+	// 플레이어의 장비
+
+	// 모자
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Gear")
+		FPlayer_Gear Gear_Helmet;
+
+	// 상의
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Gear")
+		FPlayer_Gear Gear_Armor;
+
+	// 장갑
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Gear")
+		FPlayer_Gear Gear_Gloves;
+
+	// 신발
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Gear")
+		FPlayer_Gear Gear_Boots;
+
 };
 
 
@@ -52,36 +69,36 @@ USTRUCT(BlueprintType)
 struct FEnemy_DataTable : public FTableRowBase
 {
 	GENERATED_BODY()
-		public
-		:
-			// 몬스터의 이름
-			UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Enemy Name")
-				EEnemyName EnemyName;
+public
+:
+	// 몬스터의 이름
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Enemy Name")
+			EEnemyName EnemyName;
 
 
 
-			// 몬스터의 스텟
-			UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
-				FStat Stat;
+	// 몬스터의 스텟
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
+			FStat Stat;
 
 
-			// 몬스터 사망시 드랍될 아이템 배열
-			UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
-				TArray<FItemType> EnemyDropItemArr;
+	// 몬스터 사망시 드랍될 아이템 배열
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
+		TArray<FItemType> EnemyDropItemArr;
 
 
-			// 돈 드랍 액수
-			UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
-				int LootMoneyCount = 1;
+	// 돈 드랍 액수
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
+		int LootMoneyCount = 1;
 
-			// 드랍 확률 (0.0 ~ 1.0의 값 설정)
-			UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
-				float MoneyDropRate = 1;
+	// 드랍 확률 (0.0 ~ 1.0의 값 설정)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
+		float MoneyDropRate = 1;
 
 
-			// 공격 액션 데이터
-			UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat")
-				FCombatData CombatData;
+	// 공격 액션 데이터
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat")
+		FCombatData CombatData;
 
 
 };
@@ -409,7 +426,7 @@ public:
 		EGearType GearType;
 
 	// 무기 종류
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "GearType == EGearType::Weapon"))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		ECombatType WeaponType;
 
 	// 강화 데이터
