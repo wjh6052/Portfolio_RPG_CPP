@@ -50,7 +50,7 @@ ACInteraction_WarpPoint::ACInteraction_WarpPoint()
 
     // 워프포인트 이미지
     UObject* image;
-    CHelpers::GetAsset<UObject>(&image, "Texture2D'/Game/Asset/Widget_Asset/Texture/T_WarpPoint.T_WarpPoint'");
+    CHelpers::GetAsset<UObject>(&image, "Texture2D'/Game/Asset/Widget_Asset/Texture/interaction/T_WarpPoint.T_WarpPoint'");
     InteractionImage = image;
 }
 

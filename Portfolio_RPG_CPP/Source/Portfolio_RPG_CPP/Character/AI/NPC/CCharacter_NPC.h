@@ -21,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	
-
+	
 	
 
 
@@ -33,6 +33,10 @@ public:
 public:
 	UFUNCTION()
 		void UpdateInteractionQuestData(FQuest_DataTable NewQuest_Data, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName);
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FORCEINLINE class ACInteraction_NPC* GetInteraction_NPC() { return Interaction_NPC; }
 
 	class UCGameInstance* CGameInstance;
 	class ACInteraction_NPC* Interaction_NPC;

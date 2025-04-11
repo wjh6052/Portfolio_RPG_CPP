@@ -33,6 +33,8 @@ public:
 		class UPaperSpriteComponent* MapIconComponent;
 
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Description ")
+		FString Description = "noob";
 
 
 private:
