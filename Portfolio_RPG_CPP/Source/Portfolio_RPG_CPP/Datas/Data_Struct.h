@@ -578,30 +578,30 @@ struct FStat
 
 public:
 	// 현재 체력
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float HP = 100;
 	// 최대 체력
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float HP_Max = 100;
 
 	// 기본 데미지
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Damage = 10;
 
 	// 방어력
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Defense = 5;
 
 	// 크리티컬 데미지
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Critical_Damage = 50;
 
 	// 크리티컬 확률
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Critical_Chance = 20;
 
 	// 히트 저항 수치
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		float Stance = 0;
 
 	// 점프 높이 (기본 : 420)
