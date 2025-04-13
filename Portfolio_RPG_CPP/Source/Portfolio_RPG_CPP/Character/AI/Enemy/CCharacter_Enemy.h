@@ -30,7 +30,7 @@ public:
 	FEnemy_DataTable Enemy_DataTable;
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Components")
 		class UWidgetComponent* HPBarWidget;
 
 

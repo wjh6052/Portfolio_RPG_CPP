@@ -24,6 +24,7 @@ ACCharacter_AI::ACCharacter_AI()
 	AINameWidget->SetWidgetClass(aINameClass);
 	
 	AINameWidget->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
+	AINameWidget->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ACCharacter_AI::BeginPlay()

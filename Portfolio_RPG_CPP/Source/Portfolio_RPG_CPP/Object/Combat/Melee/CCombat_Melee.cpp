@@ -118,17 +118,30 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 			FAttack attackData = GetCurrentAttackData();
 
+
+			// 캐릭터의 스텟 데미지 및 크리티컬 확률 추가
+			{
+				attackData.AttackDamage.Damage += OwnerCharacter->GetStatComponent()->GetCurrentStat().Damage;
+				attackData.AttackDamage.CriticalChance += OwnerCharacter->GetStatComponent()->GetCurrentStat().Critical_Chance;
+			}
+
+
 			// 크리티컬 체크 및 데미지 증가
-			if (attackData.AttackDamage.bOnCritical)
-			{				
+			bool OnCritical = attackData.AttackDamage.bOnCritical || attackData.AttackDamage.CriticalChance >= FMath::FRandRange(0.0, 100.0);
+			
+			
+			if (OnCritical)
+			{	
 				attackData.AttackDamage.Damage += (OwnerCharacter->GetStatComponent()->GetPlayerData().Stat.Critical_Damage * 0.01 * attackData.AttackDamage.Damage);
 			}
+
+
 
 			// 공격시 나의 방향을 적의 방향으로 전환
 			OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherActor);
 			
 			// 데미지를 월드상 숫자로 나이아가라 효과스폰
-			OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
+			OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, attackData.AttackDamage.Damage, OnCritical);
 			
 			// 데미지를 받은 위치에 나이아가라 효과 스폰
 			OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);

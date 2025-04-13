@@ -6,6 +6,7 @@
 #include "../../Character/AI/Enemy/CCharacter_Enemy.h"
 #include "../../Character/AI/NPC/CCharacter_NPC.h"
 #include "../../AIController/CAIController.h"
+#include "../../Object/Combat/CCombat_Base.h"
 #include "../../Maps/CLevel_Main.h"
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/GameplayUI/CWGameplayUI.h"
@@ -112,6 +113,12 @@ void UCStatComponent::PlayerDataSetting()
 	// 카메라 스프링암 위지 조정
 	OwnerACCharacter_Player->SpringArm->SetRelativeLocation(FVector(0, 0, GetPlayerData().Mesh.CapsuleHalfHeight / 2));
 
+	if (CGameInstance != nullptr)
+	{
+		CGameInstance->Update_PlayerData.AddDynamic(this, &UCStatComponent::UpdatePlayerData);
+	}
+
+
 }
 
 void UCStatComponent::EnemyDataSetting()
@@ -212,9 +219,17 @@ void UCStatComponent::Desh_Ragdoll()
 
 }
 
+// 데미지 적용
 bool UCStatComponent::AddDamage(float InDamage)
 {
 	CurrentStat.HP -= InDamage;
+
+	if(OwnerCharacter_Base->GetCharacterType() == ECharacterType::Player)
+	{
+		CGameInstance->PlayerAddDamage(OwnerCharacter_Base->GetCombatComponent()->Current_CombatData.CombatType, InDamage);
+	}
+
+	
 
 	if (CurrentStat.HP <= 0) // 죽었을 때
 	{
@@ -279,5 +294,23 @@ void UCStatComponent::SetStateType(EStateType input)
 
 	default:
 		break;
+	}
+}
+
+
+
+void UCStatComponent::UpdatePlayerData(ECombatType InCombatType)
+{
+	for (FPlayer_DataTable row : CGameInstance->Player_Data_Arr)
+	{
+		if (row.Player_CombatData.CombatData.CombatType == InCombatType)
+		{
+			Player_Data = row;
+			SetCurrentStat(row.Stat);
+
+			OwnerCharacter_Base->GetCombatComponent()->Current_CombatData = row.Player_CombatData.CombatData;
+			OwnerCharacter_Base->GetCombatComponent()->Current_Combat->CombatData = row.Player_CombatData.CombatData;
+		}
+
 	}
 }

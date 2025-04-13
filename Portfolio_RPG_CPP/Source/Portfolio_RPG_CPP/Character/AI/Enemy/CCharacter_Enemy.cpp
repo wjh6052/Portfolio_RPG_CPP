@@ -31,6 +31,8 @@ ACCharacter_Enemy::ACCharacter_Enemy()
 
 	HPBarWidget->SetRelativeLocation(FVector(0.f, 0.f, 150.f));
 
+
+	HPBarWidget->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ACCharacter_Enemy::BeginPlay()

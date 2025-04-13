@@ -586,19 +586,19 @@ public:
 
 	// 기본 데미지
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		float Damage = 10;
+		float Damage = 0;
 
 	// 방어력
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		float Defense = 5;
+		float Defense = 0;
 
 	// 크리티컬 데미지
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		float Critical_Damage = 50;
+		float Critical_Damage = 0;
 
 	// 크리티컬 확률
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		float Critical_Chance = 20;
+		float Critical_Chance = 0;
 
 	// 히트 저항 수치
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)

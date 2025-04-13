@@ -46,7 +46,12 @@ public:
 public:
 	// --------------------플레이어 데이터--------------------
 	void PlayerDataTableToArr();
-		
+	
+	void SettingPlayerDataStats(ECombatType InCombatType);
+
+	void PlayerAddDamage(ECombatType InCombatType, float InDamage);
+
+
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FPlayer_DataTable> Player_Data_Arr;
 	UDataTable* Player_DataTable;
@@ -186,6 +191,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 		FGearEnhancementData_DataTable GetGearEnhancementData(EGearType InGearType, ECombatType InCombatType);
+
+	FGearStets GetGearStets(EGearType InGearType, ECombatType InCombatType, int InLevel);
 
 	UPROPERTY(BlueprintReadWrite)
 		TArray<FGearEnhancementData_DataTable> GearEnhancementData_Arr;

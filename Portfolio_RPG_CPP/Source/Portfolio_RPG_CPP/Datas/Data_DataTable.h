@@ -22,10 +22,13 @@ public:
 
 
 
-	// 스텟
+	// 플레이어의 기본스텟
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
-		FStat Stat;
+		FStat Character_BaseStat;
 
+	// 장비와의 포함된 현재 스텟
+	UPROPERTY(BlueprintReadOnly, Category = "Stat")
+		FStat Stat;
 
 
 	// 비행 스피드

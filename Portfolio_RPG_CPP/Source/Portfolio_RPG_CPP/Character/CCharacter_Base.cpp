@@ -70,6 +70,9 @@ ACCharacter_Base::ACCharacter_Base()
 	MapIconComponent->bVisibleInSceneCaptureOnly = true;
 
 
+	// 천장에 붙이치는 현상을 방지
+	MapIconComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 
 	// 포스트프로세스 설정
 	// 캐릭터 카툰 랜더링 설정

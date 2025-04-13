@@ -95,10 +95,108 @@ void UCGameInstance::PlayerDataTableToArr()
 			if (Row)
 			{
 				Player_Data_Arr.Add(*Row);
+				SettingPlayerDataStats(Row->Player_CombatData.CombatData.CombatType);
 			}
 		}
 	}
 }
+
+void UCGameInstance::SettingPlayerDataStats(ECombatType InCombatType)
+{
+	for (int i = 0; i < Player_Data_Arr.Num(); i++)
+		if (Player_Data_Arr[i].Player_CombatData.CombatData.CombatType == InCombatType)
+		{
+			
+			// 캐릭터의 기본스텟 적용
+			Player_Data_Arr[i].Stat = Player_Data_Arr[i].Character_BaseStat;
+			
+
+			// 무기 스텟 추가
+			{
+				FGearStets tmep = GetGearStets(EGearType::Weapon, InCombatType, Player_Data_Arr[i].Player_CombatData.WeaponEnhancementLevel);
+
+				Player_Data_Arr[i].Stat.HP_Max += tmep.HP_Max;
+				Player_Data_Arr[i].Stat.Damage += tmep.Damage;
+				Player_Data_Arr[i].Stat.Defense += tmep.Defense;
+				Player_Data_Arr[i].Stat.Critical_Damage += tmep.Critical_Damage;
+				Player_Data_Arr[i].Stat.Critical_Chance += tmep.Critical_Chance;
+				Player_Data_Arr[i].Stat.Stance += tmep.Stance;
+			}
+			
+
+			// 모자 스텟 추가
+			{
+				FGearStets tmep = GetGearStets(EGearType::Helmet, InCombatType, Player_Data_Arr[i].Gear_Helmet.GearEnhancementLevel);
+
+				Player_Data_Arr[i].Stat.HP_Max += tmep.HP_Max;
+				Player_Data_Arr[i].Stat.Damage += tmep.Damage;
+				Player_Data_Arr[i].Stat.Defense += tmep.Defense;
+				Player_Data_Arr[i].Stat.Critical_Damage += tmep.Critical_Damage;
+				Player_Data_Arr[i].Stat.Critical_Chance += tmep.Critical_Chance;
+				Player_Data_Arr[i].Stat.Stance += tmep.Stance;
+
+				
+			}
+			
+
+			// 상의 스텟 추가
+			{
+				FGearStets tmep = GetGearStets(EGearType::Armor, InCombatType, Player_Data_Arr[i].Gear_Armor.GearEnhancementLevel);
+
+				Player_Data_Arr[i].Stat.HP_Max += tmep.HP_Max;
+				Player_Data_Arr[i].Stat.Damage += tmep.Damage;
+				Player_Data_Arr[i].Stat.Defense += tmep.Defense;
+				Player_Data_Arr[i].Stat.Critical_Damage += tmep.Critical_Damage;
+				Player_Data_Arr[i].Stat.Critical_Chance += tmep.Critical_Chance;
+				Player_Data_Arr[i].Stat.Stance += tmep.Stance;
+			}
+			
+
+			// 장갑 스텟 추가
+			{
+				FGearStets tmep = GetGearStets(EGearType::Gloves, InCombatType, Player_Data_Arr[i].Gear_Gloves.GearEnhancementLevel);
+
+				Player_Data_Arr[i].Stat.HP_Max += tmep.HP_Max;
+				Player_Data_Arr[i].Stat.Damage += tmep.Damage;
+				Player_Data_Arr[i].Stat.Defense += tmep.Defense;
+				Player_Data_Arr[i].Stat.Critical_Damage += tmep.Critical_Damage;
+				Player_Data_Arr[i].Stat.Critical_Chance += tmep.Critical_Chance;
+				Player_Data_Arr[i].Stat.Stance += tmep.Stance;
+			}
+			
+
+			// 신발 스텟 추가
+			{
+				FGearStets tmep = GetGearStets(EGearType::Boots, InCombatType, Player_Data_Arr[i].Gear_Boots.GearEnhancementLevel);
+
+				Player_Data_Arr[i].Stat.HP_Max += tmep.HP_Max;
+				Player_Data_Arr[i].Stat.Damage += tmep.Damage;
+				Player_Data_Arr[i].Stat.Defense += tmep.Defense;
+				Player_Data_Arr[i].Stat.Critical_Damage += tmep.Critical_Damage;
+				Player_Data_Arr[i].Stat.Critical_Chance += tmep.Critical_Chance;
+				Player_Data_Arr[i].Stat.Stance += tmep.Stance;
+			}
+
+
+			return;
+			
+		}
+}
+
+void UCGameInstance::PlayerAddDamage(ECombatType InCombatType, float InDamage)
+{
+	for (int i = 0; i < Player_Data_Arr.Num(); i++)
+	{
+		if (Player_Data_Arr[i].Player_CombatData.CombatData.CombatType == InCombatType)
+		{
+			Player_Data_Arr[i].Stat.HP -= InDamage;
+			TriggerUpdatePlayerData(InCombatType);
+			break;
+		}
+	}
+}
+
+
 
 void UCGameInstance::UpdatePlayerData(ECombatType InCombatType, FPlayer_DataTable InPlayerData)
 {
@@ -107,8 +205,10 @@ void UCGameInstance::UpdatePlayerData(ECombatType InCombatType, FPlayer_DataTabl
 		if (Player_Data_Arr[i].Player_CombatData.CombatData.CombatType == InCombatType)
 		{
 			Player_Data_Arr[i] = InPlayerData;
+			SettingPlayerDataStats(InCombatType);
+
 			TriggerUpdatePlayerData(InCombatType);
-			break;
+			return;
 		}
 	}
 
@@ -268,6 +368,30 @@ FGearEnhancementData_DataTable UCGameInstance::GetGearEnhancementData(EGearType 
 
 	return reData;
 }
+
+FGearStets UCGameInstance::GetGearStets(EGearType InGearType, ECombatType InCombatType, int InLevel)
+{
+	FGearEnhancementData_DataTable tempData = GetGearEnhancementData(InGearType, InCombatType);
+	FGearStets tempStets;
+
+	for (int i = 0; i < tempData.GearEnhancementDataArr.Num(); i++)
+	{
+		if (i < InLevel)
+		{
+			tempStets.HP_Max += tempData.GearEnhancementDataArr[i].AddGearStats.HP_Max;
+			tempStets.Damage += tempData.GearEnhancementDataArr[i].AddGearStats.Damage;
+			tempStets.Defense += tempData.GearEnhancementDataArr[i].AddGearStats.Defense;
+			tempStets.Critical_Damage += tempData.GearEnhancementDataArr[i].AddGearStats.Critical_Damage;
+			tempStets.Critical_Chance += tempData.GearEnhancementDataArr[i].AddGearStats.Critical_Chance;
+			tempStets.Stance += tempData.GearEnhancementDataArr[i].AddGearStats.Stance;
+		}
+		else
+			break;
+	}
+
+	return tempStets;
+}
+
 
 FColor UCGameInstance::GetRatingColor(EStarRating InRating)
 {

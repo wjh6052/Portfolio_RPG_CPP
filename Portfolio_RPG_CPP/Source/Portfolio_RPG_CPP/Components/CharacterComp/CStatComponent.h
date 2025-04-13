@@ -63,7 +63,7 @@ public:
 
 
 public:
-
+	// 데미지 적용
 	bool AddDamage(float InDamage);
 
 
@@ -118,9 +118,12 @@ public:
 
 
 public:
+	// 죽었을때 랙돌 효과
 	void Desh_Ragdoll();
 
 	FTimerHandle RagdollTimerHandle;
+
+
 
 private:
 	// 현제 스텟
@@ -154,5 +157,11 @@ public:
 	class ACCharacter_Enemy* OwnerCharacter_Enemy;
 
 	class ACCharacter_NPC* OwnerACCharacter_NPC;
+
+
+
+public:
+	UFUNCTION()
+		void UpdatePlayerData(ECombatType InCombatType);
 
 };

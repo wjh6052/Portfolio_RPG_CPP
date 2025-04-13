@@ -28,6 +28,8 @@ protected:
 
 public:
 	// 연출
+
+	// 데미지 적용
 	void TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
 	void OnHitImpact(bool bThrowable, class UPrimitiveComponent* OverlappedComponent);
 	void AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp);
