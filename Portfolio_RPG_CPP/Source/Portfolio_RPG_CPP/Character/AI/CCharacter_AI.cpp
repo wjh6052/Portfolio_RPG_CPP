@@ -91,7 +91,7 @@ void ACCharacter_AI::TimelineUpdate(float Value)
 {
 	for (int32 i = 0; i < MeshMateriaeDynamic.Num(); i++)
 	{
-		if (MeshMateriaeDynamic[i])
+		if (MeshMateriaeDynamic[i]->IsValidLowLevel())
 		{
 			float dummyValue = 0;
 			if (MeshMateriaeDynamic[i]->GetScalarParameterValue(FMaterialParameterInfo("Amount"), dummyValue))
