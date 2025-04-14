@@ -313,9 +313,6 @@ public:
 
 // FPotionItem 포션 데이터 테이블 추가 예정
 
-// FEquipmentItem 장비 데이터 테이블 추가 예정
-
-// FWeaponItem 무기 데이터 테이블 추가 예정
 
 
 
@@ -348,6 +345,10 @@ public:
 	// 퀘스트 보상
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestReward")
 		FQuestReward QuestReward;
+
+	// 퀘스트를 완료후의 코드
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestReward")
+		TSubclassOf<class ACQuestActor> QuestObject;
 
 
 	// 현제 퀘스트의 상황
