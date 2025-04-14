@@ -341,6 +341,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestDetails")
 		FQuestDetails QuestDetails;
 
+	// 퀘스트를 수락할때 대화
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestDetails")
+		TArray<FString> AcceptDialogues;
+
+
+
+	// 퀘스트 완료 후 대화
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestReward")
+		TArray<FString> RewardDialogues;
 
 	// 퀘스트 보상
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestReward")
