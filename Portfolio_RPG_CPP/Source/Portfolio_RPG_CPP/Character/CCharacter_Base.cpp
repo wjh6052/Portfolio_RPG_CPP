@@ -79,7 +79,9 @@ ACCharacter_Base::ACCharacter_Base()
 	GetMainMesh()->SetRenderCustomDepth(true);
 	GetMainMesh()->CustomDepthStencilValue = 250;
 
-
+	// 캐릭터에 데칼이 나오지 않도록 설정
+	GetMainMesh()->SetReceivesDecals(false);
+	GetOutLineMesh()->SetReceivesDecals(false);
 
 }
 
@@ -100,7 +102,8 @@ void ACCharacter_Base::Tick(float DeltaTime)
 
 float ACCharacter_Base::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
-	GetCombatComponent()->TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if(GetCombatComponent())
+		GetCombatComponent()->TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	
 	
 

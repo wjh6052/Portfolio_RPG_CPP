@@ -54,6 +54,10 @@ protected:
 	class UCW_AI_Name* CW_AIName;
 
 
+
+
+
+
 public:
 	virtual void DyingTimeLineStart(); // 타임라인을 세팅 및 시작할 함수
 	

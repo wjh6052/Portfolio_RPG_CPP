@@ -56,15 +56,28 @@ void ACCombat_Melee_Assassin::CooldownTick()
 
 		if (bhit)
 		{
+			bool isTarget = false;
+
 			for (FHitResult hit : HitResult)
 			{
 				ACCharacter_Base* ch = Cast<ACCharacter_Base>(hit.GetActor());
 
-				if (ch && OwnerCharacter->IsCharacterType(ECharacterType::Enemy))
+				if (ch)
 				{
-					bOnSkill[1] = true;
+					if (ch->GetCharacterType() == ECharacterType::Enemy || ch->GetCharacterType() == ECharacterType::Boss)
+					{
+						if (ch->GetStatComponent() && !(ch->GetStatComponent()->IsState(EStateType::Dying)))
+						{
+							isTarget = true;
+							break;
+						}
+					}
+
 				}
 			}
+
+			bOnSkill[1] = isTarget;
+
 		}
 		else
 		{

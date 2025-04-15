@@ -75,7 +75,8 @@ public:
 	//get
 	FORCEINLINE bool GetSprint() const { return bSprint; }
 
-	FORCEINLINE EStateType GetStateType() const { return StateType; }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE EStateType GetStateType() const { return StateType; }
 	FORCEINLINE EStatusType GetStatusType() const { return StatusType; }
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
@@ -155,6 +156,7 @@ public:
 
 	class ACCharacter_Player* OwnerACCharacter_Player;
 	class ACCharacter_Enemy* OwnerCharacter_Enemy;
+	class ACCharacter_Boss* OwnerCharacter_Boss;
 
 	class ACCharacter_NPC* OwnerACCharacter_NPC;
 

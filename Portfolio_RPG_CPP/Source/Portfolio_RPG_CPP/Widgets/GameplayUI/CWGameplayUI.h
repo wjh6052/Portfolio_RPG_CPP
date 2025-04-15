@@ -57,4 +57,12 @@ public: // ------------------------------------------------무기 선택 창---------
 	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon Choice")
 		void SetHPBar(float InHP);
 
+
+public: // ------------------------------------------------보스 HPBar------------------------------------------------
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "BossHpBar")
+		void OnBossHpBar(bool bOnHpBar, FBoss_DataTable InBoss_DataTable);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "BossHpBar")
+		void AddDamageBossHpBar(float InDamage);
 };

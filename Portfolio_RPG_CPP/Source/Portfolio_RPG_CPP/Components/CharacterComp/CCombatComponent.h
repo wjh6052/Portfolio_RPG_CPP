@@ -21,6 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 	void PlayerBeginPlay();
 	void EnemyBeginPlay();
+	void BossBeginPlay();
 
 
 	UFUNCTION(BlueprintCallable)

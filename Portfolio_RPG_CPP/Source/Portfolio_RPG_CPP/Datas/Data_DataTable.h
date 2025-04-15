@@ -98,6 +98,9 @@ public
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
 		float MoneyDropRate = 1;
 
+	// 아이템이 스폰하면서 날라갈 힘
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropPower")
+		float DropPower;
 
 	// 공격 액션 데이터
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Combat")
@@ -112,17 +115,40 @@ struct FBoss_DataTable : public FTableRowBase
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterType")
-		FName BossName_Type;
 
-	// 보스 마네킹 애님인스턴스
+	// 보스 이름
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Boss Name")
+		EBossName BossName;
 
+
+
+	// 보스 스텟
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;
 
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Speed")
-		FSpeed Speed;
+
+	// 보스 사망시 애니메이션
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AnimMontage")
+		FAnimMontageBase BossDeathAnimMontage;
+
+
+	// 몬스터 사망시 드랍될 아이템 배열
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropItem")
+		TArray<FItemType> DropItemArr;
+
+	// 돈 드랍 액수
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
+		int LootMoneyCount = 1;
+
+	// 드랍 확률 (0.0 ~ 1.0의 값 설정)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropMoney")
+		float MoneyDropRate = 1;
+
+	// 아이템이 스폰하면서 날라갈 힘
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "DropPower")
+		float DropPower;
+
 };
 
 

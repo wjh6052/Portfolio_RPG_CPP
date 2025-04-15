@@ -33,12 +33,16 @@ void UCAnimInstance_Base::NativeUpdateAnimation(float DeltaSeconds)
 	bFalling = OwnerCharacter->GetCharacterMovement()->IsFalling();
 
 
-	StateType = OwnerCharacter->GetStatComponent()->GetStateType();
+	if (OwnerCharacter->GetStatComponent())
+	{
+		StateType = OwnerCharacter->GetStatComponent()->GetStateType();
 
-	StatusType = OwnerCharacter->GetStatComponent()->GetStatusType();
+		StatusType = OwnerCharacter->GetStatComponent()->GetStatusType();
 
 
-	CombatType = OwnerCharacter->GetStatComponent()->GetPlayerData().Player_CombatData.CombatData.CombatType;
+		CombatType = OwnerCharacter->GetStatComponent()->GetPlayerData().Player_CombatData.CombatData.CombatType;
+	}
+	
 
 
 	//bLookOn = OwnerCharacter->GetCombatComponent()->bLookOn;

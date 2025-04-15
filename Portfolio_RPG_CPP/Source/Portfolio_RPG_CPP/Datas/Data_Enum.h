@@ -43,7 +43,8 @@ enum class EEnemyName : uint8
 UENUM(BlueprintType)
 enum class EBossName : uint8
 {
-	None			UMETA(DisplayName = "비어있음")
+	None			UMETA(DisplayName = "비어있음"),
+	BossBear		UMETA(DisplayName = "자이언트 베어")
 };
 
 

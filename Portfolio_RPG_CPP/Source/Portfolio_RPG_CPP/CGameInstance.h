@@ -72,7 +72,7 @@ public:
 
 
 
-	// --------------------에너미 데이터--------------------
+// --------------------에너미 데이터--------------------
 	void EnemyDataTableToArr();
 	
 	UPROPERTY(BlueprintReadWrite)
@@ -81,9 +81,14 @@ public:
 
 
 
-	// 보스 몬스터 데이터
-	//UPROPERTY(BlueprintReadWrite)
-	//	TArray<FBoss_DataTable> Boss_Data_Arr;
+
+
+
+// --------------------보스 데이터--------------------
+	void BossDataTableToArr();
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FBoss_DataTable> Boss_Data_Arr;
 	UDataTable* Boss_DataTable;
 
 

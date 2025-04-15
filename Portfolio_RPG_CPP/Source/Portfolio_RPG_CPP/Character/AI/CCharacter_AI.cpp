@@ -74,6 +74,7 @@ void ACCharacter_AI::Tick(float DeltaTime)
 	AINameWidget->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(AINameWidget->GetComponentLocation(), GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraLocation()));
 }
 
+
 void ACCharacter_AI::DyingTimeLineStart()
 {
 	for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)

@@ -18,7 +18,9 @@ UCGameInstance::UCGameInstance()
 	CHelpers::GetAsset<UDataTable>(&Enemy_DataTable, "DataTable'/Game/Data/DT_Enemy.DT_Enemy'");
 	
 	// 보스 데이터 테이블 추가예정
-	
+	CHelpers::GetAsset<UDataTable>(&Boss_DataTable, "DataTable'/Game/Data/DT_Boss.DT_Boss'");
+
+
 
 	//NPC 데이터 테이블
 	CHelpers::GetAsset<UDataTable>(&NPC_DataTable, "DataTable'/Game/Data/NPC/DT_NPC.DT_NPC'");
@@ -64,6 +66,7 @@ void UCGameInstance::Init()
 
 	PlayerDataTableToArr();
 	EnemyDataTableToArr();
+	BossDataTableToArr();
 	NPCDataTableToArr();
 	
 	
@@ -196,8 +199,6 @@ void UCGameInstance::PlayerAddDamage(ECombatType InCombatType, float InDamage)
 	}
 }
 
-
-
 void UCGameInstance::UpdatePlayerData(ECombatType InCombatType, FPlayer_DataTable InPlayerData)
 {
 	for (int32 i = 0; i < Player_Data_Arr.Num(); i++)
@@ -213,6 +214,8 @@ void UCGameInstance::UpdatePlayerData(ECombatType InCombatType, FPlayer_DataTabl
 	}
 
 }
+
+
 
 void UCGameInstance::EnemyDataTableToArr()
 {
@@ -233,6 +236,29 @@ void UCGameInstance::EnemyDataTableToArr()
 		}
 	}
 }
+
+
+void UCGameInstance::BossDataTableToArr()
+{
+	if (!Boss_DataTable)
+	{
+		CLog::Print(L"Boss 데이터테이블을 읽어오지 못하였습니다");
+	}
+	else
+	{
+		TArray<FBoss_DataTable*> AllRows;
+		Boss_DataTable->GetAllRows<FBoss_DataTable>(L"", AllRows);
+
+
+		for (FBoss_DataTable* Row : AllRows)
+		{
+			if (Row)
+				Boss_Data_Arr.Add(*Row);
+		}
+	}
+}
+
+
 
 void UCGameInstance::NPCDataTableToArr()
 {

@@ -69,6 +69,22 @@ protected:
 
 
 
+public:
+	// 일반적인 마네킹이 아닌 규격을 사용할경우 true
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Setting")
+		bool bOnCustomMesh = false;
+
+
+	// 인간형이 아닐경우 커스텀 플레이 몽타주를 사용한다
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void CustomPlayAnimMontage(FAnimMontageBase InAnimMontage);
+
+
+	// 인간형이 아닐경우 커스텀 랙돌
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void CustomDeshRagdoll();
+
+
 
 
 protected:	

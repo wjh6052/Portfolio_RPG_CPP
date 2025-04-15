@@ -3,8 +3,17 @@
 
 
 #include "PaperSpriteComponent.h"
+#include "Components/WidgetComponent.h"
 
 
+
+ACCharacter_Boss::ACCharacter_Boss()
+{
+	// StatComp를 위한 캐릭터 태그
+	CharacterType = ECharacterType::Boss;
+
+	AINameWidget->SetVisibility(false);
+}
 
 void ACCharacter_Boss::BeginPlay()
 {

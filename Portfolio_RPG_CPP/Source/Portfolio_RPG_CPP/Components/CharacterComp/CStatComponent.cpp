@@ -3,6 +3,7 @@
 #include "../../CGameInstance.h"
 #include "../../Character/CCharacter_Base.h"
 #include "../../Character/Player/CCharacter_Player.h"
+#include "../../Character/AI/Boss/CCharacter_Boss.h"
 #include "../../Character/AI/Enemy/CCharacter_Enemy.h"
 #include "../../Character/AI/NPC/CCharacter_NPC.h"
 #include "../../AIController/CAIController.h"
@@ -51,6 +52,10 @@ void UCStatComponent::BeginPlay()
 		EnemyDataSetting();
 		break;
 	
+	case ECharacterType::Boss:
+
+		BossDataSetting();
+		break;
 
 	default:
 		break;
@@ -142,8 +147,23 @@ void UCStatComponent::EnemyDataSetting()
 
 void UCStatComponent::BossDataSetting()
 {
+	OwnerCharacter_Boss = Cast<ACCharacter_Boss>(OwnerCharacter_Base);
 
+	// 데이터테이블의 에너미의 비헤이비어트리를 적용
+	for (FBoss_DataTable Row : CGameInstance->Boss_Data_Arr)
+	{
+		if (OwnerCharacter_Boss->BossName == Row.BossName)
+		{
+			// 스텟설정
+			SetCurrentStat(Row.Stat);
+			OwnerCharacter_Boss->Boss_DataTable = Row;
+
+			break;
+		}
+	}
 }
+
+
 
 void UCStatComponent::NPCDataSetting()
 {
@@ -199,12 +219,20 @@ void UCStatComponent::SetSpeed(ESpeedType input)
 
 void UCStatComponent::Desh_Ragdoll()
 {
-	// 애니메이션 속도를 0으로 설정
-	OwnerCharacter_Base->GetMesh()->GlobalAnimRateScale = 0.0f;
+	if (OwnerCharacter_Base->bOnCustomMesh)
+	{
+		OwnerCharacter_Base->CustomDeshRagdoll();
+	}
+	else
+	{
+		// 애니메이션 속도를 0으로 설정
+		OwnerCharacter_Base->GetMesh()->GlobalAnimRateScale = 0.0f;
 
-	OwnerCharacter_Base->GetMesh()->SetSimulatePhysics(true);
-	OwnerCharacter_Base->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	OwnerCharacter_Base->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		OwnerCharacter_Base->GetMesh()->SetSimulatePhysics(true);
+		OwnerCharacter_Base->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		OwnerCharacter_Base->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	
 
 	
 	if (OwnerCharacter_Enemy)
@@ -224,12 +252,17 @@ bool UCStatComponent::AddDamage(float InDamage)
 {
 	CurrentStat.HP -= InDamage;
 
-	if(OwnerCharacter_Base->GetCharacterType() == ECharacterType::Player)
+	switch (OwnerCharacter_Base->GetCharacterType())
 	{
+	case ECharacterType::Player:
 		CGameInstance->PlayerAddDamage(OwnerCharacter_Base->GetCombatComponent()->Current_CombatData.CombatType, InDamage);
-	}
+		break;
 
+	case ECharacterType::Boss:
+		break;
+	}
 	
+
 
 	if (CurrentStat.HP <= 0) // 죽었을 때
 	{
@@ -242,10 +275,18 @@ bool UCStatComponent::AddDamage(float InDamage)
 		CurrentStat.HP = CurrentStat.HP_Max;		
 	}
 
-	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Player)
+
+
+	switch (OwnerCharacter_Base->GetCharacterType())
 	{
+	case ECharacterType::Player:
 		OwnerACCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetHPBar(CurrentStat.HP);
+		break;
+
+	case ECharacterType::Boss:
+		break;
 	}
+
 
 	return false;
 }
@@ -267,6 +308,10 @@ void UCStatComponent::SetStateType(EStateType input)
 {
 	if (bIsStateLocked)
 		return;
+
+	if (StateType == EStateType::Dying)
+		return;
+
 
 	StateType = input;
 

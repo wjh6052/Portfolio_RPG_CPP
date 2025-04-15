@@ -48,7 +48,7 @@ void UCCombatComponent::BeginPlay()
 
 	case ECharacterType::Boss:
 		OwnerCharacter_Boss = Cast<ACCharacter_Boss>(OwnerCharacter_Base);
-		//BossBeginPlay();
+		BossBeginPlay();
 		break;
 
 	default:
@@ -112,6 +112,11 @@ void UCCombatComponent::EnemyBeginPlay()
 
 }
 
+void UCCombatComponent::BossBeginPlay()
+{
+	
+}
+
 // 무기 변경
 void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 {
@@ -165,11 +170,21 @@ void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 // 데미지 적용
 void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
+	if (OwnerCharacter_Base->GetStatComponent()->IsState(EStateType::Dying))
+		return;
+
 	float InDamage = DamageAmount;
 	
 
+	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss)
+	{
+		CGameInstance->GetPlayerCharacter()->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->AddDamageBossHpBar(InDamage);
 
-	if (OwnerCharacter_Base->GetStatComponent()->AddDamage(InDamage))
+
+	}
+
+
+	if (OwnerCharacter_Base->GetStatComponent() && OwnerCharacter_Base->GetStatComponent()->AddDamage(InDamage))
 	{
 		CharacterDeath(DamageCauser);
 		return;
@@ -177,8 +192,8 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	
 
 
-
-	if (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) < InDamage)
+	
+	if (OwnerCharacter_Base->GetStatComponent()&& OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) < InDamage)
 	{
 		PlayHitReaction();
 	}
@@ -217,13 +232,6 @@ void UCCombatComponent::OnHitImpact(bool bThrowable, UPrimitiveComponent* Overla
 // 넉백
 void UCCombatComponent::AttackKnockBack(AActor* DamageOwner, float InKnockBackForward, float InKnockBackUp)
 {
-	// 보스는 넉백을 받지 않을 예정
-	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss)
-	{
-		return;
-	}
-
-
 	ACharacter* damageCharacter = Cast<ACharacter>(DamageOwner);
 
 	
@@ -253,81 +261,87 @@ void UCCombatComponent::PlayHitReaction()
 // 죽었을때
 void UCCombatComponent::CharacterDeath(AActor* DamageCauser)
 {	
-	ACCombat_Base* CombatActor = Cast<ACCombat_Base>(DamageCauser);
-	if (CombatActor != nullptr)
-		if (CombatActor->OwnerCharacter != nullptr && CombatActor->OwnerCharacter->GetCharacterType() == ECharacterType::Player)
-		{			
-			switch (OwnerCharacter_Base->GetCharacterType())
+	switch (OwnerCharacter_Base->GetCharacterType())
+	{
+	case ECharacterType::Enemy:
+		for (FQuest_DataTable arr : CGameInstance->QuestData_Arr)
+		{
+			// 퀘스트의 상태가 진행 중 인지 && 몬스터의 킬이 있는지
+			if (arr.QuestState == EQuestState::InProgress && arr.QuestDetails.bRequireMonsterKill == true)
 			{
-			case ECharacterType::Enemy:
-				for (FQuest_DataTable arr : CGameInstance->QuestData_Arr)
+				for (int i = 0; i < arr.QuestDetails.MonsterTargets.Num(); i++)
 				{
-					// 퀘스트의 상태가 진행 중 인지 && 몬스터의 킬이 있는지
-					if (arr.QuestState == EQuestState::InProgress && arr.QuestDetails.bRequireMonsterKill == true)
+					// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
+					if (arr.QuestDetails.MonsterTargets[i].EnemyName == OwnerCharacter_Enemy->EnemyName)
 					{
-						for (int i = 0; i < arr.QuestDetails.MonsterTargets.Num(); i++)
+						if (arr.QuestDetails.MonsterTargets[i].CurrentKillCount + 1 <= arr.QuestDetails.MonsterTargets[i].KillCount)
 						{
-							// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
-							if (arr.QuestDetails.MonsterTargets[i].EnemyName == OwnerCharacter_Enemy->EnemyName)
-							{
-								if (arr.QuestDetails.MonsterTargets[i].CurrentKillCount + 1 <= arr.QuestDetails.MonsterTargets[i].KillCount)
-								{
-									arr.QuestDetails.MonsterTargets[i].CurrentKillCount++;
-									CGameInstance->UpdateQuestDate(arr, EQuestDetailsUpdateType::Monster, UEnum::GetDisplayValueAsText(arr.QuestDetails.MonsterTargets[i].EnemyName).ToString());
-								}
-								
-								break;
-								
-							}
-							
+							arr.QuestDetails.MonsterTargets[i].CurrentKillCount++;
+							CGameInstance->UpdateQuestDate(arr, EQuestDetailsUpdateType::Monster, UEnum::GetDisplayValueAsText(arr.QuestDetails.MonsterTargets[i].EnemyName).ToString());
 						}
-					}
 
-				}				
-				break;
-				
+						break;
 
-			case ECharacterType::Boss:
-				for (FQuest_DataTable arr : CGameInstance->QuestData_Arr)
-				{
-					// 퀘스트의 상태가 진행 중 인지 && 몬스터의 킬이 있는지
-					if (arr.QuestState == EQuestState::InProgress && arr.QuestDetails.bRequireBossKill == true)
-					{
-						for (int i = 0; i < arr.QuestDetails.BossTargets.Num(); i++)
-						{
-							// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
-							if (arr.QuestDetails.BossTargets[i].BossName == OwnerCharacter_Boss->BossName)
-							{
-								if (arr.QuestDetails.BossTargets[i].CurrentKillCount + 1 <= arr.QuestDetails.BossTargets[i].KillCount)
-								{
-									arr.QuestDetails.BossTargets[i].CurrentKillCount++;
-									CGameInstance->UpdateQuestDate(arr, EQuestDetailsUpdateType::Boss, UEnum::GetDisplayValueAsText(arr.QuestDetails.BossTargets[i].BossName).ToString());
-								}
-
-								break;
-							}
-
-						}
 					}
 
 				}
-				break;
-
 			}
-			
 
-
-			
-				
 		}
+		break;
+
+
+	case ECharacterType::Boss:
+		for (FQuest_DataTable arr : CGameInstance->QuestData_Arr)
+		{
+			// 퀘스트의 상태가 진행 중 인지 && 몬스터의 킬이 있는지
+			if (arr.QuestState == EQuestState::InProgress && arr.QuestDetails.bRequireBossKill == true)
+			{
+				for (int i = 0; i < arr.QuestDetails.BossTargets.Num(); i++)
+				{
+					// 잡아야하는 몬스터의 이름이 오너캐릭터와 동일한지 확인
+					if (arr.QuestDetails.BossTargets[i].BossName == OwnerCharacter_Boss->BossName)
+					{
+						if (arr.QuestDetails.BossTargets[i].CurrentKillCount + 1 <= arr.QuestDetails.BossTargets[i].KillCount)
+						{
+							arr.QuestDetails.BossTargets[i].CurrentKillCount++;
+							CGameInstance->UpdateQuestDate(arr, EQuestDetailsUpdateType::Boss, UEnum::GetDisplayValueAsText(arr.QuestDetails.BossTargets[i].BossName).ToString());
+						}
+
+						break;
+					}
+
+				}
+			}
+
+		}
+		break;
+	}
 
 
 
+	
+
+	// 죽었을때 애니메이션
+	if(OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss && OwnerCharacter_Boss && OwnerCharacter_Boss->Boss_DataTable.BossDeathAnimMontage.AnimMontage)
+	{
+		if (OwnerCharacter_Boss->bOnCustomMesh)
+		{
+			OwnerCharacter_Boss->CustomPlayAnimMontage(OwnerCharacter_Boss->Boss_DataTable.BossDeathAnimMontage);
+		}
+		else
+		{
+			OwnerCharacter_Boss->PlayAnimMontage(OwnerCharacter_Boss->Boss_DataTable.BossDeathAnimMontage.AnimMontage, OwnerCharacter_Boss->Boss_DataTable.BossDeathAnimMontage.PlayRate);
+		}
+		
+	}
+	else
+	{
+		OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Die_Montage.AnimMontage, Current_CombatData.Die_Montage.PlayRate);
+	}
 
 	OwnerCharacter_Base->GetStatComponent()->SetStateType(EStateType::Dying);
-	
-	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Die_Montage.AnimMontage, Current_CombatData.Die_Montage.PlayRate);
-	OwnerCharacter_Base->GetMainMesh()->SetSimulatePhysics(true);
+	//OwnerCharacter_Base->GetMainMesh()->SetSimulatePhysics(true);
 
 
 	DropLootOnDeath();
@@ -335,7 +349,7 @@ void UCCombatComponent::CharacterDeath(AActor* DamageCauser)
 
 void UCCombatComponent::DropLootOnDeath()
 {
-	float Power = 700;
+	float Power = 0;
 
 	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Enemy)
 	{
@@ -355,7 +369,7 @@ void UCCombatComponent::DropLootOnDeath()
 						item->ItemName = L"이름";
 
 						item->SetMaterialItemIcon();
-
+						Power = OwnerCharacter_Enemy->Enemy_DataTable.DropPower;
 
 						FVector Impulse = FVector(FMath::RandRange(-Power, Power), FMath::RandRange(-Power, Power), 500);
 						item->GetMesh()->AddImpulse(Impulse);
@@ -368,7 +382,7 @@ void UCCombatComponent::DropLootOnDeath()
 				break;
 			}
 		}
-
+		
 		if (OwnerCharacter_Enemy->Enemy_DataTable.LootMoneyCount > 0 && OwnerCharacter_Enemy->Enemy_DataTable.MoneyDropRate >= FMath::FRand())
 		{
 			ACItemInteraction_Money* money = GetWorld()->SpawnActor<ACItemInteraction_Money>(ACItemInteraction_Money::StaticClass(), OwnerCharacter_Enemy->GetActorLocation(), FRotator::ZeroRotator);
@@ -381,7 +395,39 @@ void UCCombatComponent::DropLootOnDeath()
 	}
 	else if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss)
 	{
+		Power = OwnerCharacter_Boss->Boss_DataTable.DropPower;
 
+		for (FItemType row : OwnerCharacter_Boss->Boss_DataTable.DropItemArr)
+		{
+			switch (row.ItemCategory)
+			{
+			case EItemCategory::Material:
+			{
+				if (row.DropRate >= FMath::FRand())
+				{
+					ACItemInteraction_Material* item = GetWorld()->SpawnActor<ACItemInteraction_Material>(ACItemInteraction_Material::StaticClass(), OwnerCharacter_Boss->GetActorLocation(), FRotator::ZeroRotator);
+
+					item->FInteractionItemMaterial.StarRating = row.StarRating;
+					item->FInteractionItemMaterial.ItemUseType = row.ItemUseType;
+					item->FInteractionItemMaterial.MaterialNum = row.ItemCount;
+					item->ItemName = L"이름";
+
+					item->SetMaterialItemIcon();
+
+
+					FVector Impulse = FVector(FMath::RandRange(-Power, Power), FMath::RandRange(-Power, Power), 500);
+					item->GetMesh()->AddImpulse(Impulse);
+				}
+
+
+				break;
+			}
+			case EItemCategory::Equipment:
+				break;
+			}
+		}
+
+		
 	}
 
 }

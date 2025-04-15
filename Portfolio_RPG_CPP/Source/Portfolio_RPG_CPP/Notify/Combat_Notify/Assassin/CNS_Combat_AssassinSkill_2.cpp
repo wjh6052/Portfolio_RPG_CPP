@@ -55,10 +55,16 @@ void UCNS_Combat_AssassinSkill_2::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 		{
 			ACCharacter_Base* ch = Cast<ACCharacter_Base>(hit.GetActor());
 
-			if (ch != nullptr && ch->IsCharacterType(ECharacterType::Enemy))
+
+			if (ch)
 			{
-				TargetArr.AddUnique(hit.GetActor());
-			}	
+				if (ch->GetCharacterType() == ECharacterType::Enemy || ch->GetCharacterType() == ECharacterType::Boss)
+				{
+					if (!(ch->GetStatComponent()->IsState(EStateType::Dying)))
+						TargetArr.AddUnique(hit.GetActor());
+				}
+
+			}
 		}
 	}
 }
