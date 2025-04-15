@@ -103,7 +103,7 @@ void ACThrowableWeapon::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCom
 	
 
 		// 데미지를 월드상 숫자로 나이아가라 효과스폰
-		OwnerCharacter->GetCombatComponent()->ShowDamageText(OtherActor, AttackData.AttackDamage_ThrowableWeapon.Damage, AttackData.bThrowableWeapon);
+		OwnerCharacter->GetCombatComponent()->ShowDamageText(OverlappedComponent, AttackData.AttackDamage_ThrowableWeapon.Damage, AttackData.bThrowableWeapon);
 		
 		// 데미지를 받은 위치에 나이아가라 효과 스폰
 		OwnerCharacter->GetCombatComponent()->OnHitImpact(true, OverlappedComponent);

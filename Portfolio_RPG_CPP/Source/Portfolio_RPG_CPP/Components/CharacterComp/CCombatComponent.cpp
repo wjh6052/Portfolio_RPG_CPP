@@ -462,7 +462,7 @@ void UCCombatComponent::AttractToTarget(AActor* Target)
 
 
 // 데미지를 월드상에 나이아가라 텍스트로 보여줌
-void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, bool bCritical, bool bHealing)
+void UCCombatComponent::ShowDamageText(UPrimitiveComponent* OverlappedComponent, float Damage, bool bCritical, bool bHealing)
 {
 	TArray<int32> IntArray;
 	float textLocatonY = 0;
@@ -476,9 +476,9 @@ void UCCombatComponent::ShowDamageText(AActor* DamageOwner, float Damage, bool b
 	for (int32 number : IntArray)
 	{		
 		UNiagaraComponent* digitSystem = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-			DamageOwner->GetWorld(),
+			OwnerCharacter_Base->GetWorld(),
 			CGameInstance->DamageText_DA->NiagaraSystem,
-			DamageOwner->GetActorLocation(),
+			OverlappedComponent->K2_GetComponentLocation(),
 			FRotator(180.0, CGameInstance->GetPlayerCharacter()->GetControlRotation().Yaw, 0.0),
 			FVector(0.5, 0.5, 0.5),
 			true,

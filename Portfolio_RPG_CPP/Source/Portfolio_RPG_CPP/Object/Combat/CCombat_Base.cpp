@@ -369,7 +369,7 @@ void ACCombat_Base::DamagesTarget(AActor* InTarget)
 	FAttack attackData = OwnerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
 
 	// 데미지를 월드상 숫자로 나이아가라 효과스폰
-	OwnerCharacter->GetCombatComponent()->ShowDamageText(InTarget, attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
+	OwnerCharacter->GetCombatComponent()->ShowDamageText(target->GetMesh(), attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
 
 	// 데미지를 받은 위치에 나이아가라 효과 스폰
 	OwnerCharacter->GetCombatComponent()->OnHitImpact(false, target->GetMesh());

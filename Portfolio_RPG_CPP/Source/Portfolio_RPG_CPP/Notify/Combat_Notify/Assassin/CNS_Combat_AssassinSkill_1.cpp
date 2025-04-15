@@ -85,7 +85,7 @@ void UCNS_Combat_AssassinSkill_1::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 		FAttack attackData = ownerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
 
 		// 데미지를 월드상 숫자로 나이아가라 효과스폰
-		ownerCharacter->GetCombatComponent()->ShowDamageText(target, attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
+		ownerCharacter->GetCombatComponent()->ShowDamageText(Cast<ACCharacter_Base>(target)->GetCapsuleComponent(), attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
 		
 		// 데미지를 받은 위치에 나이아가라 효과 스폰
 		ownerCharacter->GetCombatComponent()->OnHitImpact(false, Cast<ACCharacter_Base>(target)->GetCapsuleComponent());
