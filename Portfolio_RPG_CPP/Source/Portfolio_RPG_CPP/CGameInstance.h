@@ -227,6 +227,11 @@ public:
 
 
 
+	// 몬스터의 범위 공격에 표시될 데칼 머티리얼
+	UPROPERTY(BlueprintReadOnly)
+		class UDA_AttackRangeDecal* AttackRangeDecal_DA;
+
+
 // ----------------------------------------------------SaveGame-------------------------------------------------------
 public: 
 	// SaveGame

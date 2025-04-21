@@ -3,6 +3,7 @@
 #include "Sava/CItmeData_SaveGame.h"
 #include "Datas/DA/DA_DamageText.h"
 #include "Datas/DA/DA_MapIcon.h"
+#include "Datas/DA/DA_AttackRangeDecal.h"
 #include "Character/Player/CCharacter_Player.h"
 
 
@@ -49,6 +50,11 @@ UCGameInstance::UCGameInstance()
 
 	// 맵 아이콘 데이터 에셋
 	CHelpers::GetAsset<UDA_MapIcon>(&MapIcon_DA, "DA_MapIcon'/Game/Data/DA/DA_MapIcon.DA_MapIcon'");
+
+
+	// 몬스터의 범위 공격에 표시될 데칼 머티리얼
+	CHelpers::GetAsset<UDA_AttackRangeDecal>(&AttackRangeDecal_DA, "DA_MapIcon'/Game/Data/DA/DA_AttackRangeDecal.DA_AttackRangeDecal'");
+	
 }
 
 void UCGameInstance::Init()

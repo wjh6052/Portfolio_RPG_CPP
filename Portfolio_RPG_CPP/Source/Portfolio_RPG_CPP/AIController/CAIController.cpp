@@ -103,7 +103,7 @@ void ACAIController::OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 
 void ACAIController::OnTargetLost(AActor* Actor)
 {
-	ACCharacter_Player* player = Cast<ACCharacter_Player>(Actor);;
+	ACCharacter_Player* player = Cast<ACCharacter_Player>(Actor);
 
 	if (player) // 잊혀진 액터가 플레이어인 경우
 	{

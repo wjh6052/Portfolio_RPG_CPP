@@ -14,10 +14,10 @@ struct FAnimMontageBase
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AnimMontage")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "AnimMontage")
 		class UAnimMontage* AnimMontage;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AnimMontage")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "AnimMontage")
 		float PlayRate = 1.0;
 };
 
@@ -612,6 +612,65 @@ public:
 	UPROPERTY(EditAnywhere)
 		FSpeed Speed;
 };
+
+// 스킬 관련 데칼 구조체
+USTRUCT(BlueprintType)
+struct FSkillDecal
+{
+	GENERATED_BODY()
+
+public:
+
+	// 데칼의 형태
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		ESkillDecalType SkillDecalType;
+
+	// 박스 트레이스의 X = Forward / Y = Right / Z = Up
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "SkillDecalType == ESkillDecalType::Box"))
+		FVector BoxTraceSize;
+
+	// 데칼 사이즈
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		FVector DecalSize;
+
+	// 데칼이 나올 위치 X = Forward / Y = Right / Z = Up
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		FVector DecalLocation;
+
+	// 데칼이 끝날 시간
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		float DecalTime;
+};
+
+
+// 보스 스킬 관련 구조체
+USTRUCT(BlueprintType)
+struct FSkill
+{
+	GENERATED_BODY()
+
+public:
+	// 스킬 쿨타임
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		float SkillCooldown;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		FAttackDamage SkillDamage;
+
+	// 스킬 애니메이션
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		FAnimMontageBase SkillMontage;
+
+
+	// 데칼을 사용할 것인지 여부
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		bool bOnDecal = false;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (EditCondition = "bOnDecal"))
+		FSkillDecal SkillDecal;
+};
+
+
 
 
 

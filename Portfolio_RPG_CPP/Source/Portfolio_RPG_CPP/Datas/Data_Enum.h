@@ -161,6 +161,15 @@ enum class EConversationType : uint8 // NPC대화종류 열거형
 };
 
 
+UENUM(BlueprintType)
+enum class ESkillDecalType : uint8
+{
+	None			UMETA(DisplayName = "비어있음"),
+	Box				UMETA(DisplayName = "박스"),
+	Circle			UMETA(DisplayName = "원형"),
+	HalfCircle		UMETA(DisplayName = "반원")
+};
+
 
 
 UCLASS()

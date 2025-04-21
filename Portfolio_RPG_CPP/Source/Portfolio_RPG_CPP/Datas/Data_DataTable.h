@@ -126,6 +126,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
 		FStat Stat;
 
+	// 보스 스킬
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stat")
+		TArray<FSkill> SkillArr;
+
 
 
 	// 보스 사망시 애니메이션

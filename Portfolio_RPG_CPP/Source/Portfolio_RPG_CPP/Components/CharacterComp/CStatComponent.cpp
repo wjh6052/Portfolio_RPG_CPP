@@ -158,6 +158,10 @@ void UCStatComponent::BossDataSetting()
 			SetCurrentStat(Row.Stat);
 			OwnerCharacter_Boss->Boss_DataTable = Row;
 
+			for (FSkill skil : Row.SkillArr)
+			{
+				OwnerCharacter_Boss->CurrentSkillCooldownArr.Add(skil.SkillCooldown);
+			}
 			break;
 		}
 	}

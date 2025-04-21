@@ -79,6 +79,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 		void CustomPlayAnimMontage(FAnimMontageBase InAnimMontage);
 
+	// 커스텀 플레이 몽타주 스탑
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void CustomMontagePause(const UAnimMontage* Montage);
+
+	// 커스텀 플레이 몽타주 이어서 스타트
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void CustomMontageResume(const UAnimMontage* Montage);
+
 
 	// 인간형이 아닐경우 커스텀 랙돌
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
@@ -116,6 +124,7 @@ private:
 
 
 protected:
-	class UCGameInstance* CGameInstance;
+	UPROPERTY(BlueprintReadOnly)
+		class UCGameInstance* CGameInstance;
 
 };
