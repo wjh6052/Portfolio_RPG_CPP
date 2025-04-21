@@ -10,4 +10,5 @@ ACInteraction_System::ACInteraction_System()
 
 void ACInteraction_System::UseInteractionSystem()
 {
+	UseInteractionSystem_Blueprint();
 }

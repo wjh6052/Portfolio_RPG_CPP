@@ -19,4 +19,7 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 		virtual void UseInteractionSystem();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void UseInteractionSystem_Blueprint();
 };

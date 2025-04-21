@@ -48,7 +48,6 @@ void ACCharacter_Boss::Tick(float DeltaTime)
 	{
 		if(CurrentSkillCooldownArr[i] > 0)
 			CurrentSkillCooldownArr[i] -= DeltaTime;
-		CLog::Print(CurrentSkillCooldownArr[i], i);
 	}
 
 
