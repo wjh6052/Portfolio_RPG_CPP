@@ -77,6 +77,17 @@ void ACCharacter_Player::BeginPlay()
 	{
 		MapIconComponent->SetSprite(CGameInstance->MapIcon_DA->Player_Sprite);
 	}
+
+
+	// 플레이어 스폰 위치 조정
+	if (CGameInstance)
+	{
+		
+		if(CGameInstance->PlayerSpawnPoint != FVector(0,0,0))
+			SetActorLocation(CGameInstance->PlayerSpawnPoint);
+
+
+	}
 	
 }
 

@@ -729,7 +729,22 @@ public:
 
 
 
+// --------------------- 레벨별 플레이어 스폰 위치 ---------------------
 
+USTRUCT(BlueprintType)
+struct FPlayerSpawnPoint
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+		FName LevelName;
+
+	UPROPERTY(EditAnywhere)
+		FVector SpawnLocation;
+
+
+};
 
 
 // --------------------- NPC 대화 구조체 ---------------------

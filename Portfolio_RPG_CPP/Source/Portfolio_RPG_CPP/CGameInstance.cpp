@@ -458,6 +458,16 @@ FColor UCGameInstance::GetRatingColor(EStarRating InRating)
 
 // ----------------------------------------------------SaveGame-------------------------------------------------------
 
+void UCGameInstance::MoveToLevel(FName InLevelName, FVector InSpawnPotin)
+{
+	PlayerSpawnPoint = InSpawnPotin;
+
+
+	UGameplayStatics::OpenLevel(this, InLevelName);
+}
+
+
+
 void UCGameInstance::SaveData(FString SlotName, int Index)
 {
 	if (!ItmeData_SaveGame)

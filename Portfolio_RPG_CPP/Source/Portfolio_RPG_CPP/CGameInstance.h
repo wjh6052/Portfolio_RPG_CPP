@@ -232,6 +232,17 @@ public:
 		class UDA_AttackRangeDecal* AttackRangeDecal_DA;
 
 
+
+// ------------------------------------------------Level-------------------------------------------------------
+public:
+	UFUNCTION(BlueprintCallable)
+		void MoveToLevel(FName InLevelName, FVector InSpawnPotin);
+
+	FName SpawnLevelName;
+	FVector PlayerSpawnPoint;
+
+
+
 // ----------------------------------------------------SaveGame-------------------------------------------------------
 public: 
 	// SaveGame
@@ -250,7 +261,7 @@ public: // Get
 
 
 public:
-
+	
 	
 
 	// 유저의 현재 캐릭터
