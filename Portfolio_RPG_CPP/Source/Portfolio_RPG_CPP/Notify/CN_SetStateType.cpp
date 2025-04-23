@@ -5,8 +5,7 @@ FString UCN_SetStateType::GetNotifyName_Implementation() const
 {
 	return "SetStateType";
 }
-
-void UCN_SetStateType::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCN_SetStateType::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation);
 	CheckNull(MeshComp->GetOwner());

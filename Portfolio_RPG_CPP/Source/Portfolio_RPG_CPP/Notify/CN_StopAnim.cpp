@@ -8,7 +8,7 @@ FString UCN_StopAnim::GetNotifyName_Implementation() const
 	return "StopAnim";
 }
 
-void UCN_StopAnim::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UCN_StopAnim::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation);
 

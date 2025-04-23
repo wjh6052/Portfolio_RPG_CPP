@@ -13,5 +13,5 @@ class PORTFOLIO_RPG_CPP_API UCN_StopAnim : public UAnimNotify
 	
 public:
 	FString GetNotifyName_Implementation() const override;
-	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 };

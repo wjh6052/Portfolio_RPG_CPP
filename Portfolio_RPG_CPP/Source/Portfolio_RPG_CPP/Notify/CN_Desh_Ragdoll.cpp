@@ -8,7 +8,8 @@ FString UCN_Desh_Ragdoll::GetNotifyName_Implementation() const
 	return "Desh_Ragdoll";
 }
 
-void UCN_Desh_Ragdoll::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+
+void UCN_Desh_Ragdoll::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation);
 

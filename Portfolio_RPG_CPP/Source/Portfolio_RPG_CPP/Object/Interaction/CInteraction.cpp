@@ -14,7 +14,7 @@ ACInteraction::ACInteraction()
 	CHelpers::CreateSceneComponent(this, &SphereCollision, "SphereCollision", StaticMesh);
 
 
-	SphereCollision->SetHiddenInGame(false);	
+	SphereCollision->SetHiddenInGame(true);	
 }
 
 void ACInteraction::BeginPlay()

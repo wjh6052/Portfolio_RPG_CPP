@@ -162,9 +162,9 @@ void UCNS_AttackTrace::BossNotify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 }
 
 
-void UCNS_AttackTrace::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
+void UCNS_AttackTrace::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime);
+	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
 
 	if (SkillDecalType != ESkillDecalType::Box)
 		return;
