@@ -70,7 +70,8 @@ public:
 
 
 	// 퀘스트 정보 델리게이트
-	FORCEINLINE void TriggerUpdatePlayerData(ECombatType InCombatType) { Update_PlayerData.Broadcast(InCombatType); }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE void TriggerUpdatePlayerData(ECombatType InCombatType) { Update_PlayerData.Broadcast(InCombatType); }
 
 
 
@@ -207,7 +208,8 @@ public:
 // --------------------시스템 알람--------------------
 
 	// 시스템 알람 델리게이트 호출 함수
-	FORCEINLINE void TriggerSystemAlarm(FString Alarm) { SystemAlarm.Broadcast(Alarm); }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE void TriggerSystemAlarm(FString Alarm) { SystemAlarm.Broadcast(Alarm); }
 
 	UPROPERTY(BlueprintAssignable)
 		FSystemAlarm SystemAlarm;

@@ -17,7 +17,8 @@ class PORTFOLIO_RPG_CPP_API ACItemInteraction_Material : public ACInteraction
 public:
 	ACItemInteraction_Material();
 
-	void SetMaterialItemIcon();
+	UFUNCTION(BlueprintCallable)
+		void SetMaterialItemIcon();
 
 protected:
 	virtual void BeginPlay() override;
