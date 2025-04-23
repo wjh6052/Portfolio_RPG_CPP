@@ -85,9 +85,8 @@ void ACCharacter_Player::BeginPlay()
 		
 		if(CGameInstance->PlayerSpawnPoint != FVector(0,0,0))
 			SetActorLocation(CGameInstance->PlayerSpawnPoint);
-
-
 	}
+
 	
 }
 
@@ -405,17 +404,21 @@ void ACCharacter_Player::OnAttack()
 
 void ACCharacter_Player::OnSkill_1()
 {
-	GetCombatComponent()->Skill_1();
+	
+	if(GetStatComponent()->IsStatus(EStatusType::Combat))
+		GetCombatComponent()->Skill_1();
 }
 
 void ACCharacter_Player::OnSkill_2()
 {
-	GetCombatComponent()->Skill_2();
+	if (GetStatComponent()->IsStatus(EStatusType::Combat))
+		GetCombatComponent()->Skill_2();
 }
 
 void ACCharacter_Player::OnSkill_3()
 {
-	GetCombatComponent()->Skill_3();
+	if (GetStatComponent()->IsStatus(EStatusType::Combat))
+		GetCombatComponent()->Skill_3();
 }
 
 

@@ -1,6 +1,6 @@
 ﻿ #include "CGameInstance.h"
 #include "Global.h"
-#include "Sava/CItmeData_SaveGame.h"
+#include "Sava/CSaveGame.h"
 #include "Datas/DA/DA_DamageText.h"
 #include "Datas/DA/DA_MapIcon.h"
 #include "Datas/DA/DA_AttackRangeDecal.h"
@@ -64,6 +64,11 @@ void UCGameInstance::Init()
 	// 아이콘 데이터 업로드
 	IconDataTableToArr();
 
+
+	// 데이터 테이블에서 기본값 불러오기
+	ItemDataTableToArr();
+
+
 	// 강화 데이터 업로드
 	GearEnhancementDataTableToArr();
 
@@ -76,12 +81,6 @@ void UCGameInstance::Init()
 	NPCDataTableToArr();
 	
 	
-
-	SaveData();
-	//if (!LoadData())
-	//{
-	//	SaveData();
-	//}
 }
 
 
@@ -456,7 +455,7 @@ FColor UCGameInstance::GetRatingColor(EStarRating InRating)
 
 
 
-// ----------------------------------------------------SaveGame-------------------------------------------------------
+// ------------------------------------------------Level-------------------------------------------------------
 
 void UCGameInstance::MoveToLevel(FName InLevelName, FVector InSpawnPotin)
 {
@@ -468,96 +467,161 @@ void UCGameInstance::MoveToLevel(FName InLevelName, FVector InSpawnPotin)
 
 
 
-void UCGameInstance::SaveData(FString SlotName, int Index)
+// ----------------------------------------------------SaveGame-------------------------------------------------------
+void UCGameInstance::SaveData(int Index)
 {
-	if (!ItmeData_SaveGame)
-	{
-		ItmeData_SaveGame = Cast<UCItmeData_SaveGame>(UGameplayStatics::CreateSaveGameObject(UCItmeData_SaveGame::StaticClass()));
-	}
 
-
-	if (ItmeData_SaveGame) //데이터 저장
-	{
-		// 세이브 게임의 기존 값 삭제
-		ItmeData_SaveGame->Save_MaterialItemItmeData_Arr.Empty();
-
-
-		// 데이터 테이블에서 기본값 불러오기
-		ItemDataTableToArr();
-
-		// 데이터 저장
-		ItmeData_SaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
-		ItmeData_SaveGame->Save_Money = Money;
-
-
-		UGameplayStatics::SaveGameToSlot(ItmeData_SaveGame, SlotName, Index);
-	}
+	CSaveGame = Cast<UCSaveGame>(UGameplayStatics::CreateSaveGameObject(UCSaveGame::StaticClass()));
 
 	
-	if (UGameplayStatics::DoesSaveGameExist(SlotName, Index))
+	// 레벨
+	FString FullName = GetWorld()->GetMapName(); // "UEDPIE_0_MyLevel"
+	FString CleanName = FullName;
+
+	// PIE 접두어 제거
+	const FString PIEPrefix = TEXT("UEDPIE_");
+	if (CleanName.StartsWith(PIEPrefix))
 	{
-		CLog::Print(L"세이브를 성공했습니다");		
+		int32 PrefixEndIndex = CleanName.Find(TEXT("_"), ESearchCase::IgnoreCase, ESearchDir::FromStart, PIEPrefix.Len());
+		if (PrefixEndIndex != INDEX_NONE)
+		{
+			// "UEDPIE_0_MyLevel" → "MyLevel"
+			CleanName = CleanName.Mid(PrefixEndIndex + 1);
+		}
+	}
+	CSaveGame->Save_SpawnLevelName = FName(CleanName);
+		
+	// 위치
+	CSaveGame->Save_PlayerSpawnPoint = GetPlayerCharacter()->GetActorLocation();
+	
+
+	// 아이템
+	CSaveGame->Save_MaterialItemItmeData_Arr.Empty();
+	CSaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
+
+	// 머니
+	CSaveGame->Save_Money = Money;
+
+
+	// 강화
+	CSaveGame->Save_GearEnhancementData_Arr.Empty();
+	CSaveGame->Save_GearEnhancementData_Arr = GearEnhancementData_Arr;
+
+	// 퀘스트
+	CSaveGame->Save_QuestData_Arr.Empty();
+	CSaveGame->Save_QuestData_Arr = QuestData_Arr;
+
+	
+	UGameplayStatics::SaveGameToSlot(CSaveGame, ("SaveData_" + FString::FromInt(Index)), 0);
+	CLog::Print(("SaveData_" + FString::FromInt(Index)));
+	
+
+	
+	if (UGameplayStatics::DoesSaveGameExist(("SaveData_" + FString::FromInt(Index)), 0))
+	{
+		FString s = FString::FromInt(Index);
+		s += L"의 세이브를 성공했습니다";
+		TriggerSystemAlarm(s);
 	}
 	else
 	{
-		CLog::Print(L"세이브를 실패했습니다");
+		FString s = FString::FromInt(Index);
+		s += L"의 세이브를 실패했습니다";
+		TriggerSystemAlarm(s);
 	}
 	
 }
 
-bool UCGameInstance::LoadData(FString SlotName, int Index)
+bool UCGameInstance::LoadData(int Index)
 {
-	UCItmeData_SaveGame* loadData = Cast<UCItmeData_SaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, Index));
+	UCSaveGame* loadData = Cast<UCSaveGame>(UGameplayStatics::LoadGameFromSlot(("SaveData_" + FString::FromInt(Index)), 0));
 
 
 
 	if (loadData)
 	{
-		ItmeData_SaveGame = loadData;
+		CSaveGame = loadData;
 		
 		// 기존의 값 삭제
-		MaterialItemItmeData_Arr.Empty();
-
-		// 아이템데이터 저장
-		MaterialItemItmeData_Arr = ItmeData_SaveGame->Save_MaterialItemItmeData_Arr;
-		Money = ItmeData_SaveGame->Save_Money;
-
-
-		// 전체 퀘스트 진행도 추가 예정
-		QuestData_Arr.Empty();
-
-		// 현제 플레이어의 퀘스트 정보
+		{
+			MaterialItemItmeData_Arr.Empty();
+			QuestData_Arr.Empty();
+		}
+		
 
 
-		CLog::Print(L"로드를 성공했습니다");	
+		// 저장된 정보 덮어씌우기
+		{
+			// 레벨
+			SpawnLevelName = CSaveGame->Save_SpawnLevelName;
+
+			// 위치
+			PlayerSpawnPoint = CSaveGame->Save_PlayerSpawnPoint;
+
+
+			// 아이템
+			MaterialItemItmeData_Arr = CSaveGame->Save_MaterialItemItmeData_Arr;
+
+			// 머니
+			Money = CSaveGame->Save_Money;
+
+
+			// 강화
+			GearEnhancementData_Arr = CSaveGame->Save_GearEnhancementData_Arr;
+
+			// 퀘스트
+			QuestData_Arr = CSaveGame->Save_QuestData_Arr;
+		}
+		
+
+
+		MoveToLevel(SpawnLevelName, PlayerSpawnPoint);
+
+
+		FString s = FString::FromInt(Index);
+		s += L"의 로드를 성공했습니다";
+		LoadAlarm = s;
+		
+
+		
 		return true;
 	}
 	else
 	{
-		CLog::Print(L"로드를 실패했습니다");
+
+		FString s = FString::FromInt(Index);
+		s += L"의 로드를 실패했습니다";
+		TriggerSystemAlarm(s);
+
 		return false;
 	}
 
 }
 
-void UCGameInstance::DeleteData(FString SlotName, int Index)
+void UCGameInstance::DeleteData(int Index)
 {
-	if (UGameplayStatics::DoesSaveGameExist(SlotName, Index))
+	if (UGameplayStatics::DoesSaveGameExist(("SaveData_" + FString::FromInt(Index)), 0))
 	{
 		// 데이터 삭제
-		UGameplayStatics::DeleteGameInSlot(SlotName, Index);
-		if (UGameplayStatics::DoesSaveGameExist(SlotName, Index))
+		if (UGameplayStatics::DeleteGameInSlot(("SaveData_" + FString::FromInt(Index)), 0))
 		{
-			CLog::Print(L"데이터 제거를 성공했습니다");
+			
+			FString s = FString::FromInt(Index);
+			s += L"의 데이터 제거를 성공했습니다";
+			TriggerSystemAlarm(s);
 		}
 		else
 		{
-			CLog::Print(L"데이터 제거를 실패했습니다");
+			FString s = FString::FromInt(Index);
+			s += L"의 데이터 제거를 실패했습니다";
+			TriggerSystemAlarm(s);
 		}
 	}
 	else
 	{
-		CLog::Print(L"제거할 데이터를 찾지 못 하였습니다");
+		FString s = FString::FromInt(Index);
+		s += L"의 데이터를 찾지 못 하였습니다";
+		TriggerSystemAlarm(s);
 	}
 }
 

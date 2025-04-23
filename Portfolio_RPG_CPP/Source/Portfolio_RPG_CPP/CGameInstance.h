@@ -21,6 +21,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdata_Money, int, AddMoney);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FUpdate_Quest, FQuest_DataTable, NewQuest_DataTable, EQuestDetailsUpdateType, QuestDetailsUpdateType, FString, InName);
 
 
+// 시스템 알림창 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSystemAlarm, FString, Alarm);
+
 
 
 
@@ -173,7 +176,19 @@ public:
 		FUpdata_Money Updata_Money;
 
 
-	
+// ------------------------------------------------강화 데이터-------------------------------------------------------
+public:
+	void GearEnhancementDataTableToArr();
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FGearEnhancementData_DataTable GetGearEnhancementData(EGearType InGearType, ECombatType InCombatType);
+
+	FGearStets GetGearStets(EGearType InGearType, ECombatType InCombatType, int InLevel);
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<FGearEnhancementData_DataTable> GearEnhancementData_Arr;
+	UDataTable* GearEnhancementData_DataTable;
 
 
 
@@ -189,19 +204,14 @@ public:
 
 
 
+// --------------------시스템 알람--------------------
 
-// --------------------강화 데이터 --------------------
-	void GearEnhancementDataTableToArr();
+	// 시스템 알람 델리게이트 호출 함수
+	FORCEINLINE void TriggerSystemAlarm(FString Alarm) { SystemAlarm.Broadcast(Alarm); }
 
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-		FGearEnhancementData_DataTable GetGearEnhancementData(EGearType InGearType, ECombatType InCombatType);
-
-	FGearStets GetGearStets(EGearType InGearType, ECombatType InCombatType, int InLevel);
-
-	UPROPERTY(BlueprintReadWrite)
-		TArray<FGearEnhancementData_DataTable> GearEnhancementData_Arr;
-	UDataTable* GearEnhancementData_DataTable;
+	UPROPERTY(BlueprintAssignable)
+		FSystemAlarm SystemAlarm;
+	
 
 
 
@@ -247,16 +257,19 @@ public:
 public: 
 	// SaveGame
 	UFUNCTION(BlueprintCallable)
-		void SaveData(FString SlotName = "SaveData", int Index = 0);
+		void SaveData(int Index);
 	UFUNCTION(BlueprintCallable)
-		bool LoadData(FString SlotName = "SaveData", int Index = 0);
+		bool LoadData(int Index);
 	UFUNCTION(BlueprintCallable)
-		void DeleteData(FString SlotName = "SaveData", int Index = 0);
+		void DeleteData(int Index);
 
 
 public: // Get
-		FORCEINLINE int GetMoney() { return Money; }
+	FORCEINLINE int GetMoney() { return Money; }
 
+
+	UPROPERTY(BlueprintReadWrite)
+		FString LoadAlarm = "";
 	
 
 
@@ -268,8 +281,8 @@ public:
 	ECombatType CombatType;
 
 private:
-	// 아이템데이터를 저장할 SaveGame
-	class UCItmeData_SaveGame* ItmeData_SaveGame;
+	// SaveGame
+	class UCSaveGame* CSaveGame;
 
 
 

@@ -25,6 +25,8 @@ void UCWidgetComponent::BeginPlay()
 	CheckNull(PlayerController);
 
 	
+	PlayerController->bShowMouseCursor = false;
+	PlayerController->SetInputMode(FInputModeGameOnly());
 
 	// Spawn Widget	
 	MainWidget = Cast<UCWMain>(CreateWidget(PlayerController, MainWidgetClass));

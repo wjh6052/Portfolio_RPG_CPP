@@ -1,0 +1,2 @@
+#include "CSaveGame.h"
+
