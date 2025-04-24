@@ -11,7 +11,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdata_PlayerData, ECombatType, CombatType);
 
 // 아이템 정보 델리게이트
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FUpdataMaterialItem, EItemUseType, ItemUseType, EStarRating, ItemRating, int, AddCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FUpdataMaterialItem, EItemCategory, InItemCategory, EItemUseType, ItemUseType, EStarRating, ItemRating, int, AddCount);
 
 // 돈 정보 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdata_Money, int, AddMoney);
@@ -52,6 +52,7 @@ public:
 	
 	void SettingPlayerDataStats(ECombatType InCombatType);
 
+
 	void PlayerAddDamage(ECombatType InCombatType, float InDamage);
 
 
@@ -60,16 +61,16 @@ public:
 	UDataTable* Player_DataTable;
 	
 
-	// 퀘스트 정보를 델리게이트 한 변수
+	// 플레이어 정보를 델리게이트 한 변수
 	UPROPERTY(BlueprintAssignable)
 		FUpdata_PlayerData Update_PlayerData;
 	
-	// 퀘스트 정보를 업데이트할 함수
+	// 플레이어 정보를 업데이트할 함수
 	UFUNCTION(BlueprintCallable)
 		void UpdatePlayerData(ECombatType InCombatType, FPlayer_DataTable InPlayerData);
 
 
-	// 퀘스트 정보 델리게이트
+	// 플레이어 정보 델리게이트
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE void TriggerUpdatePlayerData(ECombatType InCombatType) { Update_PlayerData.Broadcast(InCombatType); }
 
@@ -144,17 +145,19 @@ public:
 		TArray<FMaterialItem_DataTable> MaterialItemItmeData_Arr;
 	UDataTable* MaterialItem_DataTable;
 
+	// 배열에 아이템의 갯수를 추가하는 함수
+	UFUNCTION(BlueprintCallable)
+		void AddMaterialItem(EItemCategory InItemCategory, EItemUseType ItemUseType, EStarRating ItemRating, int AddCount);
+
 
 	// 아이템 정보 델리게이트 호출 함수
-	FORCEINLINE void TriggerUpdataMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount) { Updata_MaterialItem.Broadcast(ItemUseType, ItemRating, AddCount); }
+	FORCEINLINE void TriggerUpdataMaterialItem(EItemCategory InItemCategory, EItemUseType ItemUseType, EStarRating ItemRating, int AddCount) { Updata_MaterialItem.Broadcast(InItemCategory, ItemUseType, ItemRating, AddCount); }
 
 	UPROPERTY(BlueprintAssignable)
 		FUpdataMaterialItem Updata_MaterialItem;
 
 
-	// 배열에 아이템의 갯수를 추가하는 함수
-	UFUNCTION(BlueprintCallable)
-		void AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount);
+	
 	
 
 

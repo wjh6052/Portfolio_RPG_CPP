@@ -22,6 +22,9 @@ public:
 		FVector Save_PlayerSpawnPoint;
 
 
+	// 플레이어 데이터
+	UPROPERTY(SaveGame)
+		TArray<FPlayer_DataTable> Save_Player_Data_Arr;
 
 	// 보유 아이템 데이터
 	UPROPERTY(SaveGame)

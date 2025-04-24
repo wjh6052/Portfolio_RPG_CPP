@@ -175,7 +175,8 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 
 	float InDamage = DamageAmount;
 	
-
+	
+	// 오너가 보스일 경우 플레이어의 UI의 보스HP바를 수정
 	if (OwnerCharacter_Base->GetCharacterType() == ECharacterType::Boss)
 	{
 		CGameInstance->GetPlayerCharacter()->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->AddDamageBossHpBar(InDamage);

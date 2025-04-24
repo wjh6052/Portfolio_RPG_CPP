@@ -63,8 +63,9 @@ public:
 
 
 public:
-	// 데미지 적용
-	bool AddDamage(float InDamage);
+	// 데미지 적용 (데미지가 -일 경우 힐로 판단)
+	UFUNCTION(BlueprintCallable)
+		bool AddDamage(float InDamage);
 
 
 	void SetGroggy(float GroggyTime);
@@ -81,7 +82,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		FORCEINLINE ESpeedType GetSpeedType() const { return SpeedType; }
 
-	FORCEINLINE FStat GetCurrentStat() const { return CurrentStat; }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE FStat GetCurrentStat() const { return CurrentStat; }
 
 	FORCEINLINE FPlayer_DataTable GetPlayerData() const { return Player_Data; }
 	FORCEINLINE FEnemy_DataTable GetEnemyData() const { return Enemy_Data; }

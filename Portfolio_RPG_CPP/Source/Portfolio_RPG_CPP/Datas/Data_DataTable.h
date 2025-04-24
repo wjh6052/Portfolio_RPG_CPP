@@ -281,7 +281,7 @@ public:
 
 // ---------------------아이템 데이터 테이블---------------------
 
-// 재료 아이템 데이터 테이블
+// 아이템 데이터 테이블
 USTRUCT(BlueprintType)
 struct FMaterialItem_DataTable : public FTableRowBase // 재료아이템 데이터테이블
 {
@@ -295,7 +295,7 @@ public:
 		EItemCategory ItemCategory;
 
 	// 아이템의 사용처
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Category")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Category", meta = (EditCondition = "ItemCategory == EItemCategory::Material"))
 		EItemUseType ItemUseType;
 
 	//등급 설정
@@ -337,6 +337,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Description")
 		FString ItemDescription;
 
+
+	// 포션 회복량
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Potion", meta = (EditCondition = "ItemCategory == EItemCategory::Potion"))
+		float HealAmount = 0;
 
 };
 

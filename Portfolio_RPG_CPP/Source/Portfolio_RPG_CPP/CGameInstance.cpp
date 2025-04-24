@@ -198,6 +198,10 @@ void UCGameInstance::PlayerAddDamage(ECombatType InCombatType, float InDamage)
 		if (Player_Data_Arr[i].Player_CombatData.CombatData.CombatType == InCombatType)
 		{
 			Player_Data_Arr[i].Stat.HP -= InDamage;
+
+			if (Player_Data_Arr[i].Stat.HP > Player_Data_Arr[i].Stat.HP_Max)
+				Player_Data_Arr[i].Stat.HP = Player_Data_Arr[i].Stat.HP_Max;
+
 			TriggerUpdatePlayerData(InCombatType);
 			break;
 		}
@@ -495,6 +499,10 @@ void UCGameInstance::SaveData(int Index)
 	CSaveGame->Save_PlayerSpawnPoint = GetPlayerCharacter()->GetActorLocation();
 	
 
+	// 플레이어 데이터
+	CSaveGame->Save_Player_Data_Arr = Player_Data_Arr;
+
+
 	// 아이템
 	CSaveGame->Save_MaterialItemItmeData_Arr.Empty();
 	CSaveGame->Save_MaterialItemItmeData_Arr = MaterialItemItmeData_Arr;
@@ -557,6 +565,10 @@ bool UCGameInstance::LoadData(int Index)
 
 			// 위치
 			PlayerSpawnPoint = CSaveGame->Save_PlayerSpawnPoint;
+
+
+			// 플레이어 데이터
+			Player_Data_Arr = CSaveGame->Save_Player_Data_Arr;
 
 
 			// 아이템
@@ -626,60 +638,61 @@ void UCGameInstance::DeleteData(int Index)
 }
 
 
-void UCGameInstance::AddMaterialItem(EItemUseType ItemUseType, EStarRating ItemRating, int AddCount)
+void UCGameInstance::AddMaterialItem(EItemCategory InItemCategory, EItemUseType ItemUseType, EStarRating ItemRating, int AddCount)
 {
 	for (int i = 0; i < MaterialItemItmeData_Arr.Num(); i++)
 	{
-		if (MaterialItemItmeData_Arr[i].ItemUseType == ItemUseType && MaterialItemItmeData_Arr[i].StarRating == ItemRating)
-		{
-			if (AddCount > 0)
+		if(MaterialItemItmeData_Arr[i].ItemCategory == InItemCategory)
+			if (MaterialItemItmeData_Arr[i].ItemUseType == ItemUseType && MaterialItemItmeData_Arr[i].StarRating == ItemRating)
 			{
-				MaterialItemItmeData_Arr[i].ItemCount += AddCount;
-				TriggerUpdataMaterialItem(ItemUseType, ItemRating, AddCount);
-
-				UEnum* enumUseType = StaticEnum<EItemUseType>();
-				FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
-				UEnum* EnumRating = StaticEnum<EStarRating>();
-				FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
-
-
-				//CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 획득"), *eUseType, *eStarRating, AddCount));
-			}
-			else if (AddCount < 0)
-			{
-				MaterialItemItmeData_Arr[i].ItemCount += AddCount;
-				TriggerUpdataMaterialItem(ItemUseType, ItemRating, AddCount);
-
-				UEnum* enumUseType = StaticEnum<EItemUseType>();
-				FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
-				UEnum* EnumRating = StaticEnum<EStarRating>();
-				FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
-
-
-				//CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 소모"), *eUseType, *eStarRating, AddCount));
-			}			
-
-
-			// 변경된 아이템이 퀘스트 관련 아이템인지 확인
-			for (int q = 0; q < QuestData_Arr.Num(); q++)
-			{
-				if (QuestData_Arr[q].QuestDetails.bRequireItemCollection == true)
+				if (AddCount > 0)
 				{
-					for (int j = 0; j < QuestData_Arr[q].QuestDetails.RequiredItems.Num(); j++)
-					{
-						if (QuestData_Arr[q].QuestDetails.RequiredItems[j].ItemUseType == ItemUseType && QuestData_Arr[q].QuestDetails.RequiredItems[j].StarRating == ItemRating && QuestData_Arr[q].QuestState == EQuestState::InProgress)
-						{
-							UpdateQuestDate(QuestData_Arr[q], EQuestDetailsUpdateType::Itme, MaterialItemItmeData_Arr[i].ItemName);
-						}
-					}
-					
+					MaterialItemItmeData_Arr[i].ItemCount += AddCount;
+					TriggerUpdataMaterialItem(InItemCategory, ItemUseType, ItemRating, AddCount);
+
+					UEnum* enumUseType = StaticEnum<EItemUseType>();
+					FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
+					UEnum* EnumRating = StaticEnum<EStarRating>();
+					FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
+
+
+					//CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 획득"), *eUseType, *eStarRating, AddCount));
 				}
+				else if (AddCount < 0)
+				{
+					MaterialItemItmeData_Arr[i].ItemCount += AddCount;
+					TriggerUpdataMaterialItem(InItemCategory, ItemUseType, ItemRating, AddCount);
+
+					UEnum* enumUseType = StaticEnum<EItemUseType>();
+					FString eUseType = enumUseType->GetDisplayNameTextByIndex(static_cast<int64>(ItemUseType)).ToString();
+					UEnum* EnumRating = StaticEnum<EStarRating>();
+					FString eStarRating = EnumRating->GetDisplayNameTextByIndex(static_cast<int64>(ItemRating)).ToString();
+
+
+					//CLog::Print(FString::Printf(TEXT(" %s / %s / %d개 소모"), *eUseType, *eStarRating, AddCount));
+				}			
+
+
+				// 변경된 아이템이 퀘스트 관련 아이템인지 확인
+				for (int q = 0; q < QuestData_Arr.Num(); q++)
+				{
+					if (QuestData_Arr[q].QuestDetails.bRequireItemCollection == true)
+					{
+						for (int j = 0; j < QuestData_Arr[q].QuestDetails.RequiredItems.Num(); j++)
+						{
+							if (QuestData_Arr[q].QuestDetails.RequiredItems[j].ItemUseType == ItemUseType && QuestData_Arr  [q].QuestDetails.RequiredItems[j].StarRating == ItemRating && QuestData_Arr[q].QuestState ==  EQuestState::InProgress)
+							{
+								UpdateQuestDate(QuestData_Arr[q], EQuestDetailsUpdateType::Itme, MaterialItemItmeData_Arr   [i].ItemName);
+							}
+						}
+						
+					}
+				}
+				
+				//
+				//UpdateQuestDate
+				return;
 			}
-			
-			//
-			//UpdateQuestDate
-			return;
-		}
 	}
 }
 

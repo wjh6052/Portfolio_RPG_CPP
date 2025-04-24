@@ -255,37 +255,39 @@ void UCStatComponent::Desh_Ragdoll()
 // 데미지 적용
 bool UCStatComponent::AddDamage(float InDamage)
 {
-	CurrentStat.HP -= InDamage;
+	float damage = InDamage;
 
-	switch (OwnerCharacter_Base->GetCharacterType())
-	{
-	case ECharacterType::Player:
-		CGameInstance->PlayerAddDamage(OwnerCharacter_Base->GetCombatComponent()->Current_CombatData.CombatType, InDamage);
-		break;
-
-	case ECharacterType::Boss:
-		break;
-	}
-	
+	CurrentStat.HP -= damage;
 
 
-	if (CurrentStat.HP <= 0) // 죽었을 때
+	if (CurrentStat.HP - damage <= 0) // 죽었을 때
 	{
 		CurrentStat.HP = 0;
 
 		return true;
 	}
-	else if (CurrentStat.HP >= CurrentStat.HP_Max) // 힐을 받았을때 최대체력을 넘지 않도록 설정
-	{
-		CurrentStat.HP = CurrentStat.HP_Max;		
-	}
+	else 
 
+
+	// 힐인 경우
+	if (InDamage <= 0)
+	{
+		if (CurrentStat.HP - damage >= CurrentStat.HP_Max) // 힐을 받았을때 최대체력을 넘지 않도록 설정
+		{
+			CurrentStat.HP = CurrentStat.HP_Max;
+		}
+		else
+		{
+			OwnerCharacter_Base->GetCombatComponent()->ShowDamageText(OwnerCharacter_Base->GetMainMesh(), (InDamage * -1), false, true);
+		}
+	}
 
 
 	switch (OwnerCharacter_Base->GetCharacterType())
 	{
 	case ECharacterType::Player:
 		OwnerACCharacter_Player->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->SetHPBar(CurrentStat.HP);
+		CGameInstance->PlayerAddDamage(OwnerCharacter_Base->GetCombatComponent()->Current_CombatData.CombatType, InDamage);
 		break;
 
 	case ECharacterType::Boss:
