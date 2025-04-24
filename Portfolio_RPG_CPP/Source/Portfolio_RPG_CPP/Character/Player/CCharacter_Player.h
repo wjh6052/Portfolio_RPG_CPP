@@ -105,4 +105,16 @@ private:
 
 	int Run = 0;
 	FTimerHandle RunTimer;
+
+
+
+protected:
+	class ACMapCamera* Minimap;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		FVector MiniMapLocation = FVector(0, 0, 250);
+
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		bool bIsLobby = false;
 };

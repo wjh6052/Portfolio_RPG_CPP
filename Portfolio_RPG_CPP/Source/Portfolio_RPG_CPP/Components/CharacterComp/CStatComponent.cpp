@@ -116,7 +116,8 @@ void UCStatComponent::PlayerDataSetting()
 	OwnerACCharacter_Player->GetCapsuleComponent()->SetCapsuleHalfHeight(GetPlayerData().Mesh.CapsuleHalfHeight);
 
 	// 카메라 스프링암 위지 조정
-	OwnerACCharacter_Player->SpringArm->SetRelativeLocation(FVector(0, 0, GetPlayerData().Mesh.CapsuleHalfHeight / 2));
+	if(!OwnerACCharacter_Player->bIsLobby)
+		OwnerACCharacter_Player->SpringArm->SetRelativeLocation(FVector(0, 0, GetPlayerData().Mesh.CapsuleHalfHeight / 2));
 
 	if (CGameInstance != nullptr)
 	{

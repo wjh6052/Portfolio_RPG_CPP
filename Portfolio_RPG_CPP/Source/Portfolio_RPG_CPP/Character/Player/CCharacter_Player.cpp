@@ -64,13 +64,13 @@ void ACCharacter_Player::BeginPlay()
 	// 미니맵 스폰
 	{
 		FActorSpawnParameters Params;
-		ACMapCamera* minimap = GetWorld()->SpawnActor<ACMapCamera>(
+		Minimap = GetWorld()->SpawnActor<ACMapCamera>(
 			ACMapCamera::StaticClass(),
-			GetActorLocation() + FVector(0, 0, 250),
+			GetActorLocation() + MiniMapLocation,
 			GetActorRotation(),
 			Params
 			);
-		minimap->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+		Minimap->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
 	}
 
 	if (CGameInstance->MapIcon_DA != nullptr)
@@ -145,7 +145,6 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 // 테스트 1
 void ACCharacter_Player::OnTest1()
 {
-	GetCombatComponent()->EquipCombat();
 	
 }
 
@@ -220,6 +219,8 @@ void ACCharacter_Player::OnMoveRight(float InAxis)
 
 void ACCharacter_Player::OnJump()
 {
+	CheckTrue(bIsLobby);
+
 	switch (GetStatComponent()->GetStateType())
 	{
 
@@ -266,6 +267,21 @@ void ACCharacter_Player::OnHorizontalLook(float InAxis)
 {
 	if(GetWidgetComponent()->CurrentUi == ECurrentUi::InGameUI)
 		Super::OnHorizontalLook(InAxis);
+
+	if (bIsLobby)
+	{
+		float Dot = FVector::DotProduct(GetActorForwardVector(), GetControlRotation().Vector());
+
+		if (Dot < 0.0f)
+		{
+			FRotator CurrentRot = GetActorRotation();
+			FRotator TargetRot = FRotator(0.0f, GetControlRotation().Yaw, 0.0f);
+
+			// 회전을 부드럽게 연결
+			FRotator NewRot = FMath::RInterpTo(CurrentRot, TargetRot, GetWorld()->GetDeltaSeconds(), 1.0f); // 회전 속도 조절
+			SetActorRotation(NewRot);
+		}
+	}
 }
 
 void ACCharacter_Player::OnVerticalLook(float InAxis)
@@ -277,6 +293,7 @@ void ACCharacter_Player::OnVerticalLook(float InAxis)
 
 void ACCharacter_Player::OnWalk()
 {
+	CheckTrue(bIsLobby);
 	switch (GetStatComponent()->GetSpeedType())
 	{
 	case ESpeedType::Walk:
@@ -293,6 +310,7 @@ void ACCharacter_Player::OnWalk()
 
 void ACCharacter_Player::OnRun()
 {
+	CheckTrue(bIsLobby);
 	++Run;
 
 	if (Run >= 2)
@@ -316,6 +334,7 @@ void ACCharacter_Player::RunDelay()
 
 void ACCharacter_Player::OnSprint()
 {
+	CheckTrue(bIsLobby);
 	CheckFalse(GetStatComponent()->IsCanMove());
 
 	GetStatComponent()->SetSprint(true);
@@ -352,6 +371,7 @@ void ACCharacter_Player::OffSprint()
 // 인벤토리창 열기
 void ACCharacter_Player::OnInventory()
 {
+	CheckTrue(bIsLobby);
 	GetWidgetComponent()->SetViewInventory();
 }
 
@@ -366,6 +386,7 @@ void ACCharacter_Player::OnInteraction()
 // 마우스 휠
 void ACCharacter_Player::OnCameraZoom(float InAxis)
 {
+	CheckTrue(bIsLobby);
 	CheckFalse(InAxis != 0);
 
 	if (GetWidgetComponent()->GetMainWidget()->CanZoomScroll())
@@ -383,6 +404,7 @@ void ACCharacter_Player::OnCameraZoom(float InAxis)
 // 무기 선택 창
 void ACCharacter_Player::OnWeaponChoice()
 {
+	CheckTrue(bIsLobby);
 	GetWidgetComponent()->OnWeaponChoice(true);
 }
 
@@ -395,6 +417,7 @@ void ACCharacter_Player::OffWeaponChoice()
 // 마우스 왼쪽 클릭
 void ACCharacter_Player::OnAttack()
 {
+	CheckTrue(bIsLobby);
 	if (GetStatComponent()->IsStatus(EStatusType::Combat))
 	{
 		GetCombatComponent()->OnAttack();
@@ -404,19 +427,21 @@ void ACCharacter_Player::OnAttack()
 
 void ACCharacter_Player::OnSkill_1()
 {
-	
+	CheckTrue(bIsLobby);
 	if(GetStatComponent()->IsStatus(EStatusType::Combat))
 		GetCombatComponent()->Skill_1();
 }
 
 void ACCharacter_Player::OnSkill_2()
 {
+	CheckTrue(bIsLobby);
 	if (GetStatComponent()->IsStatus(EStatusType::Combat))
 		GetCombatComponent()->Skill_2();
 }
 
 void ACCharacter_Player::OnSkill_3()
 {
+	CheckTrue(bIsLobby);
 	if (GetStatComponent()->IsStatus(EStatusType::Combat))
 		GetCombatComponent()->Skill_3();
 }
