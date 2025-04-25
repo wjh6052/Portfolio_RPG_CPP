@@ -24,6 +24,7 @@ void UCNS_Combat_AssassinSkill_3::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 	CheckFalse(Cast<ACCharacter_Base>(MeshComp->GetOwner()));
 	ACCharacter_Base* ownerCharacter = Cast<ACCharacter_Base>(MeshComp->GetOwner());
 
+	
 
 	
 	if (ownerCharacter->GetCombatComponent()->Current_Combat->SkillSingleTarget == nullptr)

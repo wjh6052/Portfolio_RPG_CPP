@@ -339,16 +339,17 @@ void ACCharacter_Player::OnSprint()
 
 	GetStatComponent()->SetSprint(true);
 
-	if (GetStatComponent()->IsStatus(EStatusType::Flight))
+	switch (GetStatComponent()->GetStatusType())
 	{
+	case EStatusType::Flight:
 		CheckNull(GetFlightComponent());
 		GetFlightComponent()->SetSprint(GetStatComponent()->GetSprint());
+		break;
 
-
-		return;
+	default:
+		GetCombatComponent()->PlayerRolling();
+		break;
 	}
-
-	CheckFalse(GetStatComponent()->IsState(EStateType::Idling));
 }
 
 void ACCharacter_Player::OffSprint()

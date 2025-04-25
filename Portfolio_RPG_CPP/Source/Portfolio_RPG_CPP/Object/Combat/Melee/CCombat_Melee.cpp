@@ -105,8 +105,11 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 {
 	if (GetOwner() != OtherActor && Cast<ACCharacter_Base>(OtherActor))
 	{		
-		
 		ACCharacter_Base* otherCharacter = Cast<ACCharacter_Base>(OtherActor);
+
+		// 같은 애너미일경우 중지
+		if (otherCharacter->CharacterType == Cast<ACCharacter_Base>(GetOwner())->CharacterType)
+			return;
 
 		// 다중공격이 될 경우 중지
 		for (AActor* actor : BeginActor)
@@ -116,45 +119,45 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 		BeginActor.AddUnique(OtherActor);
 
 
-			FAttack attackData = GetCurrentAttackData();
+		FAttack attackData = GetCurrentAttackData();
 
 
-			// 캐릭터의 스텟 데미지 및 크리티컬 확률 추가
-			{
-				attackData.AttackDamage.Damage += OwnerCharacter->GetStatComponent()->GetCurrentStat().Damage;
-				attackData.AttackDamage.CriticalChance += OwnerCharacter->GetStatComponent()->GetCurrentStat().Critical_Chance;
-			}
+		// 캐릭터의 스텟 데미지 및 크리티컬 확률 추가
+		{
+			attackData.AttackDamage.Damage += OwnerCharacter->GetStatComponent()->GetCurrentStat().Damage;
+			attackData.AttackDamage.CriticalChance += OwnerCharacter->GetStatComponent()->GetCurrentStat().Critical_Chance;
+		}
 
 
-			// 크리티컬 체크 및 데미지 증가
-			bool OnCritical = attackData.AttackDamage.bOnCritical || attackData.AttackDamage.CriticalChance >= FMath::FRandRange(0.0, 100.0);
+		// 크리티컬 체크 및 데미지 증가
+		bool OnCritical = attackData.AttackDamage.bOnCritical || attackData.AttackDamage.CriticalChance >= FMath::FRandRange(0.0, 100.0);
 			
 			
-			if (OnCritical)
-			{	
-				attackData.AttackDamage.Damage += (OwnerCharacter->GetStatComponent()->GetPlayerData().Stat.Critical_Damage * 0.01 * attackData.AttackDamage.Damage);
-			}
+		if (OnCritical)
+		{	
+			attackData.AttackDamage.Damage += (OwnerCharacter->GetStatComponent()->GetPlayerData().Stat.Critical_Damage *   0.01f * attackData.AttackDamage.Damage);
+		}
 
-			
-			if (!(otherCharacter->GetCharacterType() == ECharacterType::Boss))
-			{
-				// 공격시 나의 방향을 적의 방향으로 전환
-				OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherActor);
+		
+		if (!(otherCharacter->GetCharacterType() == ECharacterType::Boss))
+		{
+			// 공격시 나의 방향을 적의 방향으로 전환
+			OwnerCharacter->GetCombatComponent()->AttractToTarget(OtherActor);
 
-				// 넉백 효과
-				OwnerCharacter->GetCombatComponent()->AttackKnockBack(OtherActor, attackData.AttackDamage.KnockbackStrength, attackData.AttackDamage.KnockUpStrength);
-			}
+			// 넉백 효과
+			OwnerCharacter->GetCombatComponent()->AttackKnockBack(OtherActor, attackData.AttackDamage.KnockbackStrength,attackData.AttackDamage.KnockUpStrength);
+		}
 
-			// 데미지를 월드상 숫자로 나이아가라 효과스폰
-			OwnerCharacter->GetCombatComponent()->ShowDamageText(OverlappedComponent, attackData.AttackDamage.Damage, OnCritical);
+		// 데미지를 월드상 숫자로 나이아가라 효과스폰
+		OwnerCharacter->GetCombatComponent()->ShowDamageText(OverlappedComponent, attackData.AttackDamage.Damage,OnCritical);
 
-			// 데미지를 받은 위치에 나이아가라 효과 스폰
-			OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);
-			
-			
+		// 데미지를 받은 위치에 나이아가라 효과 스폰
+		OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);
+		
+		
 
 
-			UGameplayStatics::ApplyDamage(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
+		UGameplayStatics::ApplyDamage(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
 
 
 		

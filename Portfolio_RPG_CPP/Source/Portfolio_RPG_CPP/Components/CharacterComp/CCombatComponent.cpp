@@ -15,6 +15,7 @@
 
 #include "NiagaraComponent.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "GameFramework/Controller.h"
 
@@ -196,7 +197,11 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	
 	if (OwnerCharacter_Base->GetStatComponent()&& OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) < InDamage)
 	{
-		PlayHitReaction();
+		if (!Current_Combat->bSkill)
+		{
+			PlayHitReaction();
+			Current_Combat->EndAttack();
+		}
 	}
 	
 	
@@ -252,11 +257,25 @@ void UCCombatComponent::PlayHitReaction()
 {
 	CheckNull(Current_Combat);
 
+	if (bIsPlayerHitTime)
+		return;
+
 	Current_Combat->EndAttack();
 	OwnerCharacter_Base->StopAnimMontage();
 
 	OwnerCharacter_Base->GetStatComponent()->SetStateType(EStateType::Hitted);
 	OwnerCharacter_Base->PlayAnimMontage(Current_CombatData.Hit_Montage.AnimMontage, Current_CombatData.Hit_Montage.PlayRate);
+
+	if (OwnerCharacter_Player)
+	{
+		bIsPlayerHitTime = true;
+		FTimerHandle timerHandle;
+		GetWorld()->GetTimerManager().SetTimer(timerHandle, [this]()
+			{
+				bIsPlayerHitTime = false;
+			},
+			3.0f, false);
+	}
 }
 
 // 죽었을때
@@ -578,5 +597,47 @@ void UCCombatComponent::Skill_2()
 void UCCombatComponent::Skill_3()
 {
 	Current_Combat->StartSkill(2);
+}
+
+void UCCombatComponent::PlayerRolling()
+{
+	CheckNull(OwnerCharacter_Player);
+	CheckNull(Current_Combat->CombatData.Rolling.AnimMontage);
+
+	CheckTrue(Current_Combat->bSkill);
+	CheckTrue(OwnerCharacter_Player->GetStatComponent()->IsState(EStateType::Rolling));
+
+	OwnerCharacter_Player->bUseControllerRotationYaw = false;
+	OwnerCharacter_Player->GetCharacterMovement()->bOrientRotationToMovement = true;
+
+
+	OwnerCharacter_Player->GetStatComponent()->SetStateType(EStateType::Rolling);
+
+
+	
+	if (UKismetMathLibrary::Vector_IsNearlyZero(OwnerCharacter_Player->GetVelocity(), 0.0001f))
+	{
+		FRotator nawRotation = UKismetMathLibrary::Conv_VectorToRotator(OwnerCharacter_Player->GetActorForwardVector());
+		OwnerCharacter_Player->SetActorRotation(nawRotation);
+	}
+	else
+	{
+		FVector start = OwnerCharacter_Player->GetActorLocation();
+		FVector target = (start + UKismetMathLibrary::Vector_Normal2D(OwnerCharacter_Player->GetVelocity(), 0.0001f));
+
+		FRotator nawRotation = UKismetMathLibrary::FindLookAtRotation(start, target);
+		OwnerCharacter_Player->SetActorRotation(nawRotation);
+	}
+
+	OwnerCharacter_Base->PlayAnimMontage(Current_Combat->CombatData.Rolling.AnimMontage, Current_Combat->CombatData.Rolling.PlayRate);
+}
+
+void UCCombatComponent::EndRolling()
+{
+	OwnerCharacter_Player->bUseControllerRotationYaw = true;
+	OwnerCharacter_Player->GetCharacterMovement()->bOrientRotationToMovement = false;
+
+
+	OwnerCharacter_Player->GetStatComponent()->SetStateType(EStateType::Idling);
 }
 

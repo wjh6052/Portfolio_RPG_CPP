@@ -58,6 +58,8 @@ public:
 	void Skill_3();
 
 
+	void PlayerRolling();
+	void EndRolling();
 
 	int ComboCount = 0;
 
@@ -91,7 +93,8 @@ public:
 
 	class ACCharacter_Base* DamageCharacter = nullptr;
 
-public:// 노티파이
+public:
 
+	bool bIsPlayerHitTime = false;
 		
 };

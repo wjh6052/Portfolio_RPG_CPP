@@ -409,13 +409,9 @@ public:
 
 
 
-	// 막기
-	UPROPERTY(EditAnywhere, Category = "Block")
-		FAnimMontageBase Block;
-
-	// 막기 중 맞을때
-	UPROPERTY(EditAnywhere, Category = "Block")
-		FAnimMontageBase Block_Hit;
+	// 구르기
+	UPROPERTY(EditAnywhere, Category = "Rolling")
+		FAnimMontageBase Rolling;
 
 
 	// 죽을 때 애님인스턴스
