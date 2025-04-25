@@ -65,7 +65,7 @@ void UCGameInstance::Init()
 	IconDataTableToArr();
 
 
-	// 데이터 테이블에서 기본값 불러오기
+	// 아이템 기본값 불러오기
 	ItemDataTableToArr();
 
 
@@ -81,6 +81,38 @@ void UCGameInstance::Init()
 	NPCDataTableToArr();
 	
 	
+}
+
+
+void UCGameInstance::ReSetData()
+{
+	
+	
+	
+
+	// 레벨
+	SpawnLevelName = "";
+
+	// 위치
+	PlayerSpawnPoint = FVector(0);
+
+
+	// 플레이어 데이터
+	PlayerDataTableToArr();
+
+
+	// 아이템
+	ItemDataTableToArr();
+
+	// 머니
+	Money = 0;
+
+
+	// 강화
+	GearEnhancementDataTableToArr();
+
+	// 퀘스트
+	QuestDataTableToArr();
 }
 
 
