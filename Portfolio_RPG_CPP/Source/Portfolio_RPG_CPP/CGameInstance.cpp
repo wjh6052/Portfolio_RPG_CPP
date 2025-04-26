@@ -559,13 +559,15 @@ void UCGameInstance::SaveData(int Index)
 	
 	if (UGameplayStatics::DoesSaveGameExist(("SaveData_" + FString::FromInt(Index)), 0))
 	{
-		FString s = FString::FromInt(Index);
+		FString s = "SaveData_";
+		s += FString::FromInt(Index);
 		s += L"의 세이브를 성공했습니다";
 		TriggerSystemAlarm(s);
 	}
 	else
 	{
-		FString s = FString::FromInt(Index);
+		FString s = "SaveData_";
+		s += FString::FromInt(Index);
 		s += L"의 세이브를 실패했습니다";
 		TriggerSystemAlarm(s);
 	}
@@ -622,7 +624,8 @@ bool UCGameInstance::LoadData(int Index)
 		MoveToLevel(SpawnLevelName, PlayerSpawnPoint);
 
 
-		FString s = FString::FromInt(Index);
+		FString s = "SaveData_";
+		s += FString::FromInt(Index);
 		s += L"의 로드를 성공했습니다";
 		LoadAlarm = s;
 		
@@ -633,7 +636,8 @@ bool UCGameInstance::LoadData(int Index)
 	else
 	{
 
-		FString s = FString::FromInt(Index);
+		FString s = "SaveData_";
+		s += FString::FromInt(Index);
 		s += L"의 로드를 실패했습니다";
 		TriggerSystemAlarm(s);
 
@@ -650,20 +654,23 @@ void UCGameInstance::DeleteData(int Index)
 		if (UGameplayStatics::DeleteGameInSlot(("SaveData_" + FString::FromInt(Index)), 0))
 		{
 			
-			FString s = FString::FromInt(Index);
+			FString s = "SaveData_";
+			s += FString::FromInt(Index);
 			s += L"의 데이터 제거를 성공했습니다";
 			TriggerSystemAlarm(s);
 		}
 		else
 		{
-			FString s = FString::FromInt(Index);
+			FString s = "SaveData_";
+			s += FString::FromInt(Index);
 			s += L"의 데이터 제거를 실패했습니다";
 			TriggerSystemAlarm(s);
 		}
 	}
 	else
 	{
-		FString s = FString::FromInt(Index);
+		FString s = "SaveData_";
+		s += FString::FromInt(Index);
 		s += L"의 데이터를 찾지 못 하였습니다";
 		TriggerSystemAlarm(s);
 	}

@@ -186,6 +186,7 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	}
 
 
+	// 죽었을때
 	if (OwnerCharacter_Base->GetStatComponent() && OwnerCharacter_Base->GetStatComponent()->AddDamage(InDamage))
 	{
 		CharacterDeath(DamageCauser);
@@ -197,11 +198,7 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 	
 	if (OwnerCharacter_Base->GetStatComponent()&& OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().HP_Max * (OwnerCharacter_Base->GetStatComponent()->GetCurrentStat().Stance / 100.f) < InDamage)
 	{
-		if (!Current_Combat->bSkill)
-		{
-			PlayHitReaction();
-			Current_Combat->EndAttack();
-		}
+		PlayHitReaction();
 	}
 	
 	
@@ -257,6 +254,9 @@ void UCCombatComponent::PlayHitReaction()
 {
 	CheckNull(Current_Combat);
 
+	if (!Current_Combat->bSkill && OwnerCharacter_Player)
+		return;
+
 	if (bIsPlayerHitTime)
 		return;
 
@@ -283,6 +283,23 @@ void UCCombatComponent::CharacterDeath(AActor* DamageCauser)
 {	
 	switch (OwnerCharacter_Base->GetCharacterType())
 	{
+	case ECharacterType::Player:
+	{
+		OwnerCharacter_Player->GetStatComponent()->Desh_Ragdoll();
+
+
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.5f);
+
+		FTimerHandle timerGameEnd;
+		GetWorld()->GetTimerManager().SetTimer(timerGameEnd, [this]()
+			{
+				UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.f);
+				OwnerCharacter_Player->GetWidgetComponent()->GetMainWidget()->SetWidgetSwitcher(ECurrentUi::PlayerDie);
+			},
+			2.0f, false);
+	}
+		break;
+
 	case ECharacterType::Enemy:
 		for (FQuest_DataTable arr : CGameInstance->QuestData_Arr)
 		{

@@ -258,21 +258,13 @@ bool UCStatComponent::AddDamage(float InDamage)
 	float damage = InDamage;
 
 	CurrentStat.HP -= damage;
-
-
-	if (CurrentStat.HP - damage <= 0) // 죽었을 때
-	{
-		CurrentStat.HP = 0;
-
-		return true;
-	}
-	else 
+	
 
 
 	// 힐인 경우
 	if (InDamage <= 0)
 	{
-		if (CurrentStat.HP - damage >= CurrentStat.HP_Max) // 힐을 받았을때 최대체력을 넘지 않도록 설정
+		if (CurrentStat.HP >= CurrentStat.HP_Max) // 힐을 받았을때 최대체력을 넘지 않도록 설정
 		{
 			CurrentStat.HP = CurrentStat.HP_Max;
 		}
@@ -294,7 +286,12 @@ bool UCStatComponent::AddDamage(float InDamage)
 		break;
 	}
 
+	if (CurrentStat.HP <= 0) // 죽었을 때
+	{
+		CurrentStat.HP = 0;
 
+		return true;
+	}
 	return false;
 }
 

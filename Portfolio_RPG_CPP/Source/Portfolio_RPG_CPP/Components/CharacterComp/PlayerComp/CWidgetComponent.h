@@ -10,7 +10,8 @@ enum class ECurrentUi : uint8
 {
 	InGameUI = 0     UMETA(DisplayName = "인게임 UI"),
 	Inventory = 1    UMETA(DisplayName = "인벤토리"),
-	NPCDialogue = 2  UMETA(DisplayName = "NPC 대화")
+	NPCDialogue = 2  UMETA(DisplayName = "NPC 대화"),
+	PlayerDie = 3  UMETA(DisplayName = "플레이어 죽음")
 };
 
 
