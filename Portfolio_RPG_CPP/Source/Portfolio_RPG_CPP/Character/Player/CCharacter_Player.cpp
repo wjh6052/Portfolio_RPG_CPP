@@ -30,7 +30,7 @@ ACCharacter_Player::ACCharacter_Player()
 	SpringArm->bUsePawnControlRotation = true;
 
 	// 포스트프로세스를 통해 캐릭터를 회색으로 표현하기 위해 카메라 암을 물체들에 막히지 않도록 설정
-	SpringArm->bDoCollisionTest = false;
+	//SpringArm->bDoCollisionTest = false;
 
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));

@@ -11,6 +11,7 @@
 
 #include "Engine/Classes/Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "PaperSpriteComponent.h"
 
 
@@ -49,6 +50,12 @@ ACCharacter_Base::ACCharacter_Base()
 
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 	GetMesh()->SetVisibility(false);
+
+
+
+	// 캐릭터가 카메라를 통과하도록 설정
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
 
 	// -> MovementComp

@@ -76,10 +76,10 @@ public:
 
 public:
 	//Scene Component
-	UPROPERTY(EditAnywhere, Category = Camera)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 		class USpringArmComponent* SpringArm;
 
-	UPROPERTY(EditAnywhere, Category = Camera)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 		class UCameraComponent* Camera;
 
 

@@ -32,6 +32,7 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
 public:
 	//Get
 	FORCEINLINE class USkeletalMeshComponent* GetMainMesh() { return Main_SkeletalMesh; }
