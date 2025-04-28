@@ -77,41 +77,41 @@ void ACCharacter_AI::Tick(float DeltaTime)
 
 void ACCharacter_AI::DyingTimeLineStart()
 {
-	for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)
-	{
-		if (GetMainMesh() && GetMainMesh()->GetMaterial(i) && MeshMateriaeDynamic[i])
-		{
-			if (i < MeshMateriaeDynamic.Num() && IsValid(MeshMateriaeDynamic[i]) && GetMainMesh()->GetMaterial(i))
-			{
-				GetMainMesh()->SetMaterial(i, MeshMateriaeDynamic[i]);
-			}
-
-			if (IsValid(GetOutLineMesh()))
-			{
-				GetOutLineMesh()->SetVisibility(false);
-			}
-		}
-		
-	}
+	//for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)
+	//{
+	//	if (GetMainMesh() && GetMainMesh()->GetMaterial(i) && MeshMateriaeDynamic[i])
+	//	{
+	//		if (i < MeshMateriaeDynamic.Num() && IsValid(MeshMateriaeDynamic[i]) && GetMainMesh()->GetMaterial(i))
+	//		{
+	//			GetMainMesh()->SetMaterial(i, MeshMateriaeDynamic[i]);
+	//		}
+	//
+	//		if (IsValid(GetOutLineMesh()))
+	//		{
+	//			GetOutLineMesh()->SetVisibility(false);
+	//		}
+	//	}
+	//	
+	//}
 	
 	
-	DyingTimeLine.PlayFromStart();
 	GetCombatComponent()->Current_Combat->EndWeapon();
+	DyingTimeLine.PlayFromStart();
 }
 
 void ACCharacter_AI::TimelineUpdate(float Value)
 {
-	if (MeshMateriaeDynamic.Num() > 0)
-	{
-		const int32 NumMaterials = MeshMateriaeDynamic.Num();
-		for (int32 i = 0; i < NumMaterials; i++)
-		{
-			if (MeshMateriaeDynamic.IsValidIndex(i) && MeshMateriaeDynamic[i])
-			{
-				MeshMateriaeDynamic[i]->SetScalarParameterValue("Amount", Value);
-			}
-		}
-	}
+	//if (MeshMateriaeDynamic.Num() > 0)
+	//{
+	//	const int32 NumMaterials = MeshMateriaeDynamic.Num();
+	//	for (int32 i = 0; i < NumMaterials; i++)
+	//	{
+	//		if (MeshMateriaeDynamic.IsValidIndex(i) && MeshMateriaeDynamic[i])
+	//		{
+	//			//MeshMateriaeDynamic[i]->SetScalarParameterValue("Amount", Value);
+	//		}
+	//	}
+	//}
 	
 	return;
 

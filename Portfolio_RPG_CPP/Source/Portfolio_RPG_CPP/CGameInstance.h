@@ -132,7 +132,8 @@ public:
 
 
 	// 퀘스트 정보 델리게이트
-	FORCEINLINE void TriggerUpdateQuest(FQuest_DataTable NewQuestData, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName) { Update_Quest.Broadcast(NewQuestData, QuestDetailsUpdateType, InName); }
+	UFUNCTION(BlueprintCallable)
+		FORCEINLINE void TriggerUpdateQuest(FQuest_DataTable NewQuestData, EQuestDetailsUpdateType QuestDetailsUpdateType, FString InName) { Update_Quest.Broadcast(NewQuestData, QuestDetailsUpdateType, InName); }
 
 
 

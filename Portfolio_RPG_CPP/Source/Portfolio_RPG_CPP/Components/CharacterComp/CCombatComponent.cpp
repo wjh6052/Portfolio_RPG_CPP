@@ -87,6 +87,8 @@ void UCCombatComponent::PlayerBeginPlay()
 			}
 		}
 	}
+
+	bIsPlayerHitTime = false;
 }
 
 void UCCombatComponent::EnemyBeginPlay()
@@ -255,7 +257,7 @@ void UCCombatComponent::PlayHitReaction()
 {
 	CheckNull(Current_Combat);
 
-	if (!Current_Combat->bSkill && OwnerCharacter_Player)
+	if (Current_Combat->bSkill == true && !OwnerCharacter_Player)
 		return;
 
 	if (bIsPlayerHitTime)
@@ -275,7 +277,7 @@ void UCCombatComponent::PlayHitReaction()
 			{
 				bIsPlayerHitTime = false;
 			},
-			3.0f, false);
+			2.5f, false);
 	}
 }
 

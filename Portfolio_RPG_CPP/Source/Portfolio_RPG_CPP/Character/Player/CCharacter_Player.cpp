@@ -406,11 +406,20 @@ void ACCharacter_Player::OnCameraZoom(float InAxis)
 void ACCharacter_Player::OnWeaponChoice()
 {
 	CheckTrue(bIsLobby);
+
+	CheckFalse(GetWidgetComponent()->CurrentUi == ECurrentUi::InGameUI);
+
 	GetWidgetComponent()->OnWeaponChoice(true);
 }
 
 void ACCharacter_Player::OffWeaponChoice()
 {
+	CheckFalse(GetWidgetComponent()->CurrentUi == ECurrentUi::InGameUI);
+
+	if (GetStatComponent()->IsStatus(EStatusType::Flight))
+		FlightComponent->EndFlight();
+
+
 	GetWidgetComponent()->OnWeaponChoice(false);
 }
 

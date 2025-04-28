@@ -24,7 +24,7 @@ void ACCombat_Base::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetActorHiddenInGame(true);
+	SetActorHiddenInGame(false);
 
 	OwnerCharacter = Cast<ACCharacter_Base>(GetOwner());
 
@@ -218,6 +218,7 @@ void ACCombat_Base::ComboAttack()
 	if (OwnerCharacter->GetStatComponent()->IsSpeedType(ESpeedType::Run))
 	{
 		bRunToAttack = true;
+		Cast<ACCharacter_Player>(OwnerCharacter)->GetStatComponent()->SetSpeed(ESpeedType::Joging);
 		OwnerCharacter->PlayAnimMontage(CombatData.RunToAttack.AnimMontage.AnimMontage, CombatData.RunToAttack.AnimMontage.PlayRate);
 		return;
 	}

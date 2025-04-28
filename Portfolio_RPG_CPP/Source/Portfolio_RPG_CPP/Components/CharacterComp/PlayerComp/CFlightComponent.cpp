@@ -219,7 +219,7 @@ void UCFlightComponent::StartFlight()
 
 void UCFlightComponent::EndFlight()
 {
-	CheckTrue(OwnerPlayer->GetStatComponent()->GetSpeedType() == ESpeedType::Sprint); // Spawn�� ���� ����
+	//CheckTrue(OwnerPlayer->GetStatComponent()->GetSpeedType() == ESpeedType::Sprint); // Spawn�� ���� ����
 
 	Flight_bFlying = false;
 	OwnerPlayer->OffSprint();
@@ -237,7 +237,7 @@ void UCFlightComponent::EndFlight()
 	}
 
 
-	SetSprint(Flight_bFlying); // Sprint �ӵ� �ǵ�����
+	SetSprint(false);
 
 
 
