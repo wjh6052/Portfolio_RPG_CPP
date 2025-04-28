@@ -55,7 +55,7 @@ void ACAISpawner::AISpawn(int32 index)
     FActorSpawnParameters Params;
     ACCharacter_AI* spawnAi = GetWorld()->SpawnActor<ACCharacter_AI>(
         FAISpawnerInfo[index].SpawnAI,
-        FAISpawnerInfo[index].AIPatrol->GetSplineComp()->GetLocationAtSplinePoint(0, ESplineCoordinateSpace::World),
+        FAISpawnerInfo[index].bSpawnerSpawn ? GetActorLocation() : FAISpawnerInfo[index].AIPatrol->GetSplineComp()->GetLocationAtSplinePoint(0, ESplineCoordinateSpace::World),
         FRotator::ZeroRotator,
         Params
         );

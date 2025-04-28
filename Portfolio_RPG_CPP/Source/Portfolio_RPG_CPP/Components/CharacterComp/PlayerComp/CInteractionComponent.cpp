@@ -35,11 +35,15 @@ void UCInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UCInteractionComponent::AddInteraction(AActor* InIteminteraction)
 {
+	CheckNull(OwnerPlayer->GetWidgetComponent()->GetMainWidget());
+
 	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->AddInteraction(InIteminteraction);
 }
 
 void UCInteractionComponent::RemovalInteraction(AActor* InIteminteraction)
 {
+	CheckNull(OwnerPlayer->GetWidgetComponent()->GetMainWidget());
+
 	OwnerPlayer->GetWidgetComponent()->GetMainWidget()->GetGameplayUI()->RemovalInteraction(InIteminteraction);
 }
 

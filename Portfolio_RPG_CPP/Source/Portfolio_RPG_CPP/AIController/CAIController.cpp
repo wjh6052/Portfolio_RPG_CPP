@@ -112,7 +112,7 @@ void ACAIController::OnTargetLost(AActor* Actor)
 		StopMovement();
 
 		bFindPlayer = false;
-		CLog::Print(L"잊혀짐");
+		//CLog::Print(L"잊혀짐");
 	}
 
 	

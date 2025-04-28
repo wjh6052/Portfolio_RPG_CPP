@@ -42,6 +42,7 @@ void ACInteraction::OnComponentEndOverlap(UPrimitiveComponent* OverlappedCompone
 	ACCharacter_Player* player = Cast<ACCharacter_Player>(OtherActor);
 	CheckNull(player);
 
+	CheckNull(player->GetInteractionComponent());
 	player->GetInteractionComponent()->RemovalInteraction(this);
 }
 

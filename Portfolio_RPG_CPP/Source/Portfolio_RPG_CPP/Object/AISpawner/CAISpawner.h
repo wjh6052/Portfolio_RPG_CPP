@@ -20,6 +20,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float RESpawnTime = 5.0f;
 
+	// 스폰 지점이 스포너의 위치인지 (true = 스포너의 위치에서 스폰)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bSpawnerSpawn = false;
 
 	FTimerHandle TimerHandle;
 };

@@ -359,20 +359,20 @@ struct FQuest_DataTable : public FTableRowBase
 	GENERATED_BODY()
 public:
 	// 퀘스트 ID 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestSetting")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestSetting")
 		int32 QuestID;
 
 	// 퀘스트 이름
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestSetting")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestSetting")
 		FString QuestName;
 
-	// 퀘스트 설명
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestSetting")
-		FString QuestDescription;
+	// 퀘스트 설명 (배열을 줄바꿈 역활)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestSetting")
+		TArray<FString> QuestDescription;
 
 
 	// 퀘스트 내용
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestDetails")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestDetails")
 		FQuestDetails QuestDetails;
 
 	// 퀘스트를 수락할때 대화
@@ -386,17 +386,28 @@ public:
 		TArray<FString> RewardDialogues;
 
 	// 퀘스트 보상
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestReward")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestReward")
 		FQuestReward QuestReward;
 
-	// 퀘스트를 완료후의 코드
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "QuestReward")
+	// 다음 활성화 퀘스트
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestReward")
+		TArray<int32> NextQuestID;
+	
+
+	// 현제 퀘스트의 상황
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestState")
+		EQuestState QuestState;
+
+
+
+	// 퀘스트와 관련된 오브젝트
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "QuestObject")
 		TSubclassOf<class ACQuestActor> QuestObject;
 
 
-	// 현제 퀘스트의 상황
-	UPROPERTY(BlueprintReadWrite)
-		EQuestState QuestState;
+
+
+
 
 	// 퀘스트를 준 NPC이름
 	UPROPERTY(BlueprintReadWrite)

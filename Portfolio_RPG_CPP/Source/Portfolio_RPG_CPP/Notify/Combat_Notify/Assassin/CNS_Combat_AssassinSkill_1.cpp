@@ -58,7 +58,7 @@ void UCNS_Combat_AssassinSkill_1::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 		{
 			ACCharacter_Base* hitCharacter = Cast<ACCharacter_Base>(hit.GetActor());
 
-			if (hitCharacter && hitCharacter->IsCharacterType(ECharacterType::Enemy))
+			if (hitCharacter && (hitCharacter->IsCharacterType(ECharacterType::Enemy) || hitCharacter->IsCharacterType(ECharacterType::Boss)))
 			{
 				TargetArr.AddUnique(hit.GetActor());
 			}
@@ -83,6 +83,12 @@ void UCNS_Combat_AssassinSkill_1::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 	for (AActor* target : TargetArr)
 	{
 		FAttack attackData = ownerCharacter->GetCombatComponent()->Current_Combat->GetCurrentAttackData();
+
+		// 캐릭터의 스텟 데미지 및 크리티컬 확률 추가
+		{
+			attackData.AttackDamage.Damage += ownerCharacter->GetStatComponent()->GetCurrentStat().Damage;
+			attackData.AttackDamage.CriticalChance += ownerCharacter->GetStatComponent()->GetCurrentStat().Critical_Chance;
+		}
 
 		// 데미지를 월드상 숫자로 나이아가라 효과스폰
 		ownerCharacter->GetCombatComponent()->ShowDamageText(Cast<ACCharacter_Base>(target)->GetCapsuleComponent(), attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);

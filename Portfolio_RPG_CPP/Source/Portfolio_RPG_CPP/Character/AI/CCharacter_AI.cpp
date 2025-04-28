@@ -79,8 +79,19 @@ void ACCharacter_AI::DyingTimeLineStart()
 {
 	for (int32 i = 0; i < GetMainMesh()->GetNumMaterials(); i++)
 	{
-		GetMainMesh()->SetMaterial(i, MeshMateriaeDynamic[i]);
-		GetOutLineMesh()->SetVisibility(false);
+		if (GetMainMesh() && GetMainMesh()->GetMaterial(i) && MeshMateriaeDynamic[i])
+		{
+			if (i < MeshMateriaeDynamic.Num() && IsValid(MeshMateriaeDynamic[i]) && GetMainMesh()->GetMaterial(i))
+			{
+				GetMainMesh()->SetMaterial(i, MeshMateriaeDynamic[i]);
+			}
+
+			if (IsValid(GetOutLineMesh()))
+			{
+				GetOutLineMesh()->SetVisibility(false);
+			}
+		}
+		
 	}
 	
 	
@@ -90,26 +101,38 @@ void ACCharacter_AI::DyingTimeLineStart()
 
 void ACCharacter_AI::TimelineUpdate(float Value)
 {
-	for (int32 i = 0; i < MeshMateriaeDynamic.Num(); i++)
+	if (MeshMateriaeDynamic.Num() > 0)
 	{
-		if (MeshMateriaeDynamic[i]->IsValidLowLevel())
+		const int32 NumMaterials = MeshMateriaeDynamic.Num();
+		for (int32 i = 0; i < NumMaterials; i++)
 		{
-			float dummyValue = 0;
-			if (MeshMateriaeDynamic[i]->GetScalarParameterValue(FMaterialParameterInfo("Amount"), dummyValue))
+			if (MeshMateriaeDynamic.IsValidIndex(i) && MeshMateriaeDynamic[i])
+			{
 				MeshMateriaeDynamic[i]->SetScalarParameterValue("Amount", Value);
+			}
 		}
-			
 	}
 	
+	return;
 
 }
 
 void ACCharacter_AI::TimelineFinished()
 {
-	if (AISpawner)
-		AISpawner->ReSpawn(Spawnindex);
+	FTimerHandle TimerHandle;
 
-	GetCombatComponent()->Current_Combat->Destroy();
-	this->Destroy();
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		{
+			if (AISpawner)
+				AISpawner->ReSpawn(Spawnindex);
+
+			GetCombatComponent()->Current_Combat->Destroy();
+
+
+			this->Destroy();
+		},
+		1, false);
+
+	
 
 }

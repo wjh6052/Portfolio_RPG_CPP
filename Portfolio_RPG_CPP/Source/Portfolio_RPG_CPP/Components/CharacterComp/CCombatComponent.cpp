@@ -56,6 +56,7 @@ void UCCombatComponent::BeginPlay()
 		break;
 	}
 	
+	
 }
 
 void UCCombatComponent::PlayerBeginPlay()
@@ -624,8 +625,6 @@ void UCCombatComponent::PlayerRolling()
 	CheckTrue(Current_Combat->bSkill);
 	CheckTrue(OwnerCharacter_Player->GetStatComponent()->IsState(EStateType::Rolling));
 
-	OwnerCharacter_Player->bUseControllerRotationYaw = false;
-	OwnerCharacter_Player->GetCharacterMovement()->bOrientRotationToMovement = true;
 
 
 	OwnerCharacter_Player->GetStatComponent()->SetStateType(EStateType::Rolling);
@@ -651,8 +650,6 @@ void UCCombatComponent::PlayerRolling()
 
 void UCCombatComponent::EndRolling()
 {
-	OwnerCharacter_Player->bUseControllerRotationYaw = true;
-	OwnerCharacter_Player->GetCharacterMovement()->bOrientRotationToMovement = false;
 
 
 	OwnerCharacter_Player->GetStatComponent()->SetStateType(EStateType::Idling);

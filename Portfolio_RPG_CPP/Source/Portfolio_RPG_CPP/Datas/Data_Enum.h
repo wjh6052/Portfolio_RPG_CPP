@@ -132,6 +132,7 @@ enum class ENPCName : uint8 // NPC이름 열거형
 UENUM(BlueprintType)
 enum class EQuestState : uint8  // 퀘스트의 상태
 {
+	Disabled        UMETA(DisplayName = "비활성화"),
 	NotStarted		UMETA(DisplayName = "시작 전"),
 	InProgress		UMETA(DisplayName = "진행 중"),
 	Completed		UMETA(DisplayName = "완료됨")

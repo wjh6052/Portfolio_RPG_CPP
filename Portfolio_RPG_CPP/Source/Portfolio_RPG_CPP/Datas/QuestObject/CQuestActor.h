@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -23,6 +23,16 @@ public:
 
 
 public:
+	// 진행 중
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-		void BeginQuestObject();
+		void InProgress();
+
+	// 완료됨
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+		void Completed();
+
+
+public:
+	UPROPERTY(BlueprintReadWrite)
+		class UCGameInstance* CGameInstance;
 };
