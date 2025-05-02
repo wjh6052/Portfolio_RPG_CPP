@@ -22,7 +22,7 @@ ACCombat_Melee::ACCombat_Melee()
 	
 
 	//Test
-	CapsuleCollision->SetHiddenInGame(false);
+	CapsuleCollision->SetHiddenInGame(true);
 }
 
 void ACCombat_Melee::BeginPlay()

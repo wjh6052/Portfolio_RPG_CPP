@@ -32,7 +32,7 @@ ACThrowableWeapon::ACThrowableWeapon()
 
 
 
-	CapsuleCollision->SetHiddenInGame(false);
+	CapsuleCollision->SetHiddenInGame(true);
 
 
 
