@@ -13,6 +13,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "PaperSpriteComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 #define INPUT
@@ -107,15 +108,6 @@ void ACCharacter_Base::Tick(float DeltaTime)
 
 }
 
-float ACCharacter_Base::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
-{
-	if(GetCombatComponent())
-		GetCombatComponent()->TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	
-	
-
-	return 0.0f;
-}
 
 void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -133,7 +125,15 @@ void ACCharacter_Base::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 }
 
 
+void ACCharacter_Base::SetGlobalTime(float InTime)
+{
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), InTime);
+}
+
+
 #ifdef INPUT
+
+
 
 
 void ACCharacter_Base::OnMoveForward(float InAxis)

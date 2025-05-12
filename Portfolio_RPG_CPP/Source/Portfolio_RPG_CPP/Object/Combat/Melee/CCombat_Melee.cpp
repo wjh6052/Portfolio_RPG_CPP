@@ -155,9 +155,13 @@ void ACCombat_Melee::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedCompon
 		OwnerCharacter->GetCombatComponent()->OnHitImpact(false, OverlappedComponent);
 		
 		
+		ACCharacter_Base* actor = Cast<ACCharacter_Base>(OtherActor);
 
-
-		UGameplayStatics::ApplyDamage(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
+		if (actor)
+		{
+			actor->GetCombatComponent()->TakeDamage(attackData.AttackDamage.Damage, OwnerCharacter, OnCritical, bSkill);
+		}
+		//UGameplayStatics::ApplyDamage(OtherActor, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), this, UDamageType::StaticClass());
 
 
 		

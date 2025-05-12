@@ -71,7 +71,7 @@ public:
 	void OnSkill_2();
 	void OnSkill_3();
 
-
+	void PlayerCameraShake(float InDamage, bool AttackPlayer);
 
 
 public:

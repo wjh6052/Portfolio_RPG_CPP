@@ -18,7 +18,8 @@ public class Portfolio_RPG_CPP : ModuleRules
 			"GameplayTasks",
 			"NavigationSystem",
 			"AnimGraphRuntime",
-			"Paper2D"
+			"Paper2D",
+			"GameplayCameras"
 	});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

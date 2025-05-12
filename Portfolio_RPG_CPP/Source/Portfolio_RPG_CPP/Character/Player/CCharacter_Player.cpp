@@ -1,5 +1,6 @@
 ﻿#include "CCharacter_Player.h"
 #include "../../Global.h"
+#include "../../Camera/CPlayerCameraShake.h"
 #include "../../Widgets/CWMain.h"
 #include "../../Widgets/Interaction/CWInteractionBox.h"
 #include "../../AnimInstance/CAnimInstance_Player.h"
@@ -145,7 +146,6 @@ void ACCharacter_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 // 테스트 1
 void ACCharacter_Player::OnTest1()
 {
-	
 }
 
 // 테스트 2
@@ -454,6 +454,23 @@ void ACCharacter_Player::OnSkill_3()
 	CheckTrue(bIsLobby);
 	if (GetStatComponent()->IsStatus(EStatusType::Combat))
 		GetCombatComponent()->Skill_3();
+}
+
+void ACCharacter_Player::PlayerCameraShake(float InDamage, bool AttackPlayer)
+{
+
+	float cameraP = 0.2;
+
+	if (!AttackPlayer)
+	{
+		cameraP = InDamage / GetStatComponent()->GetCurrentStat().HP_Max;
+	}
+
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC && PC->PlayerCameraManager)
+	{
+		PC->PlayerCameraManager->StartCameraShake(UCPlayerCameraShake::StaticClass(), cameraP);
+	}
 }
 
 

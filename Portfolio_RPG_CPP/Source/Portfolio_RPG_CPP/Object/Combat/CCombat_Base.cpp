@@ -379,7 +379,15 @@ void ACCombat_Base::DamagesTarget(AActor* InTarget)
 	OwnerCharacter->GetCombatComponent()->AttackKnockBack(InTarget, attackData.AttackDamage.KnockbackStrength, attackData.AttackDamage.KnockUpStrength);
 
 	// 데미지 입력
-	UGameplayStatics::ApplyDamage(InTarget, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), OwnerCharacter->GetCombatComponent()->Current_Combat, UDamageType::StaticClass());
+
+	ACCharacter_Base* actor = Cast<ACCharacter_Base>(InTarget);
+
+	// 데미지 입력
+	if (actor)
+	{
+		actor->GetCombatComponent()->TakeDamage(attackData.AttackDamage.Damage, OwnerCharacter, true, true);
+	}
+	//UGameplayStatics::ApplyDamage(InTarget, attackData.AttackDamage.Damage, OwnerCharacter->GetController(), OwnerCharacter->GetCombatComponent()->Current_Combat, UDamageType::StaticClass());
 }
 
 

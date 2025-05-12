@@ -90,14 +90,30 @@ void UCNS_Combat_AssassinSkill_1::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 			attackData.AttackDamage.CriticalChance += ownerCharacter->GetStatComponent()->GetCurrentStat().Critical_Chance;
 		}
 
+		bool OnCritical = attackData.AttackDamage.bOnCritical || attackData.AttackDamage.CriticalChance >= FMath::FRandRange(0.0, 100.0);
+
+
+		if (OnCritical)
+		{
+			attackData.AttackDamage.Damage += (ownerCharacter->GetStatComponent()->GetPlayerData().Stat.Critical_Damage * 0.01f * attackData.AttackDamage.Damage);
+		}
+
+
 		// 데미지를 월드상 숫자로 나이아가라 효과스폰
 		ownerCharacter->GetCombatComponent()->ShowDamageText(Cast<ACCharacter_Base>(target)->GetCapsuleComponent(), attackData.AttackDamage.Damage, attackData.AttackDamage.bOnCritical);
 		
 		// 데미지를 받은 위치에 나이아가라 효과 스폰
 		ownerCharacter->GetCombatComponent()->OnHitImpact(false, Cast<ACCharacter_Base>(target)->GetCapsuleComponent());
 		
+		ACCharacter_Base* actor = Cast<ACCharacter_Base>(target);
+
 		// 데미지 입력
-		UGameplayStatics::ApplyDamage(target, attackData.AttackDamage.Damage, ownerCharacter->GetController(), ownerCharacter->GetCombatComponent()->Current_Combat, UDamageType::StaticClass());
+		if (actor)
+		{
+			actor->GetCombatComponent()->TakeDamage(attackData.AttackDamage.Damage, ownerCharacter, OnCritical, ownerCharacter->GetCombatComponent()->Current_Combat->bSkill);
+		}
+
+		//UGameplayStatics::ApplyDamage(target, attackData.AttackDamage.Damage, ownerCharacter->GetController(), ownerCharacter->GetCombatComponent()->Current_Combat, UDamageType::StaticClass());
 	}
 }
 

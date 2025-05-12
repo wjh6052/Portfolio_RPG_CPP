@@ -172,7 +172,7 @@ void UCCombatComponent::SwitchWeapon(ECombatType InCombatType)
 }
 
 // 데미지 적용
-void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+void UCCombatComponent::TakeDamage(float DamageAmount, AActor* DamageCauser, bool IsCritical, bool IsSkill)
 {
 	if (OwnerCharacter_Base->GetStatComponent()->IsState(EStateType::Dying))
 		return;
@@ -188,6 +188,11 @@ void UCCombatComponent::TakeDamage(float DamageAmount, struct FDamageEvent const
 
 	}
 
+	// 카메라 쉐이크
+	if (CGameInstance || IsCritical || IsSkill)
+	{
+		CGameInstance->GetPlayerCharacter()->PlayerCameraShake(InDamage, (OwnerCharacter_Base->GetCharacterType() != ECharacterType::Player));
+	}
 
 	// 죽었을때
 	if (OwnerCharacter_Base->GetStatComponent() && OwnerCharacter_Base->GetStatComponent()->AddDamage(InDamage))
