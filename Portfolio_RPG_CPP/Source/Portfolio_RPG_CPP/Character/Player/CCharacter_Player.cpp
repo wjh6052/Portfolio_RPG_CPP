@@ -88,7 +88,11 @@ void ACCharacter_Player::BeginPlay()
 			SetActorLocation(CGameInstance->PlayerSpawnPoint);
 	}
 
-	
+	if (GEngine)
+	{
+		GEngine->Exec(GetWorld(), TEXT("DisableAllScreenMessages true"));
+		CLog::Print(1);
+	}
 }
 
 
