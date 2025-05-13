@@ -229,8 +229,15 @@ void UCNS_AttackTrace::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenc
 			// 데미지를 월드상 숫자로 나이아가라 효과스폰
 			ownerBoss->GetCombatComponent()->ShowDamageText(target->GetMainMesh(), ownerBoss->CurrentSkill.SkillDamage.Damage, false);
 
+			ACCharacter_Base* actor = Cast<ACCharacter_Base>(target);
 
-			UGameplayStatics::ApplyDamage(target, ownerBoss->CurrentSkill.SkillDamage.Damage, ownerBoss->GetController(), ownerBoss, UDamageType::StaticClass());
+			// 데미지 입력
+			if (actor)
+			{
+				actor->GetCombatComponent()->TakeDamage(ownerBoss->CurrentSkill.SkillDamage.Damage, ownerBoss, true, true);
+			}
+
+			//UGameplayStatics::ApplyDamage(target, ownerBoss->CurrentSkill.SkillDamage.Damage, ownerBoss->GetController(), ownerBoss, UDamageType::StaticClass());
 
 			OnTarget = true;
 		}
@@ -297,7 +304,14 @@ void UCNS_AttackTrace::BossEndNotify(USkeletalMeshComponent* MeshComp, UAnimSequ
 		ownerBoss->GetCombatComponent()->ShowDamageText(target->GetMainMesh(), ownerBoss->CurrentSkill.SkillDamage.Damage, false);
 
 
-		UGameplayStatics::ApplyDamage(target, ownerBoss->CurrentSkill.SkillDamage.Damage, ownerBoss->GetController(), ownerBoss, UDamageType::StaticClass());
+		ACCharacter_Base* actor = Cast<ACCharacter_Base>(target);
+
+		// 데미지 입력
+		if (actor)
+		{
+			actor->GetCombatComponent()->TakeDamage(ownerBoss->CurrentSkill.SkillDamage.Damage, ownerBoss, true, true);
+		}
+		//UGameplayStatics::ApplyDamage(target, ownerBoss->CurrentSkill.SkillDamage.Damage, ownerBoss->GetController(), ownerBoss, UDamageType::StaticClass());
 
 
 	}
