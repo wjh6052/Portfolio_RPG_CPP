@@ -1,4 +1,4 @@
-![UI](https://github.com/user-attachments/assets/e35aecb3-c10d-413b-9a1a-7c8f799b4938)  
+![UI](https://github.com/user-attachments/assets/4f472c9e-78e0-4528-8daf-643a7ea5c8e4)
 ![오브젝트 상호작용](https://github.com/user-attachments/assets/85f7e16a-21a5-4050-a62d-6c8064ec7dd4)  
 ![공격 중](https://github.com/user-attachments/assets/8d4c773d-8c44-4cde-a2e8-4df180a0f7ff)  
 ![카툰 렌더링](https://github.com/user-attachments/assets/f64e9e9a-c240-4b0c-a748-087f74fcbe06)  
