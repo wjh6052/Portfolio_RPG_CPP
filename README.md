@@ -326,6 +326,6 @@ public:
 ## 9. 포트폴리오 관련 링크
 <br>
 
-[포트폴리오 영상 보기](https://www.youtube.com/watch?v=PboJuj6Sku8)  
+[포트폴리오 영상 보기](https://youtu.be/39JHvmv2vvs)  
 [GitHub 소스코드 확인](https://github.com/wjh6052/Portfolio_RPG_CPP)  
 [게임 데모, UI 정리 PPT 다운로드](https://drive.google.com/drive/folders/1sUIedU8rEOF7PQWR05eeySVDdqj9V2ri?usp=drive_link)  
