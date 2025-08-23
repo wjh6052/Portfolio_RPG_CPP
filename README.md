@@ -236,7 +236,7 @@ CWB_Main
 
 
 **추가 설명**<br>
-* 📄 [UI 상세 설명 PPT (Google Drive)](https://drive.google.com/drive/folders/1O-1oLa-TYRhBmjl65HDWEK9a34n4Tsav?usp=drive_link)
+* 📄 [UI 상세 설명 PPT (Google Drive)](https://docs.google.com/presentation/d/1w4mQx9eOzApdIJakjelVV0aBQHWA5Cx1/edit?usp=drive_link&ouid=112765785772264027404&rtpof=true&sd=true)
  <br>
  <br>
 
