@@ -1,3 +1,10 @@
+## 미리보기  
+
+***
+[포트폴리오 영상 보기](https://youtu.be/39JHvmv2vvs)
+
+***
+
 ![UI](https://github.com/user-attachments/assets/4f472c9e-78e0-4528-8daf-643a7ea5c8e4)
 ![공격 중](https://github.com/user-attachments/assets/8d4c773d-8c44-4cde-a2e8-4df180a0f7ff)  
 ![카툰 렌더링](https://github.com/user-attachments/assets/f64e9e9a-c240-4b0c-a748-087f74fcbe06)  
@@ -7,7 +14,7 @@
 
 
 
-
+***
 
 ## 목차
 
@@ -55,6 +62,8 @@
 
 
 ## 1. 데이터 기반 시스템
+<details>
+  <summary>데이터 기반 시스템</summary>
 **🛠 데이터 테이블을 통한 관리**
 
   🔹 플레이어 데이터 테이블
@@ -103,9 +112,11 @@
 🔹 맵 아이콘 에셋
   + 맵이나 미니맵에 사용될 스프라이트 에셋을 관리하는 데이터 에셋
  <img src="https://github.com/user-attachments/assets/890609fc-2a5e-4126-856b-910a31df7004" width="500"/><br>
-
+</details>
 
 ## 2. 캐릭터 교체, 액션 및 전투 시스템
+<details>
+  <summary>캐릭터 교체, 액션 및 전투 시스템</summary>
 
 **🛠 캐릭터 교체**
 + 게임 플레이 도중 Tab키를 눌러 무기 변경 UI를 화면에 띄운 후 마우스 커서가 있는 무기로 변경하여 무기에 해당하는 캐릭터의 매쉬, 스킬을 변경하는 기능합니다
@@ -163,12 +174,14 @@ void ACCombat_Base::NextComboAttack()
 
 🔹 데미지 적용 및 영향
   무기의 콜리전 충돌 -> 충돌될 캐릭터의 UCCombatComponent::TakeDamage호출 -> 중복확인 -> 데미지, 사망처리 -> 히트 연출 및 데미지 텍스트 스폰
-
+</details>
 
 ## 3. AI 시스템
+<details>
+  <summary>AI 시스템</summary>
+
 🔹 CCharacter_Base를 상속 받은 CCharacter_AI 클래스로 구성
 
-  
 **🛠 몬스터 및 보스**<br>
 + AIController 및 Behavior Tree를 활용하여 AI 상태 관리
 + CAISpawner를 통해 몬스터를 스폰 및 리스폰 구현
@@ -177,8 +190,11 @@ void ACCombat_Base::NextComboAttack()
 
 **🛠 NPC**<br>
 + NPC는 상호작용 클레스 CInteraction를 상속 받은 CInteraction_NPC를 스폰하여 캐릭터에 붙여 플레어와 상호작용 하도록 설정
+</details>
 
 ## 4. 상호작용
+<details>
+  <summary>상호작용</summary>
 **🛠 상호작용**<br>
 
 <img src="https://github.com/user-attachments/assets/0a48d0e5-46b2-4c41-99c2-622451ab6278" width="500"/><br>
@@ -192,9 +208,11 @@ void ACCombat_Base::NextComboAttack()
   + 플레이어가 콜리전에 진입시 상호작용 오브젝트의 데이터를 받아와 위젯 배열에 저장, F키를 입력 시 현재 선택된 오브젝트와 상호작용합니다
     <br>
 
-
+</details>
 
 ## 5. UI 시스템 및 미니맵<br>
+<details>
+  <summary>UI 시스템 및 미니맵</summary>
 <img src="https://github.com/user-attachments/assets/3c8029f1-e6d9-47cd-b3f4-1b4307911304" width="500"/><br>
 🔹 UI의 전체 흐름
  <pre>
@@ -239,9 +257,11 @@ CWB_Main
 * 📄 [UI 상세 설명 PPT (Google Drive)](https://docs.google.com/presentation/d/1w4mQx9eOzApdIJakjelVV0aBQHWA5Cx1/edit?usp=drive_link&ouid=112765785772264027404&rtpof=true&sd=true)
  <br>
  <br>
-
+</details>
  
 ## 6. 렌더링
+<details>
+  <summary>렌더링 (카툰렌더링)</summary>
 **🛠 카툰 렌더링**<br>
 <img src="https://github.com/user-attachments/assets/d301ac33-012b-4c1d-bd2f-e2f7de71376b" width="500"/><br>
 <img src="https://github.com/user-attachments/assets/2f90bd1b-0254-43ba-9769-5b5fe9c311ea" width="500"/><br>
@@ -257,8 +277,11 @@ CWB_Main
   
 <br>
 <br>
+</details>
 
 ## 7. 디테일
+<details>
+  <summary>디테일</summary>
 <br>
 🔹 캐릭터 리타겟팅
 + 베이스가 될 마네킹 밑에 보여질 캐릭터 메쉬, 메쉬 아웃라인을 통해 마네킹 애니메이션 만으로도 모든 캐릭터의 애니메이션 인스턴스를 구성했습니다
@@ -274,10 +297,12 @@ CWB_Main
 🔹 무기 매쉬 임팩트
 + 무기를 들었을 때 뺐을 때 무기가 서서히 보이도록/사라지도록 구현
   - 서서히 사라지는 머티리얼을 제작, 무기의 머티리얼을 다이나믹 인스턴스로 교체 후 머티리얼의 값을 타임라인으로 조정하여 서서히 사라지는 효과를 구현했습니다
-
+</details>
 
 
 ## 8. 세이브 및 로드
+<details>
+  <summary>세이브 및 로드</summary>
 <br>
 🔹 UCSaveGame를 통해 각종 데이터를 저장
 <pre>
@@ -322,6 +347,8 @@ public:
 🔹 UI를 통해 세이브 데이터를 저장, 로드, 삭제를 구현
 <br><img src="https://github.com/user-attachments/assets/a3bd9529-f3d5-4fce-b783-7e3d3f583e25" width="500"/><br>
 <br>
+
+</details>
 
 ## 9. 포트폴리오 관련 링크
 <br>
