@@ -62,8 +62,8 @@
 
 
 ## 1. 데이터 기반 시스템
-<details>
-  <summary>데이터 기반 시스템</summary>
+<details open>
+  <summary>데이터 기반 시스템 (접기 / 펼치기)</summary>
 **🛠 데이터 테이블을 통한 관리**
 
   🔹 플레이어 데이터 테이블
@@ -115,8 +115,8 @@
 </details>
 
 ## 2. 캐릭터 교체, 액션 및 전투 시스템
-<details>
-  <summary>캐릭터 교체, 액션 및 전투 시스템</summary>
+<details open>
+  <summary>캐릭터 교체, 액션 및 전투 시스템 (접기 / 펼치기)</summary>
 
 **🛠 캐릭터 교체**
 + 게임 플레이 도중 Tab키를 눌러 무기 변경 UI를 화면에 띄운 후 마우스 커서가 있는 무기로 변경하여 무기에 해당하는 캐릭터의 매쉬, 스킬을 변경하는 기능합니다
@@ -177,8 +177,8 @@ void ACCombat_Base::NextComboAttack()
 </details>
 
 ## 3. AI 시스템
-<details>
-  <summary>AI 시스템</summary>
+<details open>
+  <summary>AI 시스템 (접기 / 펼치기)</summary>
 
 🔹 CCharacter_Base를 상속 받은 CCharacter_AI 클래스로 구성
 
@@ -193,8 +193,8 @@ void ACCombat_Base::NextComboAttack()
 </details>
 
 ## 4. 상호작용
-<details>
-  <summary>상호작용</summary>
+<details open>
+  <summary>상호작용 (접기 / 펼치기)</summary>
 **🛠 상호작용**<br>
 
 <img src="https://github.com/user-attachments/assets/0a48d0e5-46b2-4c41-99c2-622451ab6278" width="500"/><br>
@@ -211,8 +211,8 @@ void ACCombat_Base::NextComboAttack()
 </details>
 
 ## 5. UI 시스템 및 미니맵<br>
-<details>
-  <summary>UI 시스템 및 미니맵</summary>
+<details open>
+  <summary>UI 시스템 및 미니맵 (접기 / 펼치기)</summary>
 <img src="https://github.com/user-attachments/assets/3c8029f1-e6d9-47cd-b3f4-1b4307911304" width="500"/><br>
 🔹 UI의 전체 흐름
  <pre>
@@ -260,8 +260,8 @@ CWB_Main
 </details>
  
 ## 6. 렌더링
-<details>
-  <summary>렌더링 (카툰렌더링)</summary>
+<details open>
+  <summary>렌더링 (카툰렌더링) (접기 / 펼치기)</summary>
 **🛠 카툰 렌더링**<br>
 <img src="https://github.com/user-attachments/assets/d301ac33-012b-4c1d-bd2f-e2f7de71376b" width="500"/><br>
 <img src="https://github.com/user-attachments/assets/2f90bd1b-0254-43ba-9769-5b5fe9c311ea" width="500"/><br>
@@ -280,8 +280,8 @@ CWB_Main
 </details>
 
 ## 7. 디테일
-<details>
-  <summary>디테일</summary>
+<details open>
+  <summary>디테일 (접기 / 펼치기)</summary>
 <br>
 🔹 캐릭터 리타겟팅
 + 베이스가 될 마네킹 밑에 보여질 캐릭터 메쉬, 메쉬 아웃라인을 통해 마네킹 애니메이션 만으로도 모든 캐릭터의 애니메이션 인스턴스를 구성했습니다
@@ -301,8 +301,8 @@ CWB_Main
 
 
 ## 8. 세이브 및 로드
-<details>
-  <summary>세이브 및 로드</summary>
+<details open>
+  <summary>세이브 및 로드 (접기 / 펼치기)</summary>
 <br>
 🔹 UCSaveGame를 통해 각종 데이터를 저장
 <pre>
